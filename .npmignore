@@ -1,8 +1,17 @@
 # Useless directories
 /miniprogram_npm
+/pages
+/utils
+
+# Useless files
+/app.js
+/app.json
+/app.wxss
+/project.config.json
 
 # Useless configurations
 /.gitignore
+/rollup.config.js
 
 # Logs
 logs

@@ -3,6 +3,8 @@
 }
 
 .time {
+  font-family: Consolas;
+  font-size: 128rpx;
   color: #fff;
 }
 
@@ -15,5 +17,6 @@
 }
 
 .scramble {
+  font-size: 48rpx;
   color: #eee;
 }

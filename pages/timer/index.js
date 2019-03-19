@@ -4,6 +4,7 @@ const { generateScramble } = require('../../utils/patch.js')
 
 let interval = null
 let readyTimeout = null
+let startTime = 0
 
 Page({
   data: {
@@ -18,6 +19,7 @@ Page({
     })
   },
   pressDown() {
+    console.log('down')
     if (this.data.status === 0) {
       this.ready()
     } else if (this.data.status === 2) {
@@ -25,10 +27,14 @@ Page({
     }
   },
   pressUp() {
+    console.log('up')
     if (this.data.status === 1) {
       this.start()
     } else {
       clearTimeout(readyTimeout)
+      this.setData({
+        statusColor: ''
+      })
     }
   },
   ready() {
@@ -41,7 +47,6 @@ Page({
     }), 500)
   },
   start() {
-    console.log('start')
     this.setData({
       status: 2,
       statusColor: ''
@@ -52,15 +57,16 @@ Page({
     })
   },
   finish() {
-    console.log('end')
     this.stopTimer()
     this.setData({ status: 0 })
   },
   startTimer() {
-    const now = Date.now()
+    startTime = Date.now()
     interval = setInterval(() => {
+      const msTime = Date.now() - startTime
+      const time = dayjs(msTime).format(msTime < 60000 ? 's.SSS' : 'm:ss.SSS')
       this.setData({
-        time: dayjs(Date.now() - now).format('m:s.SSS')
+        time: time.substring(0, time.length - 1)
       })
     }, 10)
   },
