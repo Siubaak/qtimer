@@ -11,7 +11,8 @@ Page({
     status: 0, // 0:完成 1:准备 2:计时中
     time: '0.00',
     scramble: '',
-    statusColor: ''
+    timeClass: '',
+    scrambleClass: ''
   },
   onLoad() {
     this.setData({
@@ -33,32 +34,36 @@ Page({
     } else {
       clearTimeout(readyTimeout)
       this.setData({
-        statusColor: ''
+        timeClass: ''
       })
     }
   },
   ready() {
     this.setData({
-      statusColor: 'ready'
+      timeClass: 'ready'
     })
     readyTimeout = setTimeout(() => this.setData({
       status: 1,
-      statusColor: 'start'
+      timeClass: 'start'
     }), 500)
   },
   start() {
     this.setData({
       status: 2,
-      statusColor: ''
+      timeClass: ''
     })
     this.startTimer()
     this.setData({
+      scrambleClass: 'start',
       scramble: generateScramble(app.globalData.type)
     })
   },
   finish() {
     this.stopTimer()
-    this.setData({ status: 0 })
+    this.setData({
+      status: 0,
+      scrambleClass: ''
+    })
   },
   startTimer() {
     startTime = Date.now()

@@ -1,6 +1,6 @@
 {
   "name": "qtimer",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "probably the best cube timer in mini programs",
   "main": "app.js",
   "unpkg": "hot/dist/qtimer.min.js",
@@ -21,9 +21,11 @@
     "url": "https://github.com/Siubaak/qtimer/issues"
   },
   "homepage": "https://github.com/Siubaak/qtimer#readme",
-  "devDependencies": {
+  "dependencies": {
     "dayjs": "^1.8.10",
-    "rollup": "^1.6.0",
-    "sval": "^0.2.4"
+    "sval": "^0.2.5"
+  },
+  "devDependencies": {
+    "rollup": "^1.6.0"
   }
 }

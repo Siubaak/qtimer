@@ -4,16 +4,29 @@ const interpreter = new Sval()
 const version = wx.getStorageSync('__generate_scramble__version')
 const code = wx.getStorageSync('__generate_scramble')
 
-// wx.request({
-//   url: ''
-// })
+wx.request({
+  url: 'https://unpkg.com/qtimer?meta',
+  success(res) {
+    const integrity = res.data.integrity
+    if (integrity !== version) {
+      console.log('generate scramble update')
+      wx.setStorageSync('__generate_scramble__version', integrity)
+      wx.request({
+        url: 'https://unpkg.com/qtimer',
+        success(res) {
+          wx.setStorageSync('__generate_scramble', res.data)
+        }
+      })
+    } else {
+      console.log('use cached generate scramble')
+    }
+  }
+})
 
-interpreter.run(`
-exports.supportedTypes = ['3x3']
-exports.generateScramble = function (type) {
-  return 'R R R R R R R'
+if (code) {
+  interpreter.import({ Object, Math })
+  interpreter.run(code)
 }
-`)
 
 // supportedTypes
 // generateScramble
