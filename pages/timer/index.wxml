@@ -1,0 +1,9 @@
+<!--index.wxml-->
+<view class="container" bindtouchstart="pressDown" bindtouchend="pressUp">
+  <view class="item">
+    <text class="time {{statusColor}}">{{time}}</text>
+  </view>
+  <view class="item">
+    <text class="scramble">{{scramble}}</text>
+  </view>
+</view>

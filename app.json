@@ -1,0 +1,12 @@
+{
+  "pages":[
+    "pages/timer/index",
+    "pages/group/index"
+  ],
+  "window":{
+    "navigationBarBackgroundColor": "#000",
+    "navigationBarTitleText": "QTimer",
+    "navigationBarTextStyle": "white"
+  },
+  "resizable": true
+}

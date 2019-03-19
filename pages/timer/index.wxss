@@ -1,0 +1,19 @@
+.container {
+  background-color: #000;
+}
+
+.time {
+  color: #fff;
+}
+
+.time.ready {
+  color: #e64340;
+}
+
+.time.start {
+  color: #1aad19;
+}
+
+.scramble {
+  color: #eee;
+}

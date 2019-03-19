@@ -1,0 +1,27 @@
+{
+  "name": "qtimer",
+  "version": "1.0.0",
+  "description": "probably the best cube timer in mini programs",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Siubaak/qtimer.git"
+  },
+  "keywords": [
+    "cude",
+    "timer"
+  ],
+  "author": "baakqiu",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Siubaak/qtimer/issues"
+  },
+  "homepage": "https://github.com/Siubaak/qtimer#readme",
+  "dependencies": {
+    "dayjs": "^1.8.10",
+    "sval": "^0.2.4"
+  }
+}
