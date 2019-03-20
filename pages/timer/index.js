@@ -5,13 +5,21 @@ const { generateScramble } = require('../../utils/patch.js')
 let interval = null
 let readyTimeout = null
 let startTime = 0
+let lastTap = 0
+
+function format(msTime) {
+  const time = dayjs(msTime).format(msTime < 60000 ? 's.SSS' : 'm:ss.SSS')
+  return time.substring(0, time.length - 1)
+}
 
 Page({
   data: {
     status: 0, // 0:完成 1:准备 2:计时中
+    origin: 0,
     time: '0.00',
     scramble: '',
     timeClass: '',
+    timeSize: '',
     scrambleClass: ''
   },
   onLoad() {
@@ -20,15 +28,40 @@ Page({
     })
   },
   pressDown() {
-    console.log('down')
     if (this.data.status === 0) {
-      this.ready()
+      if (Date.now() - lastTap < 300) {
+        wx.showActionSheet({
+          itemList: ['正常', '+2', 'DNF'],
+          success: res => {
+            console.log(res.tapIndex)
+            switch(res.tapIndex) {
+              case 0:
+                this.setData({
+                  time: format(this.data.origin)
+                })
+                break
+              case 1:
+                this.setData({
+                  time: format(this.data.origin + 2000)
+                })
+                break
+              case 2:
+                this.setData({
+                  time: 'DNF'
+                })
+                break
+              default:
+            }
+          }
+        })
+      } else {
+        this.ready()
+      }
     } else if (this.data.status === 2) {
       this.finish()
     }
   },
   pressUp() {
-    console.log('up')
     if (this.data.status === 1) {
       this.start()
     } else {
@@ -36,46 +69,46 @@ Page({
       this.setData({
         timeClass: ''
       })
+      lastTap = Date.now()
     }
   },
   ready() {
     this.setData({
       timeClass: 'ready'
     })
-    readyTimeout = setTimeout(() => this.setData({
-      status: 1,
-      timeClass: 'start'
-    }), 500)
+    readyTimeout = setTimeout(() => {
+      this.setData({
+        status: 1,
+        timeClass: 'start'
+      })
+      wx.vibrateShort()
+    }, 800)
   },
   start() {
+    startTime = Date.now()
+    interval = setInterval(() => {
+      const msTime = Date.now() - startTime
+      this.setData({
+        origin: msTime,
+        time: format(msTime),
+        timeSize: msTime < 60000 ? '' : 'small'
+      })
+      if (msTime > 599989) this.finish()
+    }, 10)
     this.setData({
       status: 2,
-      timeClass: ''
-    })
-    this.startTimer()
-    this.setData({
-      scrambleClass: 'start',
+      timeClass: 'timing',
+      scrambleClass: 'hide',
       scramble: generateScramble(app.globalData.type)
     })
+    wx.setKeepScreenOn({ keepScreenOn: true })
   },
   finish() {
-    this.stopTimer()
+    clearInterval(interval)
     this.setData({
       status: 0,
       scrambleClass: ''
     })
-  },
-  startTimer() {
-    startTime = Date.now()
-    interval = setInterval(() => {
-      const msTime = Date.now() - startTime
-      const time = dayjs(msTime).format(msTime < 60000 ? 's.SSS' : 'm:ss.SSS')
-      this.setData({
-        time: time.substring(0, time.length - 1)
-      })
-    }, 10)
-  },
-  stopTimer() {
-    clearInterval(interval)
+    wx.setKeepScreenOn({ keepScreenOn: false })
   }
 })

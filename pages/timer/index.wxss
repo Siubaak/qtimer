@@ -8,29 +8,43 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: bold;
+  justify-content: flex-start;
+}
+
+.item.down {
   justify-content: center;
 }
 
 .time {
-  font-family: 'Courier New', Courier, monospace;
-  font-size: 152rpx;
-  font-weight: bold;
-  color: #fff;
-}
-
-.time.ready {
-  color: #e64340;
-}
-
-.time.start {
-  color: #1aad19;
-}
-
-.scramble {
-  font-size: 48rpx;
+  font-size: 196rpx;
+  text-align: center;
   color: #eee;
 }
 
-.scramble.start {
-  color: #000;
+.time.small {
+  font-size: 156rpx;
+}
+
+.time.ready {
+  color: #fa5151;
+}
+
+.time.start {
+  color: #44b549;
+}
+
+.time.timing {
+  color: #eaa000;
+}
+
+.scramble {
+  font-size: 42rpx;
+  text-align: center;
+  color: #eee;
+}
+
+.scramble.hide {
+  opacity: 0;
 }
