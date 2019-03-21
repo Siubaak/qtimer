@@ -43,6 +43,7 @@ Page({
               const details = groups[current].details
               details[details.length - 1].time = time
               details[details.length - 1].cond = tapIndex
+
               app.saveGroups()
             } else {
               wx.showModal({
@@ -56,6 +57,7 @@ Page({
                     const { current, groups } = app.globalData
                     const details = groups[current].details
                     details.pop()
+
                     app.saveGroups()
                     app.notifyData()
                   }
@@ -87,7 +89,7 @@ Page({
       this.setData({ status: 1, timeClass: 'start' })
       this.preventModify()
       wx.vibrateShort()
-    }, 600)
+    }, 500)
   },
   start() {
     startTime = Date.now()
