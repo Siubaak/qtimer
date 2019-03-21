@@ -30,9 +30,3 @@ wx.request({
 })
 
 module.exports = interpreter.exports
-
-// module.exports = function patch() {
-//   // supportedTypes
-//   // generateScramble
-//   return interpreter.exports
-// }

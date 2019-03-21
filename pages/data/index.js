@@ -28,6 +28,16 @@ Page({
       supportedTypes: patch.supportedTypes
     })
   },
+  nameGroup(event) {
+    const { current, groups } = app.globalData
+    const curGroup = groups[current]
+    curGroup.name = event.detail.value
+    
+    const groupList = this.getGroupList(groups)
+    this.setData({ groupList })
+
+    app.saveGroups()
+  },
   switchGroup(event) {
     const groupIndex = event.detail.value
 
@@ -93,13 +103,14 @@ Page({
   getGroupList(groups) {
     const groupList = ['新建成绩分组']
     for (let i = groups.length - 1; i > -1; i--) {
-      groupList.push(`${i + 1}. ${groups[i].type} (${groups[i].create})`)
+      groupList.push(`${groups[i].name || '未命名分组'} (${groups[i].type})`)
     }
     return groupList
   },
   createGroup() {
     const { groups } = app.globalData
     const curGroup = {
+      name: '',
       create: today(),
       type: '3x3',
       details: []

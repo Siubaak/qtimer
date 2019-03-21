@@ -1,12 +1,12 @@
 const today = require('./utils/today.js')
-
-const current = wx.getStorageSync('__current_group_index')
 const groups = wx.getStorageSync('__groups')
+const current = wx.getStorageSync('__current_group_index')
 
 App({
   globalData: {
     current: 0,
     groups: [{
+      name: '',
       create: today(),
       type: '3x3',
       details: []
