@@ -1,7 +1,7 @@
 {
   "pages":[
     "pages/timer/index",
-    "pages/group/index"
+    "pages/data/index"
   ],
   "window":{
     "navigationBarBackgroundColor": "#000",
@@ -18,13 +18,13 @@
         "text": "计时",
         "pagePath": "pages/timer/index",
         "iconPath": "images/timer.png",
-        "selectedIconPath": "images/timer_selected.png"
+        "selectedIconPath": "images/timer_sel.png"
       },
       {
-        "text": "分组",
-        "pagePath": "pages/group/index",
-        "iconPath": "images/group.png",
-        "selectedIconPath": "images/group_selected.png"
+        "text": "统计",
+        "pagePath": "pages/data/index",
+        "iconPath": "images/data.png",
+        "selectedIconPath": "images/data_sel.png"
       }
     ]
   },

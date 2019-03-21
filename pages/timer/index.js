@@ -96,6 +96,7 @@ Page({
       } else {
         this.setData({ origin: msTime, time: 100000 })
         this.finish()
+        this.preventModify()
       }
     }, 10)
 
