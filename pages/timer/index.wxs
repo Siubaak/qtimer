@@ -1,0 +1,13 @@
+function getTimeSize(time) {
+  // 100000为DNF，wxs传不进去Infinity
+  return time < 60000 || time === 100000 ? '' : 'small'
+}
+
+function getScrambleClass(status) {
+  return status === 2 ? 'hide' : ''
+}
+
+module.exports = {
+  getTimeSize: getTimeSize,
+  getScrambleClass: getScrambleClass
+}

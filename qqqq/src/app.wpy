@@ -1,0 +1,73 @@
+<script>
+import wepy from 'wepy'
+import hot from '@/utils/patch'
+import { on, emit } from '@/utils/event'
+import 'wepy-async-function'
+
+const saveType = wx.getStorageSync('__current_type')
+
+export default class extends wepy.app {
+  config = {
+    pages:[
+      'pages/group/index',
+      'pages/timer/index'
+    ],
+    window:{
+      navigationBarBackgroundColor: '#000',
+      navigationBarTitleText: 'QTimer',
+      navigationBarTextStyle: 'white',
+      backgroundColor: '#000'
+    },
+    tabBar: {
+      backgroundColor: '#000',
+      color: '#eee',
+      selectedColor: '#44b549',
+      list: [
+        {
+          text: '计时',
+          pagePath: 'pages/timer/index',
+          iconPath: 'images/timer.png',
+          selectedIconPath: 'images/timer_selected.png'
+        },
+        {
+          text: '分组',
+          pagePath: 'pages/group/index',
+          iconPath: 'images/group.png',
+          selectedIconPath: 'images/group_selected.png'
+        }
+      ]
+    },
+    resizable: true
+  }
+
+  globalData = {
+    type: '3x3'
+  }
+
+  constructor () {
+    super()
+    this.use('promisify')
+    this.use('requestfix')
+  }
+
+  on = on
+  emit = emit
+
+  onLaunch() {
+    if (saveType && hot.supportedTypes.indexOf(saveType) !== -1) {
+      this.globalData.type = saveType
+    } else {
+      wepy.getStorageSync('__current_type', '3x3')
+    }
+  }
+}
+</script>
+
+<style lang='less'>
+page {
+  height: 100%;
+}
+.container {
+  height: 100%;
+}
+</style>

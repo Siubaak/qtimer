@@ -1,0 +1,182 @@
+<template>
+  <view class="container">
+    <view class="weui-cells stats">
+      <view class="weui-cell weui-cell_input">
+        <view class="weui-cell__hd">
+          <view class="weui-label">名称</view>
+        </view>
+        <view class="weui-cell__bd">
+          <input class="weui-input" placeholder="未命名分组" />
+        </view>
+      </view>
+      <view class="weui-cell weui-cell_input">
+        <view class="weui-cell__hd">
+          <view class="weui-label">时间</view>
+        </view>
+        <view class="weui-cell__bd">
+          <view class="weui-input">2019/03/02</view>
+        </view>
+      </view>
+      <view class="weui-cell weui-cell_select" hover-class="weui-cell_active">
+        <view class="weui-cell__hd weui-cell__hd_in-select-after">
+          <view class="weui-label">类别</view>
+        </view>
+        <view class="weui-cell__bd">
+          <picker @change="bindCountryChange" value="{{countryIndex}}" range="{{countries}}">
+            <view class="weui-select weui-select_in-select-after">{{countries[countryIndex]}}</view>
+          </picker>
+        </view>
+      </view>
+      <view class="weui-cell weui-cell_input">
+        <view class="weui-cell__hd">
+          <view class="weui-label">还原</view>
+        </view>
+        <view class="weui-cell__bd">
+          <view class="weui-input">{{solved}}/{{groups[current].details.length}}</view>
+        </view>
+      </view>
+      <view class="weui-cell weui-cell_input">
+        <view class="weui-cell__hd">
+          <view class="weui-label">最快成绩</view>
+        </view>
+        <view class="weui-cell__bd">
+          <view class="weui-input">{{best}}</view>
+        </view>
+      </view>
+      <view class="weui-cell weui-cell_input">
+        <view class="weui-cell__hd">
+          <view class="weui-label">最慢成绩</view>
+        </view>
+        <view class="weui-cell__bd">
+          <view class="weui-input">{{worst}}</view>
+        </view>
+      </view>
+      <view class="weui-cell weui-cell_input">
+        <view class="weui-cell__hd">
+          <view class="weui-label">去头尾平均</view>
+        </view>
+        <view class="weui-cell__bd">
+          <view class="weui-input">{{avg}}</view>
+        </view>
+      </view>
+      <view class="weui-cell weui-cell_select" hover-class="weui-cell_active">
+        <view class="weui-cell__hd weui-cell__hd_in-select-after">
+          <view class="weui-label label-tip">切换分组</view>
+        </view>
+        <view class="weui-cell__bd">
+          <picker @change="bindCountryChange" value="{{countryIndex}}" range="{{countries}}">
+            <view class="weui-select weui-select_in-select-after"></view>
+          </picker>
+        </view>
+      </view>
+      <view class="weui-cell weui-cell_select" hover-class="weui-cell_active">
+        <view class="weui-cell__hd weui-cell__hd_in-select-after">
+          <view class="weui-label label-warn">删除当前分组</view>
+        </view>
+        <view class="weui-cell__bd">
+          <picker @change="bindCountryChange" value="{{countryIndex}}" range="{{countries}}">
+            <view class="weui-select weui-select_in-select-after"></view>
+          </picker>
+        </view>
+      </view>
+    </view>
+    <view class="weui-panel weui-panel_access">
+      <view class="weui-panel__hd">成绩详情</view>
+      <view class="weui-panel__bd">
+        <repeat for="groups[current].details">
+          <view class="weui-media-box weui-media-box_text" hover-class="weui-cell_active">
+            <view class="weui-media-box__title weui-media-box__title_in-text">{{item.time}}</view>
+            <view class="weui-media-box__desc">拍表：12.55</view>
+            <view class="weui-media-box__desc">打乱：{{item.scramble}}</view>
+          </view>
+        </repeat>
+      </view>
+    </view>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy'
+import { timeFormat, dateFormat, timeParse } from '@/utils/format'
+
+export default class Group extends wepy.page {
+  config = {
+    navigationBarBackgroundColor: '#f8f8f8',
+    navigationBarTextStyle: 'black',
+    backgroundColor: '#f8f8f8'
+  }
+
+  data = {
+    current: 0,
+    groups: [
+      {
+        name: '1',
+        create: dateFormat(Date.now()),
+        type: '3x3',
+        details: [{
+          origin: 9000,
+          cond: ''
+        },{
+          origin: 9000,
+          cond: ''
+        }]
+      },
+      {
+        name: '2',
+        create: dateFormat(Date.now()),
+        type: '3x3',
+        details: [{
+          origin: 10000,
+          cond: ''
+        }]
+      }
+    ]
+  }
+
+  computed = {
+    solved: () => this.groups[this.current].details.filter(d => d.cond !== 'DNF').length,
+    best: () => timeFormat(this.groups[this.current].details.reduce((p, n) => Math.min(p.origin, n.origin))),
+    worst: () => timeFormat(this.groups[this.current].details.reduce((p, n) => Math.max(p.origin, n.origin))),
+    avg: () => timeFormat(this.groups[this.current].details.reduce((p, n) => p.origin + n.origin))
+  }
+  
+  methods = {
+    
+  }
+
+  onLoad() {
+    this.$parent.on('finish', (a) => {
+      console.log(a)
+      // const { curGroup } = this.data
+      // curGroup.details.push({ origin, time, scramble })
+      // curGroup.solved++
+      // curGroup.best = timeFormat(Math.min(timeParse(curGroup.best), origin))
+      // curGroup.worst = timeFormat(Math.max(timeParse(curGroup.worst), origin))
+      // curGroup.avg = timeFormat((timeParse(curGroup.avg)*(curGroup.solved - 1) + origin)/curGroup.solved)
+      // this.setData({
+      //   curGroup
+      // })
+    })
+  }
+}
+</script>
+
+<style lang="less">
+@import './weui.wxss';
+
+.container {
+  background-color: #f8f8f8;
+}
+
+.stats {
+  margin-top: 0;
+}
+
+.label-tip {
+  color: #44b549;
+}
+
+.label-warn {
+  color: #fa5151;
+}
+</style>

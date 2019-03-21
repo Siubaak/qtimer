@@ -1,0 +1,25 @@
+function fill(num) {
+  var str = '0' + num
+  return str.substring(str.length - 2)
+}
+
+function time(msTime) {
+  // 100000为DNF，wxs传不进去Infinity
+  if (msTime === 100000) {
+    return 'DNF'
+  } else {
+    var ms = parseInt(msTime % 1000 / 10)
+    msTime = parseInt(msTime / 1000)
+    var s = msTime % 60
+    var m = parseInt(msTime / 60)
+    if (m) {
+      return m + ':' + fill(s) + '.' + fill(ms)
+    } else {
+      return s + '.' + fill(ms)
+    }
+  }
+}
+
+module.exports = {
+  time: time
+}

@@ -1,3 +1,85 @@
-<!--index.wxml-->
+<wxs src="./index.wxs" module="util"></wxs>
 <view class="container">
+  <view class="weui-cells stats">
+    <view class="weui-cell weui-cell_select" hover-class="weui-cell_active">
+      <view class="weui-cell__hd weui-cell__hd_in-select-after">
+        <view class="weui-label label-tip">切换分组</view>
+      </view>
+      <view class="weui-cell__bd">
+        <picker bind:change="switchGroup" value="{{groupIndex}}" range="{{groupList}}">
+          <view class="weui-select weui-select_in-select-after"></view>
+        </picker>
+      </view>
+    </view>
+    <view class="weui-cell weui-cell_select" hover-class="weui-cell_active">
+      <view class="weui-cell__hd weui-cell__hd_in-select-after">
+        <view class="weui-label label-warn">删除分组</view>
+      </view>
+      <view class="weui-cell__bd">
+        <view bind:tap="deleteGroup" class="weui-select weui-select_in-select-after"></view>
+      </view>
+    </view>
+  </view>
+  <view class="weui-cells">
+    <view class="weui-cell weui-cell_input">
+      <view class="weui-cell__hd">
+        <view class="weui-label">时间</view>
+      </view>
+      <view class="weui-cell__bd">
+        <view class="weui-input">{{group.create}}</view>
+      </view>
+    </view>
+    <view class="weui-cell weui-cell_select" hover-class="weui-cell_active">
+      <view class="weui-cell__hd weui-cell__hd_in-select-after">
+        <view class="weui-label">类别</view>
+      </view>
+      <view class="weui-cell__bd">
+        <picker bind:change="switchType" value="{{typeIndex}}" range="{{supportedTypes}}">
+          <view class="weui-select weui-select_in-select-after">{{supportedTypes[typeIndex]}}</view>
+        </picker>
+      </view>
+    </view>
+    <view class="weui-cell weui-cell_input">
+      <view class="weui-cell__hd">
+        <view class="weui-label">还原</view>
+      </view>
+      <view class="weui-cell__bd">
+        <view class="weui-input">{{solved}}/{{groups[current].details.length}}</view>
+      </view>
+    </view>
+    <view class="weui-cell weui-cell_input">
+      <view class="weui-cell__hd">
+        <view class="weui-label">最快成绩</view>
+      </view>
+      <view class="weui-cell__bd">
+        <view class="weui-input">{{best}}</view>
+      </view>
+    </view>
+    <view class="weui-cell weui-cell_input">
+      <view class="weui-cell__hd">
+        <view class="weui-label">最慢成绩</view>
+      </view>
+      <view class="weui-cell__bd">
+        <view class="weui-input">{{worst}}</view>
+      </view>
+    </view>
+    <view class="weui-cell weui-cell_input">
+      <view class="weui-cell__hd">
+        <view class="weui-label">去头尾平均</view>
+      </view>
+      <view class="weui-cell__bd">
+        <view class="weui-input">{{avg}}</view>
+      </view>
+    </view>
+  </view>
+  <view wx:if="{{group.details.length}}" class="weui-panel weui-panel_access">
+    <view class="weui-panel__hd">成绩详情</view>
+    <view class="weui-panel__bd">
+      <view wx:for="{{util.reverse(group.details)}}" wx:key="{{index}}" class="weui-media-box weui-media-box_text" hover-class="weui-cell_active">
+        <view class="weui-media-box__title weui-media-box__title_in-text">{{item.time}}</view>
+        <view class="weui-media-box__desc">拍表：{{item.origin}}</view>
+        <view class="weui-media-box__desc">打乱：{{item.scramble}}</view>
+      </view>
+    </view>
+  </view>
 </view>

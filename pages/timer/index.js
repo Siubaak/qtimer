@@ -1,5 +1,4 @@
 const app = getApp()
-const dayjs = require('dayjs')
 const { generateScramble } = require('../../utils/patch.js')
 
 let interval = null
@@ -7,51 +6,34 @@ let readyTimeout = null
 let startTime = 0
 let lastTap = 0
 
-function format(msTime) {
-  const time = dayjs(msTime).format(msTime < 60000 ? 's.SSS' : 'm:ss.SSS')
-  return time.substring(0, time.length - 1)
-}
-
 Page({
   data: {
     status: 0, // 0:完成 1:准备 2:计时中
     origin: 0,
-    time: '0.00',
+    time: 0,
     scramble: '',
-    timeClass: '',
-    timeSize: '',
-    scrambleClass: ''
+    timeClass: ''
   },
   onLoad() {
+    const { current, groups } = app.globalData
     this.setData({
-      scramble: generateScramble(app.globalData.type)
+      scramble: generateScramble(groups[current].type)
     })
   },
   pressDown() {
     if (this.data.status === 0) {
-      if (Date.now() - lastTap < 300) {
+      if (Date.now() - lastTap < 300 && this.data.origin !== 0) {
         wx.showActionSheet({
           itemList: ['正常', '+2', 'DNF'],
-          success: res => {
-            console.log(res.tapIndex)
-            switch(res.tapIndex) {
-              case 0:
-                this.setData({
-                  time: format(this.data.origin)
-                })
-                break
-              case 1:
-                this.setData({
-                  time: format(this.data.origin + 2000)
-                })
-                break
-              case 2:
-                this.setData({
-                  time: 'DNF'
-                })
-                break
-              default:
-            }
+          success: ({ tapIndex }) => {
+            const time = this.modify(tapIndex)
+            this.setData({ time })
+  
+            const { current, groups } = app.globalData
+            const details = groups[current].details
+            details[details.length - 1].time = time
+            details[details.length - 1].cond = tapIndex
+            app.saveGroups()
           }
         })
       } else {
@@ -66,49 +48,62 @@ Page({
       this.start()
     } else {
       clearTimeout(readyTimeout)
-      this.setData({
-        timeClass: ''
-      })
+      this.setData({ timeClass: '' })
       lastTap = Date.now()
     }
   },
   ready() {
-    this.setData({
-      timeClass: 'ready'
-    })
+    this.setData({ timeClass: 'ready' })
+
     readyTimeout = setTimeout(() => {
-      this.setData({
-        status: 1,
-        timeClass: 'start'
-      })
+      this.setData({ status: 1, timeClass: 'start' })
       wx.vibrateShort()
-    }, 800)
+    }, 600)
   },
   start() {
     startTime = Date.now()
     interval = setInterval(() => {
       const msTime = Date.now() - startTime
-      this.setData({
-        origin: msTime,
-        time: format(msTime),
-        timeSize: msTime < 60000 ? '' : 'small'
-      })
-      if (msTime > 599989) this.finish()
+      if (msTime < 599990) {
+        this.setData({ origin: msTime, time: msTime })
+      } else {
+        this.setData({ origin: msTime, time: 100000 })
+        this.finish()
+      }
     }, 10)
+
     this.setData({
       status: 2,
-      timeClass: 'timing',
-      scrambleClass: 'hide',
-      scramble: generateScramble(app.globalData.type)
+      timeClass: ''
     })
+
     wx.setKeepScreenOn({ keepScreenOn: true })
   },
   finish() {
     clearInterval(interval)
-    this.setData({
-      status: 0,
-      scrambleClass: ''
-    })
+
+    wx.vibrateShort()
     wx.setKeepScreenOn({ keepScreenOn: false })
+    
+    const { origin, time, scramble } = this.data
+    const { current, groups } = app.globalData
+    const curGroup = groups[current]
+    curGroup.details.push({ origin, cond: 0, time, scramble })
+    app.saveGroups()
+  
+    this.setData({
+      status: 0, 
+      scramble: generateScramble(curGroup.type)
+    })
+  },
+  modify(cond) {
+    switch(cond) {
+      case 1:
+        return this.data.origin + 2000
+      case 2:
+        return 100000 // 100000为DNF，wxs传不进去Infinity
+      default:
+        return this.data.origin
+    }
   }
 })

@@ -1,0 +1,173 @@
+<template>
+  <view class="container" @touchstart="pressDown" @touchend="pressUp">
+    <view class="item down">
+      <text class="time {{timeClass}} {{timeSize}}">{{time}}</text>
+    </view>
+    <view class="item">
+      <text class="scramble {{scrambleClass}}">{{scramble}}</text>
+    </view>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy'
+import hot from '@/utils/patch'
+import { timeFormat } from '@/utils/format'
+
+let interval = null
+let readyTimeout = null
+let startTime = 0
+let lastTap = 0
+
+export default class Timer extends wepy.page {
+  data = {
+    status: 0, // 0:完成 1:准备 2:计时中
+    origin: 0,
+    cond: '',
+    scramble: '',
+    timeClass: '',
+  }
+
+  computed = {
+    time: () => {
+      if (this.cond === '+2') {
+        return timeFormat(this.origin + 2000)
+      } if (this.cond === 'DNF') {
+        return timeFormat(Infinity)
+      } else {
+        return timeFormat(this.origin)
+      }
+    },
+    timeSize: () => this.origin < 60000 ? '' : 'small',
+    scrambleClass: () => this.status === 2 ? 'hide' : ''
+  }
+
+  onLoad() {
+    this.scramble = hot.generateScramble(this.$parent.globalData.type)
+  }
+
+  methods = {
+    async pressDown() {
+      if (this.status === 0) {
+        if (Date.now() - lastTap < 300 && this.origin !== 0) {
+          const res = await wepy.showActionSheet({
+            itemList: ['正常', '+2', 'DNF']
+          })
+          switch(res.tapIndex) {
+            case 0:
+              this.cond = ''
+              break
+            case 1:
+              this.cond = '+2'
+              break
+            case 2:
+              this.cond = 'DNF'
+              break
+            default:
+          }
+          this.$apply()
+        } else {
+          this.ready()
+        }
+      } else if (this.status === 2) {
+        this.finish()
+      }
+    },
+    pressUp() {
+      if (this.status === 1) {
+        this.start()
+      } else {
+        clearTimeout(readyTimeout)
+        this.timeClass = ''
+        lastTap = Date.now()
+      }
+    }
+  }
+
+  ready() {
+    this.timeClass = 'ready'
+
+    readyTimeout = setTimeout(async () => {
+      this.status = 1
+      this.timeClass = 'start'
+      this.$apply()
+      await wepy.vibrateShort()
+    }, 500)
+  }
+
+  async start() {
+    startTime = Date.now()
+    interval = setInterval(() => {
+      this.origin = Date.now() - startTime
+      this.$apply()
+      if (this.origin > 599989) this.finish()
+    }, 10)
+
+    this.status = 2
+    this.timeClass = ''
+
+    await wepy.setKeepScreenOn({ keepScreenOn: true })
+  }
+
+  async finish() {
+    clearInterval(interval)
+
+    this.$parent.emit('finish', {
+      origin: this.origin,
+      cond: this.cond,
+      time: this.time,
+      scramble: this.scramble
+    })
+
+    this.status = 0
+    this.scramble = hot.generateScramble(this.$parent.globalData.type)
+
+    await wepy.vibrateShort()
+    await wepy.setKeepScreenOn({ keepScreenOn: false })
+  }
+}
+</script>
+
+<style lang="less">
+.container {
+  background-color: #000;
+  padding: 0 48rpx;
+}
+
+.item {
+  height: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: bold;
+  justify-content: flex-start;
+  &.down {
+    justify-content: center;
+  }
+}
+
+.time {
+  font-size: 196rpx;
+  text-align: center;
+  color: #f8f8f8;
+  &.small {
+    font-size: 156rpx;
+  }
+  &.ready {
+    color: #fa5151;
+  }
+  &.start {
+    color: #44b549;
+  }
+}
+
+.scramble {
+  font-size: 42rpx;
+  text-align: center;
+  color: #f8f8f8;
+  &.hide {
+    opacity: 0;
+  }
+}
+</style>

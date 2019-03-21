@@ -22,7 +22,6 @@
   },
   "homepage": "https://github.com/Siubaak/qtimer#readme",
   "dependencies": {
-    "dayjs": "^1.8.10",
     "sval": "^0.2.7"
   },
   "devDependencies": {

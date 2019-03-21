@@ -1,9 +1,10 @@
-<!--index.wxml-->
+<wxs src="../../utils/format.wxs" module="format"></wxs>
+<wxs src="./index.wxs" module="util"></wxs>
 <view class="container" bind:touchstart="pressDown" bind:touchend="pressUp">
   <view class="item down">
-    <text class="time {{timeClass}} {{timeSize}}">{{time}}</text>
+    <text class="time {{timeClass}} {{util.getTimeSize(time)}}">{{format.time(time)}}</text>
   </view>
   <view class="item">
-    <text class="scramble {{scrambleClass}}">{{scramble}}</text>
+    <text class="scramble {{util.getScrambleClass(status)}}">{{scramble}}</text>
   </view>
 </view>

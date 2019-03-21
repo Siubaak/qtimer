@@ -1,21 +1,17 @@
-/**index.wxss**/
-.userinfo {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+@import './weui.wxss';
+
+.container {
+  background-color: #f8f8f8;
 }
 
-.userinfo-avatar {
-  width: 128rpx;
-  height: 128rpx;
-  margin: 20rpx;
-  border-radius: 50%;
+.stats {
+  margin-top: 0;
 }
 
-.userinfo-nickname {
-  color: #aaa;
+.label-tip {
+  color: #44b549;
 }
 
-.usermotto {
-  margin-top: 200px;
+.label-warn {
+  color: #fa5151;
 }

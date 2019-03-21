@@ -1,0 +1,8 @@
+function reverse(arr) {
+  var a = [].concat(arr)
+  return a.reverse()
+}
+
+module.exports = {
+  reverse: reverse
+}

@@ -1,15 +1,30 @@
-const { supportedTypes } = require('./utils/patch.js')
-const saveType = wx.getStorageSync('__current_type')
+const today = require('./utils/today.js')
+
+const current = wx.getStorageSync('__current_group_index')
+const groups = wx.getStorageSync('__groups')
 
 App({
-  onLaunch: function () {
-    if (saveType && supportedTypes.indexOf(saveType)) {
-      this.globalData.type = saveType
-    } else {
-      wx.setStorageSync('__current_type', '3x3')
-    }
-  },
   globalData: {
-    type: '3x3'
+    current: 0,
+    groups: [{
+      create: today(),
+      type: '3x3',
+      details: []
+    }]
+  },
+  
+  onLaunch: function () {
+    if (groups) {
+      this.globalData.groups = groups
+      this.globalData.current = current
+    }
+    this.saveCurrent()
+    this.saveGroups()
+  },
+  saveCurrent() {
+    wx.setStorageSync('__current_group_index', this.globalData.current)
+  },
+  saveGroups() {
+    wx.setStorageSync('__groups', this.globalData.groups)
   }
 })

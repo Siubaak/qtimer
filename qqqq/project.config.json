@@ -1,0 +1,17 @@
+{
+	"description": "probably the best cube timer in mini programs",
+	"setting": {
+		"urlCheck": true,
+		"es6": false,
+		"postcss": false,
+		"minified": false,
+		"newFeature": true,
+		"nodeModules": false,
+		"autoAudits": false
+	},
+	"compileType": "miniprogram",
+	"appid": "wx570723ece6ea7c1c",
+	"projectname": "qtimer",
+	"miniprogramRoot": "dist/",
+	"condition": {}
+}
