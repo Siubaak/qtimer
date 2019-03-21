@@ -22,15 +22,17 @@ wx.request({
         success(res) {
           wx.setStorageSync('__generate_scramble__version', integrity)
           wx.setStorageSync('__generate_scramble', res.data)
-          if (!code) {
-            interpreter.run(code)
-          }
+          interpreter.run(res.data)
         }
       })
     }
   }
 })
 
-// supportedTypes
-// generateScramble
 module.exports = interpreter.exports
+
+// module.exports = function patch() {
+//   // supportedTypes
+//   // generateScramble
+//   return interpreter.exports
+// }

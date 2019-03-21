@@ -3,6 +3,69 @@ function reverse(arr) {
   return a.reverse()
 }
 
+function best(details) {
+  var b = Infinity
+  for (var i = 0; i < details.length; i++) {
+    b = Math.min(details[i].time, b)
+  }
+  return b
+}
+
+function worst(details) {
+  var w = 0
+  for (var i = 0; i < details.length; i++) {
+    w = Math.max(details[i].time, w)
+  }
+  return w
+}
+
+function solved(details) {
+  var solved = 0
+  for (var i = 0; i < details.length; i++) {
+    if (details[i].cond !== 2) {
+      solved++
+    }
+  }
+  return solved
+}
+
+function avg(details) {
+  var solved = 0, sum = 0
+  for (var i = 0; i < details.length; i++) {
+    var d = details[i]
+    if (d.cond !== 2) {
+      solved++
+      sum += d.time
+    }
+  }
+  if (solved === 0) {
+    return 100000
+  } else {
+    return sum / solved
+  }
+}
+
+function avgCut(details) {
+  var sum = 0, dnf = 0, best = Infinity, worst = 0
+  for (var i = 0; i < details.length; i++) {
+    var d = details[i]
+    sum += d.time
+    best = Math.min(d.time, best)
+    worst = Math.max(d.time, worst)
+    if (d.cond === 2) dnf++
+  }
+  if (dnf > 1) {
+    return 100000
+  } else {
+    return (sum - best - worst)/(details.length - 2)
+  }
+}
+
 module.exports = {
-  reverse: reverse
+  reverse: reverse,
+  best: best,
+  worst: worst,
+  solved: solved,
+  avg: avg,
+  avgCut: avgCut
 }

@@ -1,8 +1,8 @@
 export default {
-  input: 'hot/index.js',
+  input: 'patch/index.js',
   output: {
     name: 'qtimer',
-    format: 'es',
-    file: 'hot/dist/qtimer.min.js'
+    format: 'iife',
+    file: 'patch/dist/qtimer.min.js'
   }
 }

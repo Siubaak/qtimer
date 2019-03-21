@@ -15,3 +15,11 @@
 .label-warn {
   color: #fa5151;
 }
+
+.extra {
+  color: #999;
+}
+.create {
+  font-size: 13px;
+  float: right;
+}

@@ -1,5 +1,6 @@
 const app = getApp()
-const { generateScramble } = require('../../utils/patch.js')
+const today = require('../../utils/today.js')
+const patch = require('../../utils/patch.js')
 
 let interval = null
 let readyTimeout = null
@@ -17,7 +18,7 @@ Page({
   onLoad() {
     const { current, groups } = app.globalData
     this.setData({
-      scramble: generateScramble(groups[current].type)
+      scramble: patch.generateScramble(groups[current].type)
     })
   },
   pressDown() {
@@ -88,12 +89,18 @@ Page({
     const { origin, time, scramble } = this.data
     const { current, groups } = app.globalData
     const curGroup = groups[current]
-    curGroup.details.push({ origin, cond: 0, time, scramble })
+    curGroup.details.push({
+      origin,
+      time,
+      cond: 0,
+      scramble, 
+      create: today()
+    })
     app.saveGroups()
   
     this.setData({
       status: 0, 
-      scramble: generateScramble(curGroup.type)
+      scramble: patch.generateScramble(curGroup.type)
     })
   },
   modify(cond) {

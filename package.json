@@ -1,11 +1,11 @@
 {
   "name": "qtimer",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "probably the best cube timer in mini programs",
   "main": "app.js",
-  "unpkg": "hot/dist/qtimer.min.js",
+  "unpkg": "patch/dist/qtimer.min.js",
   "scripts": {
-    "build": "rollup -c"
+    "patch": "rollup -c"
   },
   "repository": {
     "type": "git",

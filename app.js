@@ -12,7 +12,6 @@ App({
       details: []
     }]
   },
-  
   onLaunch: function () {
     if (groups) {
       this.globalData.groups = groups
