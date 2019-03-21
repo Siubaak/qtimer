@@ -26,8 +26,7 @@ Page({
     if (this.data.status === 2) {
       this.finish()
     }
-    wx.hideTabBarRedDot({ index: 0 })
-    allowModify = false
+    this.preventModify()
   },
   pressDown() {
     if (this.data.status === 0) {
@@ -51,8 +50,7 @@ Page({
                 success: ({ confirm }) => {
                   if (confirm) {
                     this.setData({ time: 0 })
-                    wx.hideTabBarRedDot({ index: 0 })
-                    allowModify = false
+                    this.preventModify()
   
                     const { current, groups } = app.globalData
                     const details = groups[current].details
@@ -85,6 +83,7 @@ Page({
 
     readyTimeout = setTimeout(() => {
       this.setData({ status: 1, timeClass: 'start' })
+      this.preventModify()
       wx.vibrateShort()
     }, 600)
   },
@@ -129,8 +128,7 @@ Page({
       status: 0, 
       scramble: patch.generateScramble(curGroup.type)
     })
-    allowModify = true
-    wx.showTabBarRedDot({ index: 0 })
+    this.allowModify()
   },
   modify(cond) {
     switch(cond) {
@@ -141,5 +139,13 @@ Page({
       default:
         return this.data.origin
     }
+  },
+  allowModify() {
+    allowModify = true
+    wx.showTabBarRedDot({ index: 0 })
+  },
+  preventModify() {
+    wx.hideTabBarRedDot({ index: 0 })
+    allowModify = false
   }
 })
