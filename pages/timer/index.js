@@ -21,6 +21,7 @@ Page({
     this.setData({
       scramble: patch.generateScramble(groups[current].type)
     })
+    app.notifyData()
   },
   onHide() {
     if (this.data.status === 2) {
@@ -56,6 +57,7 @@ Page({
                     const details = groups[current].details
                     details.pop()
                     app.saveGroups()
+                    app.notifyData()
                   }
                 }
               })
@@ -130,6 +132,7 @@ Page({
       scramble: patch.generateScramble(curGroup.type)
     })
     this.allowModify()
+    app.notifyData()
   },
   modify(cond) {
     switch(cond) {

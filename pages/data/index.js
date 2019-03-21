@@ -48,6 +48,7 @@ Page({
       
       app.saveCurrent()
     }
+    app.notifyData()
   },
   deleteGroup() {
     wx.showModal({
@@ -76,6 +77,7 @@ Page({
             app.saveCurrent()
             app.saveGroups()
           }
+          app.notifyData()
         }
       }
     })
