@@ -1,7 +1,7 @@
 {
   "pages":[
-    "pages/group/index",
-    "pages/timer/index"
+    "pages/timer/index",
+    "pages/group/index"
   ],
   "window":{
     "navigationBarBackgroundColor": "#000",

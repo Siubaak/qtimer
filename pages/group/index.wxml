@@ -2,7 +2,7 @@
 <wxs src="./index.wxs" module="util"></wxs>
 <view class="container">
   <view class="weui-cells stats">
-    <view class="weui-cell weui-cell_select">
+    <view class="weui-cell weui-cell_select" hover-class="weui-cell_active">
       <view class="weui-cell__hd weui-cell__hd_in-select-after">
         <view class="weui-label label-tip">切换分组</view>
       </view>
@@ -12,7 +12,7 @@
         </picker>
       </view>
     </view>
-    <view class="weui-cell weui-cell_select">
+    <view class="weui-cell weui-cell_select" hover-class="weui-cell_active">
       <view class="weui-cell__hd weui-cell__hd_in-select-after">
         <view class="weui-label label-warn">删除分组</view>
       </view>
@@ -30,9 +30,9 @@
         <view class="weui-input">{{group.create}}</view>
       </view>
     </view>
-    <view class="weui-cell weui-cell_select">
+    <view class="weui-cell weui-cell_select" hover-class="{{util.eventHover(group.details.length)}}">
       <view class="weui-cell__hd weui-cell__hd_in-select-after">
-        <view class="weui-label">类别</view>
+        <view class="weui-label">项目</view>
       </view>
       <view class="weui-cell__bd">
         <view wx:if="{{group.details.length}}" class="weui-input">{{supportedTypes[typeIndex]}}</view>
@@ -98,7 +98,7 @@
             {{item.create}}
           </span>
         </view>
-        <view class="weui-media-box__desc">{{item.scramble}}</view>
+        <view class="weui-media-box__desc scramble">{{item.scramble}}</view>
       </view>
     </view>
   </view>

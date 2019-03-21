@@ -21,7 +21,6 @@
   font-size: 196rpx;
   text-align: center;
   color: #eee;
-  transition: color .2s;
 }
 
 .time.small {

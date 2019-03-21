@@ -6,6 +6,7 @@ let interval = null
 let readyTimeout = null
 let startTime = 0
 let lastTap = 0
+let allowModify = false
 
 Page({
   data: {
@@ -21,20 +22,46 @@ Page({
       scramble: patch.generateScramble(groups[current].type)
     })
   },
+  onHide() {
+    if (this.data.status === 2) {
+      this.finish()
+    }
+    wx.hideTabBarRedDot({ index: 0 })
+    allowModify = false
+  },
   pressDown() {
     if (this.data.status === 0) {
-      if (Date.now() - lastTap < 300 && this.data.origin !== 0) {
+      if (Date.now() - lastTap < 300 && allowModify) {
         wx.showActionSheet({
-          itemList: ['正常', '+2', 'DNF'],
+          itemList: ['正常', '+2', 'DNF', '删除'],
           success: ({ tapIndex }) => {
-            const time = this.modify(tapIndex)
-            this.setData({ time })
+            if (tapIndex < 3) {
+              const time = this.modify(tapIndex)
+              this.setData({ time })
+    
+              const { current, groups } = app.globalData
+              const details = groups[current].details
+              details[details.length - 1].time = time
+              details[details.length - 1].cond = tapIndex
+              app.saveGroups()
+            } else {
+              wx.showModal({
+                title: '删除成绩',
+                content: '当前成绩将不纳入分组统计，确定删除当前成绩？',
+                success: ({ confirm }) => {
+                  if (confirm) {
+                    this.setData({ time: 0 })
+                    wx.hideTabBarRedDot({ index: 0 })
+                    allowModify = false
   
-            const { current, groups } = app.globalData
-            const details = groups[current].details
-            details[details.length - 1].time = time
-            details[details.length - 1].cond = tapIndex
-            app.saveGroups()
+                    const { current, groups } = app.globalData
+                    const details = groups[current].details
+                    details.pop()
+                    app.saveGroups()
+                  }
+                }
+              })
+            }
           }
         })
       } else {
@@ -102,6 +129,8 @@ Page({
       status: 0, 
       scramble: patch.generateScramble(curGroup.type)
     })
+    allowModify = true
+    wx.showTabBarRedDot({ index: 0 })
   },
   modify(cond) {
     switch(cond) {

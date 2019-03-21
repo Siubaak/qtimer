@@ -52,7 +52,7 @@ Page({
   deleteGroup() {
     wx.showModal({
       title: '删除分组',
-      content: '删除当前分组会清空该分组所有成绩，确定删除当前分组？',
+      content: '当前分组所有成绩将被清空，确定删除当前分组？',
       success: ({ confirm }) => {
         if (confirm) {
           const { current, groups } = app.globalData

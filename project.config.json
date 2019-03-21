@@ -1,7 +1,16 @@
 {
 	"description": "probably the best cube timer in mini programs",
 	"packOptions": {
-		"ignore": []
+		"ignore": [
+      {
+        "type": "folder",
+        "value": "patch"
+      },
+      {
+        "type": "file",
+        "value": "rollup.config.js"
+      }
+    ]
 	},
 	"setting": {
 		"urlCheck": true,
