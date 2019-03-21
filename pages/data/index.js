@@ -133,6 +133,7 @@ Page({
   resetGroup(index) {
     const { groups } = app.globalData
     const curGroup = groups[index]
+    curGroup.name = ''
     curGroup.create = today()
     curGroup.type = '3x3'
     curGroup.details = []
