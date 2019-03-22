@@ -19,6 +19,7 @@ App({
     }
     this.saveCurrent()
     this.saveGroups()
+    this.notifyData()
   },
   saveCurrent() {
     wx.setStorageSync('__current_group_index', this.globalData.current)

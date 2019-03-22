@@ -16,12 +16,11 @@ Page({
     scramble: '',
     timeClass: ''
   },
-  onLoad() {
+  onShow() {
     const { current, groups } = app.globalData
     this.setData({
       scramble: patch.generateScramble(groups[current].type)
     })
-    app.notifyData()
   },
   onHide() {
     if (this.data.status === 2) {
@@ -31,7 +30,7 @@ Page({
   },
   pressDown() {
     if (this.data.status === 0) {
-      if (Date.now() - lastTap < 300 && allowModify) {
+      if (allowModify && Date.now() - lastTap < 300) {
         wx.showActionSheet({
           itemList: ['正常', '+2', 'DNF', '删除'],
           success: ({ tapIndex }) => {
