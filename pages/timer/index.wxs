@@ -7,7 +7,12 @@ function getScrambleClass(status) {
   return status === 2 ? 'hide' : ''
 }
 
+function getScrambleSize(len) {
+  return len > 200 ? 'small' : ''
+}
+
 module.exports = {
   getTimeSize: getTimeSize,
-  getScrambleClass: getScrambleClass
+  getScrambleClass: getScrambleClass,
+  getScrambleSize: getScrambleSize
 }

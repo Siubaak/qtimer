@@ -1,6 +1,10 @@
 const today = require('./utils/today.js')
+const patch = require('./utils/patch.js')
 const groups = wx.getStorageSync('__groups')
 const current = wx.getStorageSync('__current_group_index')
+const worker = wx.createWorker('workers/hotload.js')
+
+patch(worker)
 
 App({
   globalData: {
@@ -12,7 +16,8 @@ App({
       details: []
     }]
   },
-  onLaunch: function () {
+  worker,
+  onLaunch() {
     if (groups) {
       this.globalData.groups = groups
       this.globalData.current = current

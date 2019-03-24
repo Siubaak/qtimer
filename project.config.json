@@ -2,15 +2,15 @@
 	"description": "probably the best cube timer in mini programs",
 	"packOptions": {
 		"ignore": [
-      {
-        "type": "folder",
-        "value": "patch"
-      },
-      {
-        "type": "file",
-        "value": "rollup.config.js"
-      }
-    ]
+			{
+				"type": "folder",
+				"value": "patch"
+			},
+			{
+				"type": "file",
+				"value": "rollup.config.js"
+			}
+		]
 	},
 	"setting": {
 		"urlCheck": true,
@@ -18,17 +18,22 @@
 		"postcss": true,
 		"minified": true,
 		"newFeature": true,
-		"nodeModules": true,
+		"nodeModules": false,
 		"autoAudits": false
 	},
 	"compileType": "miniprogram",
-	"libVersion": "2.6.2",
+	"libVersion": "2.6.4",
 	"appid": "wx570723ece6ea7c1c",
 	"projectname": "qtimer",
 	"debugOptions": {
 		"hidedInDevtools": []
 	},
 	"isGameTourist": false,
+	"scripts": {
+		"beforeCompile": "",
+		"beforePreview": "",
+		"beforeUpload": ""
+	},
 	"condition": {
 		"search": {
 			"current": -1,

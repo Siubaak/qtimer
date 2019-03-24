@@ -1,6 +1,5 @@
 const app = getApp()
 const today = require('../../utils/today.js')
-const patch = require('../../utils/patch.js')
 
 Page({
   data: {
@@ -20,12 +19,16 @@ Page({
 
     this.setData({
       group: curGroup,
-
       groupIndex: groups.length - current,
-      groupList,
-      
-      typeIndex: patch.supportedTypes.indexOf(curGroup.type),
-      supportedTypes: patch.supportedTypes
+      groupList
+    })
+
+    app.worker.postMessage({ type: 'types' })
+    app.worker.onMessage(supportedTypes => {
+      this.setData({
+        supportedTypes,
+        typeIndex: supportedTypes.indexOf(curGroup.type)
+      })
     })
   },
   nameGroup(event) {

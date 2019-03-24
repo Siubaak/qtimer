@@ -1,6 +1,5 @@
 const app = getApp()
 const today = require('../../utils/today.js')
-const patch = require('../../utils/patch.js')
 
 let interval = null
 let readyTimeout = null
@@ -17,16 +16,18 @@ Page({
     timeClass: ''
   },
   onShow() {
-    const { current, groups } = app.globalData
-    this.setData({
-      scramble: patch.generateScramble(groups[current].type)
-    })
+    this.getScramble()
   },
   onHide() {
     if (this.data.status === 2) {
       this.finish()
     }
     this.preventModify()
+  },
+  getScramble() {
+    const { current, groups } = app.globalData
+    app.worker.postMessage({ type: groups[current].type })
+    app.worker.onMessage(scramble => this.setData({ scramble }))
   },
   pressDown() {
     if (this.data.status === 0) {
@@ -109,6 +110,8 @@ Page({
     })
 
     wx.setKeepScreenOn({ keepScreenOn: true })
+    
+    this.getScramble()
   },
   finish() {
     clearInterval(interval)
@@ -128,10 +131,7 @@ Page({
     })
     app.saveGroups()
   
-    this.setData({
-      status: 0, 
-      scramble: patch.generateScramble(curGroup.type)
-    })
+    this.setData({ status: 0 })
     this.allowModify()
     app.notifyData()
   },

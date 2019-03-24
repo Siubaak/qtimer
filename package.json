@@ -6,7 +6,8 @@
   "unpkg": "patch/dist/qtimer.min.js",
   "scripts": {
     "patch": "rollup -c",
-    "test": "node patch/test.js"
+    "test": "node patch/test.js",
+    "copy": "cp node_modules/sval/dist/sval.min.js workers/interpreter"
   },
   "repository": {
     "type": "git",
@@ -22,12 +23,10 @@
     "url": "https://github.com/Siubaak/qtimer/issues"
   },
   "homepage": "https://github.com/Siubaak/qtimer#readme",
-  "dependencies": {
-    "sval": "^0.2.8"
-  },
   "devDependencies": {
     "rollup": "^1.6.0",
     "rollup-plugin-node-resolve": "^4.0.1",
-    "rollup-plugin-uglify": "^6.0.2"
+    "rollup-plugin-uglify": "^6.0.2",
+    "sval": "^0.2.8"
   }
 }

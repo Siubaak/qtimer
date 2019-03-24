@@ -40,9 +40,15 @@
 }
 
 .scramble {
-  font-size: 42rpx;
+  font-size: 20px;
+  line-height: 19px;
   text-align: center;
   color: #eee;
+}
+
+.scramble.small {
+  font-size: 17px;
+  line-height: 16px;
 }
 
 .scramble.hide {
