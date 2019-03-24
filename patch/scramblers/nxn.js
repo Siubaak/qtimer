@@ -20,8 +20,7 @@ function scramble(size, sequenceLength) {
   var axsl = [tl];
   var axam = [0, 0, 0];
   var la = -1;
-  for (var i = 0; i < tl; i++)
-    axsl[i] = 0;
+  for (var i = 0; i < tl; i++) axsl[i] = 0;
   axam[0] = axam[1] = axam[2] = 0;
   var moved = 0;
   while (sequence.length + moved < sequenceLength) {
@@ -35,8 +34,7 @@ function scramble(size, sequenceLength) {
     } while (ax === la);
     if (ax != la) {
       appendMoves(sequence, axsl, tl, la);
-      for (i = 0; i < tl; i++)
-        axsl[i] = 0;
+      for (i = 0; i < tl; i++) axsl[i] = 0;
       axam[0] = axam[1] = axam[2] = 0;
       moved = 0;
       la = ax;
@@ -57,11 +55,8 @@ function scrambleString(sequence) {
     var k = sequence[i] >> 2;
     j = k % 6;
     k = (k - j) / 6;
-    if (k) {
-      scramble += ['Dw', 'Lw', 'Bw', 'Uw', 'Rw', 'Fw'][j]
-    } else {
-      scramble += 'DLBURF'.charAt(j);
-    }
+    scramble += 'DLBURF'.charAt(j);
+    if (k) scramble += 'w'
     j = sequence[i] & 3;
     if (j !== 0) scramble += ' 2\''.charAt(j);
   }
