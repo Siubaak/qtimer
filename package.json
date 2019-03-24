@@ -5,7 +5,8 @@
   "main": "app.js",
   "unpkg": "patch/dist/qtimer.min.js",
   "scripts": {
-    "patch": "rollup -c"
+    "patch": "rollup -c",
+    "test": "node patch/test.js"
   },
   "repository": {
     "type": "git",
