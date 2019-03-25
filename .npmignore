@@ -1,8 +1,8 @@
 # Useless directories
-/miniprogram_npm
 /images
 /pages
 /utils
+/workers
 
 # Useless files
 /app.js
