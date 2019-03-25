@@ -1,4 +1,5 @@
 import scramberNxN from './scramblers/nxn';
+import scramberMega from './scramblers/mega';
 
 var handlerMap = {
   '2x2': scramberNxN['2x2'],
@@ -12,7 +13,7 @@ var handlerMap = {
   // 'Square-1': getScramble.bind(null, 'sq1', 12),
   // 'Pyraminx': getScramble.bind(null, 'pyram', 12),
   // 'Skewb': getScramble.bind(null, 'skewb', 8),
-  // 'Megaminx': getScramble.bind(null, 'minx', 75),
+  'Megaminx': scramberMega,
   // 'Clock': getScramble.bind(null, 'clock', 16)
 };
 

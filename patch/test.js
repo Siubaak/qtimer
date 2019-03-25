@@ -7,4 +7,4 @@ const code = fs.readFileSync(path.resolve(__dirname, 'dist/qtimer.min.js'), 'utf
 
 interpreter.run(code)
 
-console.log(interpreter.exports.generateScramble('3x3'))
+console.log(interpreter.exports.generateScramble('Megaminx'))
