@@ -23,17 +23,16 @@ Page({
       this.finish()
     }
     this.preventModify()
+    this.setData({ scramble: 'Scrambling...' })
   },
   getScramble() {
-    const scrambleTimeout = setTimeout(() => {
-      this.setData({ scramble: 'Scrambling...' })
-    }, 100)
     const { current, groups } = app.globalData
     app.getWorkerResult({
       type: groups[current].type
-    }, ({ data }) => {
-      clearTimeout(scrambleTimeout)
-      this.setData({ scramble: data })
+    }, ({ type, data }) => {
+      if (type === groups[current].type) {
+        this.setData({ scramble: data })
+      }
     })
   },
   pressDown() {

@@ -5,10 +5,12 @@ worker.onMessage(req => {
     interpreter.run(req.data)
   } else if (req.type === 'types') {
     worker.postMessage({
+      type: 'types',
       data: interpreter.exports.supportedTypes
     })
   } else {
     worker.postMessage({
+      type: req.type,
       data: interpreter.exports.generateScramble(req.type)
     })
   }

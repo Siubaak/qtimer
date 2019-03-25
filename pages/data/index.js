@@ -25,11 +25,13 @@ Page({
     
     app.getWorkerResult({
       type: 'types'
-    }, ({ data }) => {
-      this.setData({
-        supportedTypes: data,
-        typeIndex: data.indexOf(curGroup.type)
-      })
+    }, ({ type, data }) => {
+      if (type === 'types') {
+        this.setData({
+          supportedTypes: data,
+          typeIndex: data.indexOf(curGroup.type)
+        })
+      }
     })
   },
   nameGroup(event) {
