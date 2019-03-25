@@ -1,6 +1,6 @@
 {
   "name": "qtimer",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "probably the best cube timer in mini programs",
   "main": "app.js",
   "unpkg": "patch/dist/qtimer.min.js",

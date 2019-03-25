@@ -63,7 +63,7 @@ function scrambleString(sequence) {
   return scramble;
 }
 
-var scrambleLenMap = { 2: 10, 3: 20, 4: 45, 5: 60, 6: 80, 7: 100 };
+var scrambleLenMap = { 2: 10, 3: 25, 4: 45, 5: 60, 6: 80, 7: 100 };
 function scrambler(size) {
   return function () {
     var sequence = scramble(size, scrambleLenMap[size]);

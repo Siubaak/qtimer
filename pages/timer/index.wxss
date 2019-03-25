@@ -10,7 +10,7 @@
   align-items: center;
   font-family: 'Courier New', Courier, monospace;
   font-weight: bold;
-  justify-content: flex-start;
+  justify-content: center;
 }
 
 .item.down {
