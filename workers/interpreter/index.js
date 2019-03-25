@@ -1,5 +1,5 @@
-const Sval = require('./sval.min.js')
-const init = require('./init.js')
+const Sval = require('sval.min.js')
+const init = require('init.js')
 
 const interpreter = new Sval()
 

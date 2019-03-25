@@ -25,9 +25,16 @@ Page({
     this.preventModify()
   },
   getScramble() {
+    const scrambleTimeout = setTimeout(() => {
+      this.setData({ scramble: 'Scrambling...' })
+    }, 100)
     const { current, groups } = app.globalData
-    app.worker.postMessage({ type: groups[current].type })
-    app.worker.onMessage(scramble => this.setData({ scramble }))
+    app.getWorkerResult({
+      type: groups[current].type
+    }, ({ data }) => {
+      clearTimeout(scrambleTimeout)
+      this.setData({ scramble: data })
+    })
   },
   pressDown() {
     if (this.data.status === 0) {

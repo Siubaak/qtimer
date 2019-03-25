@@ -22,12 +22,13 @@ Page({
       groupIndex: groups.length - current,
       groupList
     })
-
-    app.worker.postMessage({ type: 'types' })
-    app.worker.onMessage(supportedTypes => {
+    
+    app.getWorkerResult({
+      type: 'types'
+    }, ({ data }) => {
       this.setData({
-        supportedTypes,
-        typeIndex: supportedTypes.indexOf(curGroup.type)
+        supportedTypes: data,
+        typeIndex: data.indexOf(curGroup.type)
       })
     })
   },
