@@ -15,7 +15,13 @@ export default function scrambler() {
         scramble += 'R-- ';
       }
     }
+    if (i % 10 === 9) {
+      if (sequence) {
+        scramble += 'U ';
+      } else {
+        scramble += 'U\' ';
+      }
+    }
   }
-  scramble += 'U\'';
   return scramble;
 }
