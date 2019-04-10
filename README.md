@@ -6,6 +6,8 @@
 
 ![](https://raw.githubusercontent.com/Siubaak/qtimer/master/qrcode.jpg)
 
+熟悉魔方计时器操作的魔友应该很容易就知道QTimer怎么用。需要注意的是，QTimer不鼓励大家随意修改自己的成绩，因此只有在完成的时候，左下角计时Tab会出现小红点，此时*双击*才会出现+2、DNF和删除的操作。除此以外，QTimer不允许大家修改和删除已经录入统计的成绩。在完成5、12、50、100和200次复原时，右下角统计Tab会相应的提醒。
+
 # 热更新
 
 计时器中的打乱公式生成模块是基于[Sval](https://github.com/Siubaak/sval)实现热更新的，因为打乱公式生成是CPU密集型操作，放在了Worker里跑。
