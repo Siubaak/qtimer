@@ -9,11 +9,9 @@ worker.onMessage(req => {
       data: interpreter.exports.supportedTypes
     })
   } else {
-    var time = Date.now()
     worker.postMessage({
       type: req.type,
       data: interpreter.exports.generateScramble(req.type)
     })
-    console.log(Date.now() - time)
   }
 })

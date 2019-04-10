@@ -45,7 +45,7 @@ wx.request({
 })
 ```
 
-然后Worker很简单，就是根据拉回来的代码，直接运行，然后将需要用的方法export出来
+其中，Worker很简单，就是根据拉回来的代码，直接运行，然后将需要用的方法export出来。
 
 ```js
 // workers/hotload.js
@@ -68,7 +68,7 @@ worker.onMessage(req => {
 })
 ```
 
-因为小程序本身禁用了`eval`、`new Function`、`setTimeout`，所以interpreter就是通过Sval构造的解析器
+因为小程序本身禁用了`eval`、`new Function`、`setTimeout`，所以interpreter就是通过Sval构造的解析器。
 
 ```js
 // workers/interpreter/index.js
@@ -80,4 +80,30 @@ const interpreter = new Sval()
 interpreter.run(init)
 
 module.exports = interpreter
+```
+
+最后，在业务中，直接用export的方法就可以了。
+
+```js
+// app.js
+const worker = wx.createWorker('workers/hotload.js')
+App({
+  getWorkerResult(req, done) { // Worker调用封装
+    worker.postMessage(req)
+    worker.onMessage(done)
+  }
+})
+
+// pages/timer/index.js
+const app = getApp()
+Page({
+  getScramble() {
+    const { current, groups } = app.globalData
+    app.getWorkerResult({ // 调用Worker生成打乱
+      type: groups[current].type
+    }, res => {
+      this.setData({ scramble: res.data })
+    })
+  }
+})
 ```
