@@ -27,6 +27,6 @@
     "rollup": "^1.10.0",
     "rollup-plugin-node-resolve": "^4.2.3",
     "rollup-plugin-uglify": "^6.0.2",
-    "sval": "^0.3.1"
+    "sval": "^0.3.2"
   }
 }
