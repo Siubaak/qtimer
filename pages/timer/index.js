@@ -23,7 +23,6 @@ Page({
       this.finish()
     }
     this.preventModify()
-    this.setData({ scramble: 'Scrambling...' })
   },
   getScramble() {
     const { current, groups } = app.globalData
