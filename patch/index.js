@@ -1,5 +1,10 @@
 import scramberNxN from './scramblers/nxn';
 import scramberMega from './scramblers/mega';
+// import scramberPyram from './scramblers/pyram';
+// import scramberSkewb from './scramblers/skewb';
+// import scramberSq1 from './scramblers/sq1';
+
+// Pyram、Skewb、SQ1的打乱生成有毒，复杂度太高了
 
 var handlerMap = {
   '2x2': scramberNxN['2x2'],
@@ -10,9 +15,9 @@ var handlerMap = {
   '7x7': scramberNxN['7x7'],
   '3x3-OH': scramberNxN['3x3'],
   '3x3-WF': scramberNxN['3x3'],
-  // 'Square-1': getScramble.bind(null, 'sq1', 12),
-  // 'Pyraminx': getScramble.bind(null, 'pyram', 12),
-  // 'Skewb': getScramble.bind(null, 'skewb', 8),
+  // 'Square-1': scramberSq1,
+  // 'Pyraminx': scramberPyram,
+  // 'Skewb': scramberSkewb,
   'Megaminx': scramberMega,
   // 'Clock': getScramble.bind(null, 'clock', 16)
 };

@@ -1,6 +1,7 @@
+var length = 70;
 export default function scrambler() {
   var scramble = '';
-  for (var i = 0; i < 70; i++) {
+  for (var i = 0; i < length; i++) {
     var sequence = Math.floor(Math.random() * 2);
     if (i % 2) {
       if (sequence) {
