@@ -1,5 +1,5 @@
 .container {
-  background-color: #000;
+  background-color: #191919;
   padding: 0 48rpx;
 }
 

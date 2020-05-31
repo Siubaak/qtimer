@@ -1,16 +1,16 @@
 {
-  "pages":[
+  "pages": [
     "pages/timer/index",
     "pages/data/index"
   ],
-  "window":{
-    "navigationBarBackgroundColor": "#000",
+  "window": {
+    "navigationBarBackgroundColor": "#191919",
     "navigationBarTitleText": "QTimer",
     "navigationBarTextStyle": "white",
-    "backgroundColor": "#000"
+    "backgroundColor": "#191919"
   },
   "tabBar": {
-    "backgroundColor": "#000",
+    "backgroundColor": "#191919",
     "color": "#eee",
     "selectedColor": "#44b549",
     "list": [
@@ -29,5 +29,6 @@
     ]
   },
   "workers": "workers",
-  "resizable": true
+  "resizable": true,
+  "sitemapLocation": "sitemap.json"
 }

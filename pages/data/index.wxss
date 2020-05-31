@@ -16,6 +16,17 @@
   color: #fa5151;
 }
 
+.delete-btn {
+  padding-left: 16px;
+}
+
+.avator {
+  width: 32px;
+  height: 32px;
+  margin-right: 16px;
+  display: block;
+}
+
 .extra {
   color: #999;
 }

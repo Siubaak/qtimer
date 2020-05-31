@@ -2,22 +2,17 @@
 <wxs src="./index.wxs" module="util"></wxs>
 <view class="container">
   <view class="weui-cells stats">
-    <view class="weui-cell weui-cell_select" hover-class="weui-cell_active">
-      <view class="weui-cell__hd weui-cell__hd_in-select-after">
-        <view class="weui-label label-tip">切换分组</view>
+    <view class="weui-cell">
+      <view class="weui-cell__hd">
+        <view class="avator"><open-data type="userAvatarUrl" /></view>
       </view>
       <view class="weui-cell__bd">
+        <p><open-data type="userNickName" /></p>
+      </view>
+      <view class="weui-cell__ft">
         <picker bind:change="switchGroup" value="{{groupIndex}}" range="{{groupList}}">
-          <view class="weui-select weui-select_in-select-after"></view>
+          <view class="weui-label label-tip">切换分组</view>
         </picker>
-      </view>
-    </view>
-    <view class="weui-cell weui-cell_select" hover-class="weui-cell_active">
-      <view class="weui-cell__hd weui-cell__hd_in-select-after">
-        <view class="weui-label label-warn">删除分组</view>
-      </view>
-      <view class="weui-cell__bd">
-        <view bind:tap="deleteGroup" class="weui-select weui-select_in-select-after"></view>
       </view>
     </view>
   </view>
@@ -29,6 +24,11 @@
       <view class="weui-cell__bd">
         <input class="weui-input" value="{{group.name}}" placeholder="未命名分组" bind:change="nameGroup"/>
       </view>
+      <view class="weui-cell__ft delete-btn" bind:tap="deleteGroup">
+        <view class="weui-btn_reset weui-btn_icon">
+          <i class="weui-icon-btn_close label-warn"></i>
+        </view>
+      </view>
     </view>
     <view class="weui-cell weui-cell_input">
       <view class="weui-cell__hd">
@@ -38,12 +38,12 @@
         <view class="weui-input">{{group.create}}</view>
       </view>
     </view>
-    <view class="weui-cell weui-cell_select" hover-class="{{util.eventHover(group.details.length)}}">
+    <view class="weui-cell {{group.details.length ? '' : 'weui-cell_select'}}" hover-class="{{util.eventHover(group.details.length)}}">
       <view class="weui-cell__hd weui-cell__hd_in-select-after">
         <view class="weui-label">项目</view>
       </view>
       <view class="weui-cell__bd">
-        <view wx:if="{{group.details.length}}" class="weui-input">{{supportedTypes[typeIndex]}}</view>
+        <view wx:if="{{group.details.length}}">{{supportedTypes[typeIndex]}}</view>
         <picker wx:else bind:change="switchType" value="{{typeIndex}}" range="{{supportedTypes}}">
           <view class="weui-select weui-select_in-select-after">{{supportedTypes[typeIndex]}}</view>
         </picker>
@@ -93,7 +93,7 @@
   <view wx:if="{{group.details.length}}" class="weui-panel weui-panel_access">
     <view class="weui-panel__hd">成绩详情</view>
     <view class="weui-panel__bd">
-      <view wx:for="{{util.reverse(group.details)}}" wx:key="{{index}}" class="weui-media-box weui-media-box_text">
+      <view wx:for="{{util.reverse(group.details)}}" wx:key="index" class="weui-media-box weui-media-box_text">
         <view class="weui-media-box__title weui-media-box__title_in-text">
           {{format.time(item.time)}}
           <span wx:if="{{item.cond === 1}}" class="extra">
