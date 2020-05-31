@@ -139,6 +139,16 @@ Page({
     this.setData({ status: 0 })
     this.allowModify()
     app.notifyData()
+
+    if (!wx.getStorageSync('__finish_tips')) {
+      wx.setStorageSync('__finish_tips', 1)
+      wx.showModal({
+        title: '提示',
+        content: '当左下角“计时”选项出现红点时，可以双击屏幕对成绩进行操作哦',
+        confirmText: '我知道了',
+        showCancel: false
+      })
+    }
   },
   modify(cond) {
     switch(cond) {
