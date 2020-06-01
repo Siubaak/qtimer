@@ -1,0 +1,41 @@
+<view class="container">
+  <scroll-view class="message-container" enable-back-to-top='true' scroll-y="ture">
+    <view class="message-area">
+      <view class="message-list">
+        <view wx:for="{{msgList}}" wx:key="index"
+          class="message-item {{!item.system && item.avatar === selfAvatar && item.nickName === selfNickName ? 'message-reply': ''}}">
+          <view wx:if="{{item.system}}" class="message-info">
+            <view class="message-info-text">{{item.nickName}}{{item.content}}</view>
+          </view>
+          <view wx:else class="message-item-container">
+            <view class="message-item-avatar">
+              <image class="message-item-avatar-image" src="{{item.avatar}}" mode="aspectFill"></image>
+            </view>
+            <view class="message-bd">
+              <view class="message-content">
+                <text>{{item.content}}</text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+  <view class="reply-area">
+    <view class="reply-box">
+      <view class="reply-input-box">
+        <input class="reply-input" placeholder-class="reply-input-placeholder"
+          confirm-type="send" bindconfirm="sendReply" bindinput="inputReply"
+          cursor-spacing="13" confirm-hold="true" value="{{replyContent}}"/>
+      </view>
+      <button type="primary" class="opr-btn" bindtap="sendReply">发送</button>
+    </view>
+  </view>
+  <view class="tools-area">
+    <view class="tools-box">
+      <button type="primary" class="opr-btn" bindtap="quitRoom">退出比赛</button>
+      <button type="primary" class="opr-btn" bindtap="goToTimer">前往计时</button>
+      <button type="primary" class="opr-btn" bindtap="showResult">查看结果</button>
+    </view>
+  </view>
+</view>

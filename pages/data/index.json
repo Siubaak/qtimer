@@ -1,5 +1,8 @@
 {
   "navigationBarBackgroundColor": "#191919",
   "navigationBarTextStyle": "white",
-  "backgroundColor": "#f8f8f8"
+  "backgroundColor": "#f8f8f8",
+  "usingComponents": {
+    "float-room": "/modules/float_room/index"
+  }
 }

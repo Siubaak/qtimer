@@ -13,10 +13,14 @@ Page({
     origin: 0,
     time: 0,
     scramble: '',
-    timeClass: ''
+    timeClass: '',
+    roomId: ''
   },
   onShow() {
     this.getScramble()
+    this.setData({
+      roomId: app.globalData.room.id || ''
+    })
   },
   onHide() {
     if (this.data.status === 2) {
@@ -34,7 +38,7 @@ Page({
       }
     })
   },
-  pressDown() {
+  pressDown(event) {
     if (this.data.status === 0) {
       if (allowModify && Date.now() - lastTap < 300) {
         wx.showActionSheet({

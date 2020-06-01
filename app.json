@@ -12,7 +12,7 @@
   "tabBar": {
     "backgroundColor": "#191919",
     "color": "#eee",
-    "selectedColor": "#44b549",
+    "selectedColor": "#07c160",
     "list": [
       {
         "text": "计时",

@@ -3,13 +3,17 @@ const today = require('../../utils/today.js')
 
 Page({
   data: {
+    showMoreOptions: false,
+
     group: {},
 
-    groupIndex: '0',
+    groupIndex: 0,
     groupList: ['新建成绩分组'],
 
-    typeIndex: '0',
-    supportedTypes: ['3x3']
+    typeIndex: 0,
+    supportedTypes: ['3x3'],
+
+    roomId: ''
   },
   onShow() {
     const { current, groups } = app.globalData
@@ -18,6 +22,7 @@ Page({
     const groupList = this.getGroupList(groups)
 
     this.setData({
+      roomId: app.globalData.room.id || '',
       group: curGroup,
       groupIndex: groups.length - current,
       groupList
@@ -32,6 +37,11 @@ Page({
           typeIndex: data.indexOf(curGroup.type)
         })
       }
+    })
+  },
+  showMore() {
+    this.setData({
+      showMoreOptions: !this.data.showMoreOptions
     })
   },
   nameGroup(event) {
@@ -156,5 +166,10 @@ Page({
     
     app.saveCurrent()
     app.saveGroups()
+  },
+  navigateToRoom(event) {
+    wx.navigateTo({
+      url: event.currentTarget.id + '/index'
+    })
   }
 })

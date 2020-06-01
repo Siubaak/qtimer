@@ -1,0 +1,22 @@
+.float-room-container {
+  position: fixed;
+  height: 40px;
+  width: 96px;
+  background-color: #2f2f2f;
+  border-radius: 20px 0 0 20px;
+  top: 12px;
+  right: 0;
+  overflow: hidden;
+}
+
+.float-room-container-active {
+  background-color: #1f1f1f;
+}
+
+.float-room-text {
+  line-height: 42px;
+  color: #f8f8f8;
+  height: 40px;
+  display: block;
+  text-align: center;
+}

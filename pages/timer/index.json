@@ -1,3 +1,5 @@
 {
-  "usingComponents": {}
+  "usingComponents": {
+    "float-room": "/modules/float_room/index"
+  }
 }

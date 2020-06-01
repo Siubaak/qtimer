@@ -1,0 +1,9 @@
+@import '../weui.wxss';
+
+.container {
+  background-color: #f8f8f8;
+}
+
+.confirm-btn::after {
+	display: none;
+}

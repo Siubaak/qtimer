@@ -1,0 +1,3 @@
+<view class="float-room-container" hover-class="float-room-container-active" bindtap="enterRoom">
+  <p class="float-room-text">比赛中</p>
+</view>

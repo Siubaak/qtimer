@@ -1,4 +1,5 @@
 # Useless directories
+/cloud_functions
 /images
 /pages
 /utils

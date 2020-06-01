@@ -32,7 +32,7 @@
 }
 
 .time.start {
-  color: #44b549;
+  color: #07c160;
 }
 
 .time.timing {

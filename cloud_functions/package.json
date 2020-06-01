@@ -1,0 +1,14 @@
+{
+  "name": "qtimer-clound-func",
+  "version": "1.0.0",
+  "description": "clound functions for qtimer",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "baakqiu",
+  "license": "MIT",
+  "dependencies": {
+    "wx-server-sdk": "^2.0.4"
+  }
+}

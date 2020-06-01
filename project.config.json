@@ -4,6 +4,10 @@
 		"ignore": [
 			{
 				"type": "folder",
+				"value": "cloud_functions"
+			},
+			{
+				"type": "folder",
 				"value": "patch"
 			},
 			{
@@ -33,7 +37,7 @@
 		"userConfirmedUseCompilerModuleSwitch": false
 	},
 	"compileType": "miniprogram",
-	"libVersion": "2.6.4",
+	"libVersion": "2.10.4",
 	"appid": "wx570723ece6ea7c1c",
 	"projectname": "qtimer",
 	"debugOptions": {
@@ -47,6 +51,8 @@
 	},
 	"simulatorType": "wechat",
 	"simulatorPluginLibVersion": {},
+	"cloudfunctionTemplateRoot": "cloudfunctionTemplate",
+	"cloudfunctionRoot": "cloud_functions/",
 	"condition": {
 		"search": {
 			"current": -1,

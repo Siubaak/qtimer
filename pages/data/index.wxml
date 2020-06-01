@@ -4,31 +4,66 @@
   <view class="weui-cells stats">
     <view class="weui-cell">
       <view class="weui-cell__hd">
-        <view class="avator"><open-data type="userAvatarUrl" /></view>
+        <open-data class="avatar" type="userAvatarUrl"/>
       </view>
       <view class="weui-cell__bd">
-        <p><open-data type="userNickName" /></p>
+        <p><open-data type="userNickName"/></p>
       </view>
-      <view class="weui-cell__ft">
-        <picker bind:change="switchGroup" value="{{groupIndex}}" range="{{groupList}}">
-          <view class="weui-label label-tip">切换分组</view>
-        </picker>
-      </view>
+      <block wx:if="{{!roomId}}">
+        <view class="weui-cell__ft" bindtap="showMore">
+          <i class="weui-icon-more"></i>
+        </view>
+      </block>
     </view>
+    <block wx:if="{{!roomId && showMoreOptions}}">
+      <view class="weui-cell weui-cell_select" hover-class="weui-cell_active">
+        <view class="weui-cell__hd weui-cell__hd_in-select-after">
+          <view class="weui-label">切换成绩分组</view>
+        </view>
+        <view class="weui-cell__bd">
+          <picker bindchange="switchGroup" value="{{groupIndex}}" range="{{groupList}}">
+            <view class="weui-select weui-select_in-select-after"></view>
+          </picker>
+        </view>
+      </view>
+      <view class="weui-cell weui-cell_select" hover-class="weui-cell_active">
+        <view class="weui-cell__hd weui-cell__hd_in-select-after">
+          <view class="weui-label">创建比赛房间</view>
+        </view>
+        <view class="weui-cell__bd" id="create" bindtap="navigateToRoom">
+          <view class="weui-select weui-select_in-select-after"></view>
+        </view>
+      </view>
+      <view class="weui-cell weui-cell_select" hover-class="weui-cell_active">
+        <view class="weui-cell__hd weui-cell__hd_in-select-after">
+          <view class="weui-label">加入比赛房间</view>
+        </view>
+        <view class="weui-cell__bd" id="join" bindtap="navigateToRoom">
+          <view class="weui-select weui-select_in-select-after"></view>
+        </view>
+      </view>
+    </block>
   </view>
   <view class="weui-cells">
     <view class="weui-cell weui-cell_input">
       <view class="weui-cell__hd">
         <view class="weui-label">分组名称</view>
       </view>
-      <view class="weui-cell__bd">
-        <input class="weui-input" value="{{group.name}}" placeholder="未命名分组" bind:change="nameGroup"/>
-      </view>
-      <view class="weui-cell__ft delete-btn" bind:tap="deleteGroup">
-        <view class="weui-btn_reset weui-btn_icon">
-          <i class="weui-icon-btn_close label-warn"></i>
+      <block wx:if="{{roomId}}">
+        <view class="weui-cell__bd">
+          <p>比赛{{roomId}}</p>
         </view>
-      </view>
+      </block>
+      <block wx:else>
+        <view class="weui-cell__bd">
+          <input class="weui-input" value="{{group.name}}" placeholder="未命名分组" bindinput="nameGroup"/>
+        </view>
+        <view class="weui-cell__ft delete-btn" bindtap="deleteGroup">
+          <view class="weui-btn_reset weui-btn_icon">
+            <i class="weui-icon-btn_close label-warn"></i>
+          </view>
+        </view>
+      </block>
     </view>
     <view class="weui-cell weui-cell_input">
       <view class="weui-cell__hd">
@@ -38,13 +73,13 @@
         <view class="weui-input">{{group.create}}</view>
       </view>
     </view>
-    <view class="weui-cell {{group.details.length ? '' : 'weui-cell_select'}}" hover-class="{{util.eventHover(group.details.length)}}">
+    <view class="weui-cell {{roomId || group.details.length ? '' : 'weui-cell_select'}}" hover-class="{{util.eventHover(roomId || group.details.length)}}">
       <view class="weui-cell__hd weui-cell__hd_in-select-after">
         <view class="weui-label">项目</view>
       </view>
       <view class="weui-cell__bd">
-        <view wx:if="{{group.details.length}}">{{supportedTypes[typeIndex]}}</view>
-        <picker wx:else bind:change="switchType" value="{{typeIndex}}" range="{{supportedTypes}}">
+        <view wx:if="{{roomId || group.details.length}}">{{supportedTypes[typeIndex]}}</view>
+        <picker wx:else bindchange="switchType" value="{{typeIndex}}" range="{{supportedTypes}}">
           <view class="weui-select weui-select_in-select-after">{{supportedTypes[typeIndex]}}</view>
         </picker>
       </view>
@@ -111,3 +146,4 @@
     </view>
   </view>
 </view>
+<float-room wx:if="{{roomId}}"/>

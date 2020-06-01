@@ -1,6 +1,6 @@
 <wxs src="../../utils/format.wxs" module="format"></wxs>
 <wxs src="./index.wxs" module="util"></wxs>
-<view class="container" bind:touchstart="pressDown" bind:touchend="pressUp">
+<view class="container" bindtouchstart="pressDown" bindtouchend="pressUp">
   <view class="item down">
     <text class="time {{timeClass}} {{util.getTimeSize(time)}}">
       {{format.time(time)}}
@@ -12,3 +12,4 @@
     </text>
   </view>
 </view>
+<float-room wx:if="{{roomId}}"/>
