@@ -4,10 +4,6 @@
 		"ignore": [
 			{
 				"type": "folder",
-				"value": "cloud_functions"
-			},
-			{
-				"type": "folder",
 				"value": "patch"
 			},
 			{
@@ -51,8 +47,6 @@
 	},
 	"simulatorType": "wechat",
 	"simulatorPluginLibVersion": {},
-	"cloudfunctionTemplateRoot": "cloudfunctionTemplate",
-	"cloudfunctionRoot": "cloud_functions/",
 	"condition": {
 		"search": {
 			"current": -1,

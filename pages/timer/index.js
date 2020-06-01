@@ -38,7 +38,7 @@ Page({
       }
     })
   },
-  pressDown(event) {
+  pressDown() {
     if (this.data.status === 0) {
       if (allowModify && Date.now() - lastTap < 300) {
         wx.showActionSheet({

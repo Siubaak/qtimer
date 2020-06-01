@@ -1,8 +1,12 @@
 const app = getApp()
 const today = require('../../../utils/today.js')
+const { createRoom } = require('../../../utils/cloud.js')
 
 Page({
   data: {
+    playerIndex: 0,
+    supportedPlayers: [2],
+
     typeIndex: 0,
     supportedTypes: ['3x3'],
 
@@ -21,6 +25,9 @@ Page({
       }
     })
   },
+  switchPlayers(event) {
+    this.setData({ playerIndex: event.detail.value })
+  },
   switchType(event) {
     this.setData({ typeIndex: event.detail.value })
   },
@@ -28,12 +35,33 @@ Page({
     this.setData({ timeIndex: event.detail.value })
   },
   createRoom(event) {
-    const roomId = 711664
-    app.globalData.room.id = roomId
-    app.globalData.room.self = event.detail.userInfo
-    this.createGroup(roomId)
-    wx.redirectTo({
-      url: `/pages/room/index`
+    wx.showLoading({ title: '正在创建房间', mask: true })
+    const userInfo = event.detail.userInfo
+    createRoom({
+      data: {
+        type: this.data.supportedTypes[this.data.typeIndex],
+        solveNum: this.data.supportedTimes[this.data.timeIndex],
+        playerNum: this.data.supportedPlayers[this.data.playerIndex],
+        nickName: userInfo.nickName,
+        avatarUrl: userInfo.avatarUrl
+      },
+      success: ({ roomInfo }) => {
+        app.globalData.room.id = roomInfo.id
+        app.globalData.room.self = userInfo
+        this.createGroup(roomInfo.id)
+        wx.redirectTo({
+          url: `/pages/room/index`
+        })
+      },
+      fail: (res) => {
+        wx.showModal({
+          title: '创建房间失败',
+          content: res.error,
+          confirmText: '我知道了',
+          showCancel: false
+        })
+      },
+      complete: () => wx.hideLoading()
     })
   },
   createGroup(id) {

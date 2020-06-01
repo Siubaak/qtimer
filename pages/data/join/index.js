@@ -1,5 +1,6 @@
 const app = getApp()
 const today = require('../../../utils/today.js')
+const { joinRoom } = require('../../../utils/cloud.js')
 
 Page({
   data: {
@@ -10,12 +11,31 @@ Page({
   },
   joinRoom(event) {
     if (this.data.roomId) {
-      const roomId = this.data.roomId;
-      app.globalData.room.id = roomId;
-      app.globalData.room.self = event.detail.userInfo
-      this.createGroup(roomId)
-      wx.redirectTo({
-        url: `/pages/room/index`
+      wx.showLoading({ title: '正在加入房间', mask: true })
+      const userInfo = event.detail.userInfo
+      joinRoom({
+        data: {
+          roomId: this.data.roomId,
+          nickName: userInfo.nickName,
+          avatarUrl: userInfo.avatarUrl
+        },
+        success: ({ roomInfo }) => {
+          app.globalData.room.id = roomInfo.id
+          app.globalData.room.self = userInfo
+          this.createGroup(roomInfo.id)
+          wx.redirectTo({
+            url: `/pages/room/index`
+          })
+        },
+        fail: (res) => {
+          wx.showModal({
+            title: '加入房间失败',
+            content: res.error,
+            confirmText: '我知道了',
+            showCancel: false
+          })
+        },
+        complete: () => wx.hideLoading()
       })
     }
   },

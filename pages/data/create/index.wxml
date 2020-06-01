@@ -10,6 +10,16 @@
         <view class="weui-cells weui-cells_form">
           <view class="weui-cell weui-cell_select" hover-class="weui-cell_active">
             <view class="weui-cell__hd weui-cell__hd_in-select-after">
+              <view class="weui-label">人数</view>
+            </view>
+            <view class="weui-cell__bd">
+              <picker bindchange="switchPlayers" value="{{playerIndex}}" range="{{supportedPlayers}}">
+                <view class="weui-select weui-select_in-select-after">{{supportedPlayers[playerIndex]}}人</view>
+              </picker>
+            </view>
+          </view>
+          <view class="weui-cell weui-cell_select" hover-class="weui-cell_active">
+            <view class="weui-cell__hd weui-cell__hd_in-select-after">
               <view class="weui-label">项目</view>
             </view>
             <view class="weui-cell__bd">

@@ -29,8 +29,6 @@ App({
     this.saveCurrent()
     this.saveGroups()
     this.notifyData()
-
-    wx.cloud.init({ env: 'qtimer' })
   },
   saveCurrent() {
     wx.setStorageSync('__current_group_index', this.globalData.current)
