@@ -22,7 +22,7 @@ Page({
     const groupList = this.getGroupList(groups)
 
     this.setData({
-      roomId: app.globalData.room.id || '',
+      roomId: app.globalData.roomInfo.id || '',
       group: curGroup,
       groupIndex: groups.length - current,
       groupList

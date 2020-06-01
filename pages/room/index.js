@@ -1,30 +1,46 @@
 const app = getApp();
-const REPLY_INTERVAL_THRESHOLD = 5 * 1000; // 至少间隔5s才能发送一条消息
+const { watchRoom, sendReply } = require('../../utils/cloud.js')
+
+const REPLY_INTERVAL_THRESHOLD = 5 * 1000 // 至少间隔5s才能发送一条消息
+
+let watcher = null
 
 Page({
   data: {
     roomId: '',
-    selfAvatar: '',
-    selfNickName: '',
-    replyContent: '',
     lastReplyTs: 0,
+    replyContent: '',
+    selfIndex: '',
+    players: [],
     msgList: []
   },
-  onLoad(query) {
-    const { room } = app.globalData
+  onLoad() {
+    const { roomInfo } = app.globalData
     this.setData({
-      roomId: room.id,
-      selfAvatar: room.self.avatarUrl,
-      selfNickName: room.self.nickName,
-      msgList: [
-        {
-          system: true,
-          avatar: room.self.avatarUrl,
-          nickName: room.self.nickName,
-          content: '加入房间' + room.id
-        }
-      ]
+      roomId: roomInfo.id,
+      msgList: roomInfo.msgList,
+      players: roomInfo.players,
+      selfIndex: roomInfo.selfIndex
     })
+    watcher = watchRoom({
+      change: (newRoomInfo) => {
+        newRoomInfo.selfIndex = app.globalData.selfIndex
+        app.globalData.roomInfo = newRoomInfo
+        this.setData({
+          players: newRoomInfo.players,
+          msgList: newRoomInfo.msgList
+        })
+      }
+    })
+  },
+  onShareAppMessage() {
+    return {
+      title: '来和我一决高下吧',
+      path: '/pages/data/join/index?room=' + this.data.roomId,
+      success() {
+        wx.showToast({ title: '邀请成功' })
+      }
+    }
   },
   inputReply(event) {
     this.setData({ replyContent: event.detail.value })
@@ -43,14 +59,22 @@ Page({
       })
       return;
     }
+    sendReply({
+      data: {
+        content: this.data.replyContent
+      },
+      fail(res) {
+        wx.showModal({
+          title: '提示',
+          content: res.error,
+          confirmText: '我知道了',
+          showCancel: false
+        })
+      }
+    })
     this.setData({
       replyContent: '',
-      lastReplyTs: now,
-      msgList: this.data.msgList.concat({
-        avatar: this.data.selfAvatar,
-        nickName: this.data.selfNickName,
-        content: this.data.replyContent
-      })
+      lastReplyTs: now
     })
   },
   goToTimer() {
@@ -59,8 +83,19 @@ Page({
     })
   },
   quitRoom() {
-    app.globalData.room = {};
-    wx.navigateBack();
+    wx.showModal({
+      title: '提示',
+      content: '退出比赛房间后将无法重新进入，确认退出房间？',
+      confirmText: '退出',
+      success(res) {
+        if (res.confirm) {
+          watcher.close()
+          watcher = null
+          app.globalData.roomInfo = {};
+          wx.navigateBack();
+        }
+      }
+    })
   },
   showResult() {
     console.log('fuck');

@@ -6,6 +6,13 @@ Page({
   data: {
     roomId: ''
   },
+  onLoad(query) {
+    if (query.room) {
+      this.setData({
+        roomId: query.room
+      })
+    }
+  },
   inputNumber(event) {
     this.setData({ roomId: event.detail.value })
   },
@@ -20,8 +27,8 @@ Page({
           avatarUrl: userInfo.avatarUrl
         },
         success: ({ roomInfo }) => {
-          app.globalData.room.id = roomInfo.id
-          app.globalData.room.self = userInfo
+          roomInfo.selfIndex = roomInfo.players.length - 1
+          app.globalData.roomInfo = roomInfo
           this.createGroup(roomInfo.id)
           wx.redirectTo({
             url: `/pages/room/index`

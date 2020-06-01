@@ -15,7 +15,7 @@ App({
       type: '3x3',
       details: []
     }],
-    room: {}
+    roomInfo: {}
   },
   getWorkerResult(req, done) {
     worker.postMessage(req)
@@ -44,5 +44,8 @@ App({
     } else {
       wx.removeTabBarBadge({ index: 1 })
     }
+  },
+  watchRoom() {
+
   }
 })

@@ -19,7 +19,7 @@ Page({
   onShow() {
     this.getScramble()
     this.setData({
-      roomId: app.globalData.room.id || ''
+      roomId: app.globalData.roomInfo.id || ''
     })
   },
   onHide() {

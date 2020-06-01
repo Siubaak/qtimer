@@ -1,15 +1,15 @@
 <view class="container">
-  <scroll-view class="message-container" enable-back-to-top='true' scroll-y="ture">
+  <scroll-view class="message-container" scroll-into-view="m{{msgList.length - 1}}" enable-back-to-top='true' scroll-y="ture">
     <view class="message-area">
       <view class="message-list">
-        <view wx:for="{{msgList}}" wx:key="index"
-          class="message-item {{!item.system && item.avatar === selfAvatar && item.nickName === selfNickName ? 'message-reply': ''}}">
+        <view wx:for="{{msgList}}" wx:key="index" id="m{{index}}"
+          class="message-item {{!item.system && item.playerIndex === selfIndex ? 'message-reply': ''}}">
           <view wx:if="{{item.system}}" class="message-info">
-            <view class="message-info-text">{{item.nickName}}{{item.content}}</view>
+            <view class="message-info-text">{{players[item.playerIndex].nickName}}{{item.content}}</view>
           </view>
           <view wx:else class="message-item-container">
             <view class="message-item-avatar">
-              <image class="message-item-avatar-image" src="{{item.avatar}}" mode="aspectFill"></image>
+              <image class="message-item-avatar-image" src="{{players[item.playerIndex].avatarUrl}}" mode="aspectFill"></image>
             </view>
             <view class="message-bd">
               <view class="message-content">
