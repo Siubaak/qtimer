@@ -16,13 +16,13 @@ Page({
     roomId: ''
   },
   onShow() {
-    const { current, groups } = app.globalData
+    const { current, groups, roomInfo } = app.globalData
     const curGroup = groups[current]
 
     const groupList = this.getGroupList(groups)
 
     this.setData({
-      roomId: app.globalData.roomInfo.id || '',
+      roomId: roomInfo.id || '',
       group: curGroup,
       groupIndex: groups.length - current,
       groupList

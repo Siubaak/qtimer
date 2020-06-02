@@ -5,7 +5,7 @@
         <view wx:for="{{msgList}}" wx:key="index" id="m{{index}}"
           class="message-item {{!item.system && item.playerIndex === selfIndex ? 'message-reply': ''}}">
           <view wx:if="{{item.system}}" class="message-info">
-            <view class="message-info-text">{{players[item.playerIndex].nickName}}{{item.content}}</view>
+            <view class="message-info-text">{{item.content}}</view>
           </view>
           <view wx:else class="message-item-container">
             <view class="message-item-avatar">

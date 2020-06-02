@@ -27,7 +27,6 @@ Page({
           avatarUrl: userInfo.avatarUrl
         },
         success: ({ roomInfo }) => {
-          roomInfo.selfIndex = roomInfo.players.length - 1
           app.globalData.roomInfo = roomInfo
           this.createGroup(roomInfo.id)
           wx.redirectTo({

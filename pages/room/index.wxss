@@ -5,7 +5,8 @@
 }
 
 .message-container {
-  height: calc(100% - 100px)
+  height: calc(100% - 100px - constant(safe-area-inset-bottom));
+  height: calc(100% - 100px - env(safe-area-inset-bottom));
 }
 
 .message-item-container {
@@ -36,6 +37,7 @@
 	width: 100%;
 	height: 100%;
 	border-radius: 4px;
+	background-color: rgba(57, 69, 78, .5);
 }
 
 .message-bd {
@@ -79,7 +81,7 @@
 }
 
 .message-info {
-	color:rgba(57, 69, 78, .5);
+	color: rgba(57, 69, 78, .5);
 	padding: 10px 0;
 	text-align: center;	
 	font-size: 14px;

@@ -1,5 +1,4 @@
 const app = getApp()
-const today = require('../../../utils/today.js')
 const { createRoom } = require('../../../utils/cloud.js')
 
 Page({
@@ -46,9 +45,8 @@ Page({
         avatarUrl: userInfo.avatarUrl
       },
       success: ({ roomInfo }) => {
-        roomInfo.selfIndex = roomInfo.players.length - 1
         app.globalData.roomInfo = roomInfo
-        this.createGroup(roomInfo.id)
+        this.createGroup(roomInfo)
         wx.redirectTo({
           url: `/pages/room/index`
         })
@@ -64,12 +62,12 @@ Page({
       complete: () => wx.hideLoading()
     })
   },
-  createGroup(id) {
+  createGroup(roomInfo) {
     const { groups } = app.globalData
     const curGroup = {
-      name: '比赛' + id,
-      create: today(),
-      type: this.data.supportedTypes[this.data.typeIndex],
+      name: '比赛' + roomInfo.id,
+      create: roomInfo.create,
+      type: roomInfo.type,
       details: []
     }
     groups.push(curGroup)

@@ -1,9 +1,7 @@
 const app = getApp();
-const { watchRoom, sendReply } = require('../../utils/cloud.js')
+const { watchRoom, sendReply, quitRoom } = require('../../utils/cloud.js')
 
 const REPLY_INTERVAL_THRESHOLD = 5 * 1000 // 至少间隔5s才能发送一条消息
-
-let watcher = null
 
 Page({
   data: {
@@ -22,9 +20,9 @@ Page({
       players: roomInfo.players,
       selfIndex: roomInfo.selfIndex
     })
-    watcher = watchRoom({
+    this.watcher = watchRoom({
       change: (newRoomInfo) => {
-        newRoomInfo.selfIndex = app.globalData.selfIndex
+        newRoomInfo.selfIndex = roomInfo.selfIndex
         app.globalData.roomInfo = newRoomInfo
         this.setData({
           players: newRoomInfo.players,
@@ -32,6 +30,9 @@ Page({
         })
       }
     })
+  },
+  onUnload() {
+    this.watcher.close()
   },
   onShareAppMessage() {
     return {
@@ -86,13 +87,15 @@ Page({
     wx.showModal({
       title: '提示',
       content: '退出比赛房间后将无法重新进入，确认退出房间？',
-      confirmText: '退出',
+      confirmText: '确定',
       success(res) {
         if (res.confirm) {
-          watcher.close()
-          watcher = null
-          app.globalData.roomInfo = {};
-          wx.navigateBack();
+          quitRoom({
+            complete() {
+              app.globalData.roomInfo = {};
+              wx.navigateBack();
+            }
+          })
         }
       }
     })

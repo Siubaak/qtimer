@@ -1,4 +1,5 @@
 const app = getApp();
+const today = require('../utils/today.js')
 
 let loaded = false
 
@@ -17,21 +18,28 @@ function createRoom(opt) {
     const roomInfo = {
       id: id,
       status: 0, // 0:准备中; 1:比赛开始; 2:比赛暂停; 3:比赛结束
+      create: today(),
       type: opt.data.type,
       solveNum: opt.data.solveNum,
       playerNum: opt.data.playerNum,
+      onlineNum: 1,
       players: [{
         nickName: opt.data.nickName,
         avatarUrl: opt.data.avatarUrl,
         details: []
       }],
       scrambles: [],
-      msgList: []
+      msgList: [{
+        content: `${opt.data.nickName}创建了房间 ${id}，快点击右上角转发邀请对手吧`,
+        playerIndex: 0,
+        system: true
+      }]
     }
     db.collection('room')
       .add({
         data: roomInfo,
         success() {
+          roomInfo.selfIndex = 0
           opt.success && opt.success({
             ret: 0,
             roomInfo: roomInfo
@@ -89,13 +97,20 @@ function joinRoom(opt) {
       .doc(data._id)
       .update({
         data: {
+          onlineNum: _.inc(1),
           players: _.push({
             nickName: opt.data.nickName,
             avatarUrl: opt.data.avatarUrl,
             details: []
+          }),
+          msgList: _.push({
+            content: `${opt.data.nickName}加入了房间${data.playerNum === data.players.length + 1 ? '，房间已满，开始比赛' : ''}`,
+            playerIndex: data.players.length,
+            system: true
           })
         },
         success() {
+          data.selfIndex = data.players.length
           opt.success & opt.success({
             ret: 0,
             roomInfo: data
@@ -177,8 +192,8 @@ function watchRoom(opt) {
     })
     .watch({
       onChange(snapshot) {
-        const roomInfo = snapshot.docs[0]
-        opt.change && opt.change(roomInfo)
+        const newRoomInfo = snapshot.docs[0]
+        opt.change && opt.change(newRoomInfo)
       },
       onError(err) {
         opt.error && opt.error(err)
@@ -187,7 +202,7 @@ function watchRoom(opt) {
 }
 
 function sendReply(opt) {
-  const roomInfo = app.globalData.roomInfo
+  const { roomInfo } = app.globalData
   const roomId = roomInfo.id
   if (!roomId) {
     opt.fail && opt.fail({
@@ -222,9 +237,44 @@ function sendReply(opt) {
     })
 }
 
+function quitRoom(opt) {
+  const { roomInfo } = app.globalData
+  const roomId = roomInfo.id
+  if (!roomId) {
+    return
+  }
+  db.collection('room')
+    .where({
+      id: roomInfo.id
+    })
+    .update({
+      data: {
+        onlineNum: _.inc(-1),
+        msgList: _.push({
+          content: `${roomInfo.players[roomInfo.selfIndex].nickName}退出了房间`,
+          playerIndex: roomInfo.selfIndex,
+          system: true
+        })
+      },
+      success() {
+        opt.success & opt.success({
+          ret: 0
+        })
+      },
+      fail() {
+        opt.fail && opt.fail({
+          ret: 1000,
+          error: '退出房间失败'
+        })
+      },
+      complete: () => opt.complete()
+    })
+}
+
 module.exports = {
   createRoom: createRoom,
   joinRoom: joinRoom,
   watchRoom: watchRoom,
-  sendReply: sendReply
+  sendReply: sendReply,
+  quitRoom: quitRoom
 }
