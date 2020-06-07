@@ -1,5 +1,4 @@
-const app = getApp();
-const today = require('../utils/today.js')
+const app = getApp()
 
 let loaded = false
 
@@ -26,8 +25,7 @@ function createRoom(opt) {
     const roomInfo = {
       id: id,
       status: 0, // 0:准备中; 1:比赛中; 2:比赛结束
-      create: today(),
-      createTs: Date.now(),
+      create: Date.now(),
       type: opt.data.type,
       solveNum: opt.data.solveNum,
       playerNum: opt.data.playerNum,

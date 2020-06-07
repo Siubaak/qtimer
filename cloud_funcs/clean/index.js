@@ -11,7 +11,7 @@ exports.main = async () => {
   try {
     const a = await db.collection('room')
       .where({
-        createTs: _.lt(now)
+        create: _.lt(now)
       })
       .remove()
     console.log(a)

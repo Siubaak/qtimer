@@ -1,4 +1,5 @@
 const app = getApp()
+const today = require('../../../utils/today.js')
 const { createRoom } = require('../../../utils/cloud.js')
 
 Page({
@@ -66,7 +67,7 @@ Page({
     const { groups } = app.globalData
     const curGroup = {
       name: '比赛' + roomInfo.id,
-      create: roomInfo.create,
+      create: today(new Date(roomInfo.create)),
       type: roomInfo.type,
       details: []
     }
