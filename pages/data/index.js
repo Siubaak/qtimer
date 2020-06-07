@@ -40,9 +40,7 @@ Page({
     })
   },
   showMore() {
-    this.setData({
-      showMoreOptions: !this.data.showMoreOptions
-    })
+    this.setData({ showMoreOptions: !this.data.showMoreOptions })
   },
   nameGroup(event) {
     const { current, groups } = app.globalData

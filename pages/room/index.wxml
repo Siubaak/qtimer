@@ -8,7 +8,7 @@
           <view wx:if="{{item.system}}" class="message-info">
             <view class="message-info-text">
               <image class="message-info-avatar-image" src="{{players[item.playerIndex].avatarUrl}}" mode="aspectFill"></image>
-              <text>{{item.playerIndex ? players[item.playerIndex].nickName : ''}}{{item.content}}</text>
+              <text>{{util.isNumber(item.playerIndex) ? players[item.playerIndex].nickName : ''}}{{item.content}}</text>
             </view>
           </view>
           <view wx:else class="message-item-container">

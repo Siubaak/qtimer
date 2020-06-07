@@ -70,10 +70,15 @@ function avgCut(details) {
   }
 }
 
+function isNumber(number) {
+  return typeof number === 'number'
+}
+
 module.exports = {
   list: list,
   best: best,
   worst: worst,
   avg: avg,
-  avgCut: avgCut
+  avgCut: avgCut,
+  isNumber: isNumber
 }

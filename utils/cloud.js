@@ -30,7 +30,6 @@ function createRoom(opt) {
       type: opt.data.type,
       solveNum: opt.data.solveNum,
       playerNum: opt.data.playerNum,
-      onlineNum: 1,
       players: [{
         nickName: opt.data.nickName,
         avatarUrl: opt.data.avatarUrl,
@@ -107,7 +106,6 @@ function joinRoom(opt) {
       .update({
         data: {
           status: isFull ? 1 : 0,
-          onlineNum: _.inc(1),
           players: _.push([{
             nickName: opt.data.nickName,
             avatarUrl: opt.data.avatarUrl,
@@ -261,7 +259,6 @@ function quitRoom(opt) {
     return
   }
   const data = {
-    onlineNum: _.inc(-1),
     msgList: _.push([{
       playerIndex: roomInfo.selfIndex,
       content: '退出了房间',

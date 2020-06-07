@@ -223,22 +223,18 @@
 	right: 0;
 	bottom: 50px;
 	height: 500px;
-	background-color: #f7f8f8;
 	margin: 0;
-	padding: 0;
+	padding: 8px 10px;
   margin-bottom: constant(safe-area-inset-bottom);
   margin-bottom: env(safe-area-inset-bottom);
 }
 
 .result-box {
-	background-color: rgba(57, 69, 78, .3);
-	position: absolute;
-	top: 0;
-	right: 10px;
-	left: 10px;
-	bottom: 0;
+	background-color: rgba(57, 69, 78);
 	border-radius: 16px;
+	height: 100%;
 	padding: 0 24px;
+	box-shadow: 0 1px 6px 0 rgba(57, 69, 78, .06);
 }
 
 .result-item {

@@ -132,8 +132,6 @@ Page({
     })
   },
   showResult() {
-    this.setData({
-      result: !this.data.result
-    })
+    this.setData({ result: !this.data.result })
   }
 })

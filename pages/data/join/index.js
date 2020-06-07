@@ -8,9 +8,7 @@ Page({
   },
   onLoad(query) {
     if (query.room) {
-      this.setData({
-        roomId: query.room
-      })
+      this.setData({ roomId: query.room })
     }
   },
   inputNumber(event) {
@@ -37,7 +35,7 @@ Page({
       },
       success: ({ roomInfo }) => {
         app.globalData.roomInfo = roomInfo
-        this.createGroup(roomInfo.id)
+        this.createGroup(roomInfo)
         wx.redirectTo({
           url: `/pages/room/index`
         })
@@ -53,12 +51,12 @@ Page({
       complete: () => wx.hideLoading()
     })
   },
-  createGroup(id) {
+  createGroup(roomInfo) {
     const { groups } = app.globalData
     const curGroup = {
-      name: '比赛' + id,
-      create: today(),
-      type: '3x3',
+      name: '比赛' + roomInfo.id,
+      create: roomInfo.create,
+      type: roomInfo.type,
       details: []
     }
     groups.push(curGroup)

@@ -23,14 +23,10 @@ Page({
   },
   onShow() {
     const { roomInfo } = app.globalData
+    this.setData({ roomId: roomInfo.id || '' })
     if (roomInfo.id) {
-      this.setData({
-        roomId: roomInfo.id
-      })
       this.dataWatcher = watchRoom({
-        change: () => {
-          this.getScramble()
-        }
+        change: () => this.getScramble()
       })
       // 进入房间的时候不允许修改红点，这里在onShow的时候再隐藏一次
       wx.hideTabBarRedDot({ index: 0 })
@@ -80,13 +76,9 @@ Page({
           }
         }
         if (hasAllFinished) {
-          this.setData({
-            scramble: roomInfo.scrambles[selfSolvedNum]
-          })
+          this.setData({ scramble: roomInfo.scrambles[selfSolvedNum] })
         } else if (roomInfo.scrambles.length > selfSolvedNum) {
-          this.setData({
-            scramble: WAIT_FOR_OTHERS_MSG
-          })
+          this.setData({ scramble: WAIT_FOR_OTHERS_MSG })
         } else {
           app.getWorkerResult({
             type: groups[current].type
