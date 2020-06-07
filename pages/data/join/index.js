@@ -17,7 +17,7 @@ Page({
     this.setData({ roomId: event.detail.value })
   },
   joinRoom(event) {
-    if (/^\d{6}$/.test(this.data.roomId)) {
+    if (!/^\d{6}$/.test(this.data.roomId)) {
       wx.showModal({
         title: '加入房间失败',
         content: '房间号为6位数字，请检查房间号是否输入正确',
