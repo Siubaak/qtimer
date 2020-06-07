@@ -131,7 +131,11 @@ Page({
       }
     })
   },
-  showResult() {
+  triggerResult() {
     this.setData({ result: !this.data.result })
-  }
+  },
+  hideResult() {
+    this.setData({ result: false })
+  },
+  noop() { }
 })

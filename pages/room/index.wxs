@@ -10,8 +10,12 @@ function list(details) {
     }
     for (var i = 0; i < details.length; i++) {
       var d = details[i]
-      if (d === best || d === worst) {
+      if (d === best) {
         result.push('(' + format.time(d) + ')')
+        best = Infinity
+      } else if (d === worst) {
+        result.push('(' + format.time(d) + ')')
+        worst = 0
       } else {
         result.push(format.time(d))
       }
@@ -19,7 +23,7 @@ function list(details) {
   } else {
     result = [format.time(details[0])]
   }
-  return result.join('  ')
+  return result.join(' ')
 }
 
 function best(details) {
@@ -39,18 +43,16 @@ function worst(details) {
 }
 
 function avg(details) {
-  var solved = 0, sum = 0
+  var sum = 0, dnf = 0
   for (var i = 0; i < details.length; i++) {
     var d = details[i]
-    if (d !== 100000 && d !== 100001) {
-      solved++
-      sum += d
-    }
+    sum += d
+    if (d === 100000 || d === 100001) dnf++
   }
-  if (solved === 0) {
+  if (dnf > 1) {
     return format.time(100000)
   } else {
-    return format.time(sum / solved)
+    return format.time(sum / details.length)
   }
 }
 

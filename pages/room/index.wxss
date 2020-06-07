@@ -221,9 +221,8 @@
 	position: absolute;
 	left: 0;
 	right: 0;
-	bottom: 50px;
-	height: 500px;
 	margin: 0;
+	bottom: 50px;
 	padding: 8px 10px;
   margin-bottom: constant(safe-area-inset-bottom);
   margin-bottom: env(safe-area-inset-bottom);
@@ -232,9 +231,9 @@
 .result-box {
 	background-color: rgba(57, 69, 78);
 	border-radius: 16px;
-	height: 100%;
-	padding: 0 24px;
-	box-shadow: 0 1px 6px 0 rgba(57, 69, 78, .06);
+	max-height: 500px;
+	overflow: scroll;
+	padding: 0 24px 24px 24px;
 }
 
 .result-item {
@@ -242,6 +241,7 @@
 	font-size: 14px;
 	padding-top: 24px;
 	text-align: left;
+	padding-bottom: 400px;
 }
 
 .result-item-avatar-image {

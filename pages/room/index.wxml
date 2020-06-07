@@ -1,5 +1,5 @@
 <wxs src="./index.wxs" module="util"></wxs>
-<view class="container">
+<view class="container" bindtap="hideResult">
   <scroll-view class="message-container {{finished ? 'finished' : ''}}" scroll-into-view="m{{msgList.length - 1}}" enable-back-to-top='true' scroll-y="ture">
     <view class="message-area">
       <view class="message-list">
@@ -7,7 +7,7 @@
           class="message-item {{!item.system && item.playerIndex === selfIndex ? 'message-reply': ''}}">
           <view wx:if="{{item.system}}" class="message-info">
             <view class="message-info-text">
-              <image class="message-info-avatar-image" src="{{players[item.playerIndex].avatarUrl}}" mode="aspectFill"></image>
+              <image wx:if="{{util.isNumber(item.playerIndex)}}" class="message-info-avatar-image" src="{{players[item.playerIndex].avatarUrl}}" mode="aspectFill"></image>
               <text>{{util.isNumber(item.playerIndex) ? players[item.playerIndex].nickName : ''}}{{item.content}}</text>
             </view>
           </view>
@@ -25,7 +25,7 @@
       </view>
     </view>
   </scroll-view>
-  <view wx:if="{{result}}" class="result-area">
+  <view wx:if="{{result}}" class="result-area" catchtap="noop">
     <view class="result-box">
       <view class="result-item" wx:for="{{players}}" wx:key="index">
         <image class="result-item-avatar-image" src="{{item.avatarUrl}}" mode="aspectFill"></image>
@@ -61,7 +61,7 @@
     <view class="tools-box">
       <button type="primary" class="opr-btn" bindtap="quitRoom">退出比赛</button>
       <button type="primary" class="opr-btn" bindtap="goToTimer">前往计时</button>
-      <button type="primary" class="opr-btn" bindtap="showResult">查看结果</button>
+      <button type="primary" class="opr-btn" catchtap="triggerResult">查看结果</button>
     </view>
   </view>
 </view>
