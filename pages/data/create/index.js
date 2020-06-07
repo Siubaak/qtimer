@@ -4,7 +4,7 @@ const { createRoom } = require('../../../utils/cloud.js')
 Page({
   data: {
     playerIndex: 0,
-    supportedPlayers: [2],
+    supportedPlayers: [2, 3, 4, 5],
 
     typeIndex: 0,
     supportedTypes: ['3x3'],

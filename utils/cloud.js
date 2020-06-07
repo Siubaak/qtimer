@@ -38,7 +38,8 @@ function createRoom(opt) {
       }],
       scrambles: [firstScramble],
       msgList: [{
-        content: `${opt.data.nickName}创建了房间 ${id}，快点击右上角转发邀请对手吧`,
+        playerIndex: 0,
+        content: `创建了房间：${id}，快点击右上角∙∙∙转发邀请对手吧`,
         system: true
       }]
     }
@@ -113,7 +114,8 @@ function joinRoom(opt) {
             details: []
           }]),
           msgList: _.push([{
-            content: `${opt.data.nickName}加入了房间${isFull ? '，房间已满，开始比赛' : ''}`,
+            playerIndex: data.players.length,
+            content: `加入了房间${isFull ? '，房间已满，开始比赛' : ''}`,
             system: true
           }])
         },
@@ -178,7 +180,7 @@ function joinRoom(opt) {
           } else {
             opt.fail & opt.fail({
               ret: 1003,
-              error: '房间不存在，请确认房间号'
+              error: '房间不存在，请检查房间号是否输入正确'
             })
           }
         },
@@ -261,7 +263,8 @@ function quitRoom(opt) {
   const data = {
     onlineNum: _.inc(-1),
     msgList: _.push([{
-      content: `${roomInfo.players[roomInfo.selfIndex].nickName}退出了房间`,
+      playerIndex: roomInfo.selfIndex,
+      content: '退出了房间',
       system: true
     }])
   }
@@ -358,12 +361,14 @@ function setTime(opt) {
   // 判断是否结束游戏，决定是否需要更新房间状态
   let hasFinished = true
   for (let i = 0; i < roomInfo.players.length; i++) {
-    if (
-      // 如果是自己没有完成
-      roomInfo.selfIndex === i && roomInfo.solveNum > selfSolvedNum + 1 ||
+    if (roomInfo.selfIndex === i) {
+      if (roomInfo.solveNum > selfSolvedNum + 1) {
+        // 如果是自己没有完成
+        hasFinished = false
+        break
+      }
+    } else if (roomInfo.solveNum > roomInfo.players[i].details.length) {
       // 或者是其他人没有完成
-      roomInfo.solveNum > roomInfo.players[i].details.length
-    ) {
       hasFinished = false
       break
     }
@@ -372,7 +377,8 @@ function setTime(opt) {
     [`players.${roomInfo.selfIndex}.details`]: _.push([opt.data.time])
   }
   const msgList = [{
-    content: `${roomInfo.players[roomInfo.selfIndex].nickName}完成第${selfSolvedNum + 1}次还原，成绩为 ${formatTime(opt.data.time)}`,
+    playerIndex: roomInfo.selfIndex,
+    content: `完成第${selfSolvedNum + 1}次还原，成绩：${formatTime(opt.data.time)}`,
     system: true
   }]
   if (hasFinished) {
@@ -422,7 +428,8 @@ function updateTime(opt) {
       data: {
         [`players.${roomInfo.selfIndex}.details.${selfSolvedNum - 1}`]: opt.data.time,
         msgList: _.push([{
-          content: `${roomInfo.players[roomInfo.selfIndex].nickName}更改第${selfSolvedNum}次成绩为 ${formatTime(opt.data.time)}`,
+          playerIndex: roomInfo.selfIndex,
+          content: `更改第${selfSolvedNum}次成绩：${formatTime(opt.data.time)}`,
           system: true
         }])
       },

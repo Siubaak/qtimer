@@ -57,7 +57,7 @@ function avgCut(details) {
   if (dnf > 1) {
     return 100000
   } else {
-    return (sum - best - worst)/(details.length - 2)
+    return (sum - best - worst) / (details.length - 2)
   }
 }
 

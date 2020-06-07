@@ -10,7 +10,7 @@ let allowModify = false
 
 const WAIT_FOR_START_MSG = '请等待比赛开始'
 const WAIT_FOR_OTHERS_MSG = '请等待其他对手完成'
-const FINISH_AND_EXIT_MSG = '比赛结束，请退出比赛房间'
+const FINISH_AND_EXIT_MSG = '比赛结束，可退出比赛房间'
 
 Page({
   data: {
@@ -32,6 +32,8 @@ Page({
           this.getScramble()
         }
       })
+      // 进入房间的时候不允许修改红点，这里在onShow的时候再隐藏一次
+      wx.hideTabBarRedDot({ index: 0 })
     } else {
       this.getScramble()
     }
@@ -110,7 +112,7 @@ Page({
     }
   },
   pressDown() {
-    const { current, groups } = app.globalData
+    const { current, groups, roomInfo } = app.globalData
     if (this.data.status === 0) {
       if (allowModify && Date.now() - lastTap < 300) {
         const itemList = ['正常', '+2', 'DNF', '删除']
@@ -237,6 +239,7 @@ Page({
     app.notifyData()
 
     if (roomInfo.id) {
+      this.setData({ scramble: '' })
       setTime({
         data: {
           time: time

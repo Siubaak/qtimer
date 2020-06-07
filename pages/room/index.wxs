@@ -1,0 +1,79 @@
+var format = require('../../utils/format.wxs');
+
+function list(details) {
+  var best = Infinity, worst = 0, result = []
+  if (details.length > 1) {
+    for (var i = 0; i < details.length; i++) {
+      var d = details[i]
+      best = Math.min(d, best)
+      worst = Math.max(d, worst)
+    }
+    for (var i = 0; i < details.length; i++) {
+      var d = details[i]
+      if (d === best || d === worst) {
+        result.push('(' + format.time(d) + ')')
+      } else {
+        result.push(format.time(d))
+      }
+    }
+  } else {
+    result = [format.time(details[0])]
+  }
+  return result.join('  ')
+}
+
+function best(details) {
+  var b = Infinity
+  for (var i = 0; i < details.length; i++) {
+    b = Math.min(details[i], b)
+  }
+  return format.time(b)
+}
+
+function worst(details) {
+  var w = 0
+  for (var i = 0; i < details.length; i++) {
+    w = Math.max(details[i], w)
+  }
+  return format.time(w)
+}
+
+function avg(details) {
+  var solved = 0, sum = 0
+  for (var i = 0; i < details.length; i++) {
+    var d = details[i]
+    if (d !== 100000 && d !== 100001) {
+      solved++
+      sum += d
+    }
+  }
+  if (solved === 0) {
+    return format.time(100000)
+  } else {
+    return format.time(sum / solved)
+  }
+}
+
+function avgCut(details) {
+  var sum = 0, dnf = 0, best = Infinity, worst = 0
+  for (var i = 0; i < details.length; i++) {
+    var d = details[i]
+    sum += d
+    best = Math.min(d, best)
+    worst = Math.max(d, worst)
+    if (d === 100000 || d === 100001) dnf++
+  }
+  if (dnf > 1) {
+    return format.time(100000)
+  } else {
+    return format.time((sum - best - worst) / (details.length - 2))
+  }
+}
+
+module.exports = {
+  list: list,
+  best: best,
+  worst: worst,
+  avg: avg,
+  avgCut: avgCut
+}

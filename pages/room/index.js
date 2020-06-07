@@ -13,7 +13,9 @@ Page({
     replyContent: '',
     selfIndex: '',
     players: [],
-    msgList: []
+    msgList: [],
+    result: false,
+    finished: false
   },
   onLoad() {
     const { roomInfo } = app.globalData
@@ -21,13 +23,15 @@ Page({
       roomId: roomInfo.id,
       msgList: roomInfo.msgList,
       players: roomInfo.players,
-      selfIndex: roomInfo.selfIndex
+      selfIndex: roomInfo.selfIndex,
+      finished: roomInfo.status === 2
     })
     this.dataWatcher = watchRoom({
       change: (newRoomInfo) => {
         this.setData({
           players: newRoomInfo.players,
-          msgList: newRoomInfo.msgList
+          msgList: newRoomInfo.msgList,
+          finished: roomInfo.status === 2
         })
       }
     })
@@ -128,6 +132,8 @@ Page({
     })
   },
   showResult() {
-    console.log('fuck');
+    this.setData({
+      result: !this.data.result
+    })
   }
 })

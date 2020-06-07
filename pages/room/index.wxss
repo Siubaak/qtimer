@@ -9,6 +9,11 @@
   height: calc(100% - 100px - env(safe-area-inset-bottom));
 }
 
+.message-container.finished {
+  height: calc(100% - 50px - constant(safe-area-inset-bottom));
+  height: calc(100% - 50px - env(safe-area-inset-bottom));
+}
+
 .message-item-container {
 	overflow: hidden;
 	display: flex;
@@ -37,7 +42,7 @@
 	width: 100%;
 	height: 100%;
 	border-radius: 4px;
-	background-color: rgba(57, 69, 78, .5);
+	background-color: rgba(57, 69, 78, .3);
 }
 
 .message-bd {
@@ -54,7 +59,7 @@
 	vertical-align: top;
 	word-break: break-all;
 	background: #fff;
-	border-radius: 0 20px 20px;
+	border-radius: 20px;
 	padding: 10px;
 	text-align: left;
 	max-width: 80%;
@@ -75,29 +80,36 @@
 }
 
 .message-reply .message-content {
-	border-radius: 20px 0 20px 20px;
+	border-radius: 20px;
 	background-color: #07c160;
 	color: #fff;
 }
 
 .message-info {
-	color: rgba(57, 69, 78, .5);
 	padding: 10px 0;
-	text-align: center;	
-	font-size: 14px;
+	text-align: center;
 }
 
 .message-info-text {
 	display: inline-block;
 	vertical-align: top;
-	margin:0 auto;
+	margin: 0 auto;
 	color: #fff;
-	background-color: rgba(57, 69, 78, .2);
-	font-size: 12px;
-	height: 24px;
-	line-height: 24px;
-	padding: 0 10px;
-	border-radius: 12px;
+	background-color: rgba(57, 69, 78, .3);
+	font-size: 14px;
+	padding: 6px 10px;
+	border-radius: 16px;
+	text-align: left;
+}
+
+.message-info-avatar-image {
+	float: left;
+	width: 20px;
+	height: 20px;
+	overflow: hidden;
+	margin-right: 4px;
+	border-radius: 10px;
+	background-color: rgba(57, 69, 78, .3);
 }
 
 .message-bd .message-info {
@@ -145,7 +157,7 @@
 }
 
 .tools-box .opr-btn {
-  background-color: rgba(57, 69, 78, .2);
+  background-color: rgba(57, 69, 78, .3);
 	margin-left: 5px;
   flex: 1;
 }
@@ -203,4 +215,49 @@
 
 .reply-input-placeholder {
 	color: rgba(57, 69, 78, .3);
+}
+
+.result-area {
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 50px;
+	height: 500px;
+	background-color: #f7f8f8;
+	margin: 0;
+	padding: 0;
+  margin-bottom: constant(safe-area-inset-bottom);
+  margin-bottom: env(safe-area-inset-bottom);
+}
+
+.result-box {
+	background-color: rgba(57, 69, 78, .3);
+	position: absolute;
+	top: 0;
+	right: 10px;
+	left: 10px;
+	bottom: 0;
+	border-radius: 16px;
+	padding: 0 24px;
+}
+
+.result-item {
+	color: #fff;
+	font-size: 14px;
+	padding-top: 24px;
+	text-align: left;
+}
+
+.result-item-avatar-image {
+	float: left;
+	width: 20px;
+	height: 20px;
+	overflow: hidden;
+	margin-right: 4px;
+	border-radius: 10px;
+	background-color: rgba(57, 69, 78, .3);
+}
+
+.result-item-info {
+	padding-top: 6px;
 }
