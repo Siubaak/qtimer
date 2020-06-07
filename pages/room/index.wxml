@@ -52,7 +52,8 @@
       <view class="reply-input-box">
         <input class="reply-input" placeholder-class="reply-input-placeholder"
           confirm-type="send" bindconfirm="sendReply" bindinput="inputReply"
-          cursor-spacing="13" confirm-hold="true" value="{{replyContent}}"/>
+          cursor-spacing="13" confirm-hold="true" value="{{replyContent}}"
+          maxlength="50"/>
       </view>
       <button type="primary" class="opr-btn" bindtap="sendReply">发送</button>
     </view>
