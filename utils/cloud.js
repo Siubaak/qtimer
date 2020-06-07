@@ -14,10 +14,18 @@ const _ = db.command
 function createRoom(opt) {
   let id
 
-  const create = () => {
+  const getFirstScramble = (type, done) => {
+    app.getWorkerResult({
+      type: type
+    }, ({ data }) => {
+      done(data)
+    })
+  }
+
+  const create = (firstScramble) => {
     const roomInfo = {
       id: id,
-      status: 0, // 0:准备中; 1:比赛开始; 2:比赛暂停; 3:比赛结束
+      status: 0, // 0:准备中; 1:比赛中; 2:比赛结束
       create: today(),
       type: opt.data.type,
       solveNum: opt.data.solveNum,
@@ -28,10 +36,9 @@ function createRoom(opt) {
         avatarUrl: opt.data.avatarUrl,
         details: []
       }],
-      scrambles: [],
+      scrambles: [firstScramble],
       msgList: [{
         content: `${opt.data.nickName}创建了房间 ${id}，快点击右上角转发邀请对手吧`,
-        playerIndex: 0,
         system: true
       }]
     }
@@ -75,7 +82,7 @@ function createRoom(opt) {
               })
             }
           } else {
-            create()
+            getFirstScramble(opt.data.type, create)
           }
         },
         fail() {
@@ -93,21 +100,22 @@ function createRoom(opt) {
 
 function joinRoom(opt) {
   const join = (data) => {
+    const isFull = data.playerNum === data.players.length + 1
     db.collection('room')
       .doc(data._id)
       .update({
         data: {
+          status: isFull ? 1 : 0,
           onlineNum: _.inc(1),
-          players: _.push({
+          players: _.push([{
             nickName: opt.data.nickName,
             avatarUrl: opt.data.avatarUrl,
             details: []
-          }),
-          msgList: _.push({
-            content: `${opt.data.nickName}加入了房间${data.playerNum === data.players.length + 1 ? '，房间已满，开始比赛' : ''}`,
-            playerIndex: data.players.length,
+          }]),
+          msgList: _.push([{
+            content: `${opt.data.nickName}加入了房间${isFull ? '，房间已满，开始比赛' : ''}`,
             system: true
-          })
+          }])
         },
         success() {
           data.selfIndex = data.players.length
@@ -149,6 +157,13 @@ function joinRoom(opt) {
               opt.fail & opt.fail({
                 ret: 1002,
                 error: '已退出比赛，无法重新加入'
+              })
+              return
+            }
+            if (data.status) {
+              opt.fail & opt.fail({
+                ret: 1001,
+                error: '房间已开始比赛，无法加入'
               })
               return
             }
@@ -217,10 +232,10 @@ function sendReply(opt) {
     })
     .update({
       data: {
-        msgList: _.push({
+        msgList: _.push([{
           playerIndex: roomInfo.selfIndex,
           content: opt.data.content
-        })
+        }])
       },
       success() {
         opt.success & opt.success({
@@ -243,19 +258,24 @@ function quitRoom(opt) {
   if (!roomId) {
     return
   }
+  const data = {
+    onlineNum: _.inc(-1),
+    msgList: _.push([{
+      content: `${roomInfo.players[roomInfo.selfIndex].nickName}退出了房间`,
+      system: true
+    }])
+  }
+  const details = roomInfo.players[roomInfo.selfIndex].details
+  const dnsNum =  roomInfo.solveNum - details.length
+  if (dnsNum > 0) {
+    data[`players.${roomInfo.selfIndex}.details`] = _.push(new Array(dnsNum).fill(100001))
+  }
   db.collection('room')
     .where({
       id: roomInfo.id
     })
     .update({
-      data: {
-        onlineNum: _.inc(-1),
-        msgList: _.push({
-          content: `${roomInfo.players[roomInfo.selfIndex].nickName}退出了房间`,
-          playerIndex: roomInfo.selfIndex,
-          system: true
-        })
-      },
+      data: data,
       success() {
         opt.success & opt.success({
           ret: 0
@@ -271,10 +291,163 @@ function quitRoom(opt) {
     })
 }
 
+function setScramble(opt) {
+  const { roomInfo } = app.globalData
+  const roomId = roomInfo.id
+  if (!roomId) {
+    return
+  }
+  db.collection('room')
+    .where({
+      id: roomInfo.id
+    })
+    .update({
+      data: {
+        scrambles: _.set(roomInfo.scrambles.concat(opt.data.scramble))
+      },
+      success() {
+        opt.success & opt.success({
+          ret: 0,
+          scramble: opt.data.scramble
+        })
+      },
+      fail() {
+        opt.fail && opt.fail({
+          ret: 1000,
+          error: '更新打乱失败，请稍后再试'
+        })
+      },
+      complete: () => opt.complete()
+    })
+}
+
+const fill = (num) => {
+  const str = '0' + num
+  return str.substring(str.length - 2)
+}
+
+const formatTime = (msTime) => {
+  // 100000为DNF，100001为DNF，对齐./format.wxs
+  if (msTime === 100000) {
+    return 'DNF'
+  } else if (msTime === 100001) {
+    return 'DNS'
+  } else {
+    const ms = parseInt(msTime % 1000 / 10)
+    msTime = parseInt(msTime / 1000)
+    const s = msTime % 60
+    const m = parseInt(msTime / 60)
+    if (m) {
+      return m + ':' + fill(s) + '.' + fill(ms)
+    } else {
+      return s + '.' + fill(ms)
+    }
+  }
+}
+
+function setTime(opt) {
+  const { roomInfo } = app.globalData
+  const roomId = roomInfo.id
+  if (!roomId) {
+    return
+  }
+  const selfSolvedNum = roomInfo.players[roomInfo.selfIndex].details.length
+  if (selfSolvedNum >= roomInfo.solveNum) {
+    return
+  }
+  // 判断是否结束游戏，决定是否需要更新房间状态
+  let hasFinished = true
+  for (let i = 0; i < roomInfo.players.length; i++) {
+    if (
+      // 如果是自己没有完成
+      roomInfo.selfIndex === i && roomInfo.solveNum > selfSolvedNum + 1 ||
+      // 或者是其他人没有完成
+      roomInfo.solveNum > roomInfo.players[i].details.length
+    ) {
+      hasFinished = false
+      break
+    }
+  }
+  const data = {
+    [`players.${roomInfo.selfIndex}.details`]: _.push([opt.data.time])
+  }
+  const msgList = [{
+    content: `${roomInfo.players[roomInfo.selfIndex].nickName}完成第${selfSolvedNum + 1}次还原，成绩为 ${formatTime(opt.data.time)}`,
+    system: true
+  }]
+  if (hasFinished) {
+    data.status = 2
+    msgList.push({
+      content: '比赛结束，可点击右下角按钮查看结果，或点击左下角按钮退出游戏',
+      system: true
+    })
+  }
+  data.msgList = _.push(msgList)
+  db.collection('room')
+    .where({
+      id: roomInfo.id
+    })
+    .update({
+      data: data,
+      success() {
+        opt.success & opt.success({
+          ret: 0
+        })
+      },
+      fail() {
+        opt.fail && opt.fail({
+          ret: 1000,
+          error: '更新成绩失败，请稍后再试'
+        })
+      },
+      complete: () => opt.complete()
+    })
+}
+
+function updateTime(opt) {
+  const { roomInfo } = app.globalData
+  const roomId = roomInfo.id
+  if (!roomId) {
+    return
+  }
+  const selfSolvedNum = roomInfo.players[roomInfo.selfIndex].details.length
+  if (selfSolvedNum > roomInfo.solveNum) {
+    return
+  }
+  db.collection('room')
+    .where({
+      id: roomInfo.id
+    })
+    .update({
+      data: {
+        [`players.${roomInfo.selfIndex}.details.${selfSolvedNum - 1}`]: opt.data.time,
+        msgList: _.push([{
+          content: `${roomInfo.players[roomInfo.selfIndex].nickName}更改第${selfSolvedNum}次成绩为 ${formatTime(opt.data.time)}`,
+          system: true
+        }])
+      },
+      success() {
+        opt.success & opt.success({
+          ret: 0
+        })
+      },
+      fail() {
+        opt.fail && opt.fail({
+          ret: 1000,
+          error: '更新成绩失败，请稍后再试'
+        })
+      },
+      complete: () => opt.complete()
+    })
+}
+
 module.exports = {
   createRoom: createRoom,
   joinRoom: joinRoom,
   watchRoom: watchRoom,
   sendReply: sendReply,
-  quitRoom: quitRoom
+  quitRoom: quitRoom,
+  setScramble: setScramble,
+  setTime: setTime,
+  updateTime: updateTime
 }

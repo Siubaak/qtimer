@@ -44,8 +44,5 @@ App({
     } else {
       wx.removeTabBarBadge({ index: 1 })
     }
-  },
-  watchRoom() {
-
   }
 })

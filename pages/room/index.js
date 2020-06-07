@@ -1,7 +1,10 @@
 const app = getApp();
+const today = require('../../utils/today.js')
 const { watchRoom, sendReply, quitRoom } = require('../../utils/cloud.js')
 
 const REPLY_INTERVAL_THRESHOLD = 5 * 1000 // 至少间隔5s才能发送一条消息
+
+let roomInfoWatcher = null
 
 Page({
   data: {
@@ -20,19 +23,25 @@ Page({
       players: roomInfo.players,
       selfIndex: roomInfo.selfIndex
     })
-    this.watcher = watchRoom({
+    this.dataWatcher = watchRoom({
       change: (newRoomInfo) => {
-        newRoomInfo.selfIndex = roomInfo.selfIndex
-        app.globalData.roomInfo = newRoomInfo
         this.setData({
           players: newRoomInfo.players,
           msgList: newRoomInfo.msgList
         })
       }
     })
+    if (!roomInfoWatcher) {
+      roomInfoWatcher = watchRoom({
+        change: (newRoomInfo) => {
+          newRoomInfo.selfIndex = roomInfo.selfIndex
+          app.globalData.roomInfo = newRoomInfo
+        }
+      })
+    }
   },
   onUnload() {
-    this.watcher.close()
+    this.dataWatcher.close()
   },
   onShareAppMessage() {
     return {
@@ -92,6 +101,24 @@ Page({
         if (res.confirm) {
           quitRoom({
             complete() {
+              if (roomInfoWatcher) {
+                roomInfoWatcher.close()
+                roomInfoWatcher = null
+              }
+              const { current, groups, roomInfo } = app.globalData
+              const curGroup = groups[current]
+              let dnsNum =  roomInfo.solveNum - curGroup.details.length
+              while (dnsNum > 0) {
+                dnsNum--
+                curGroup.details.push({
+                  origin: 100001,
+                  time: 100001,
+                  cond: 0,
+                  scramble: '', 
+                  create: today()
+                })
+              }
+              app.saveGroups()
               app.globalData.roomInfo = {};
               wx.navigateBack();
             }

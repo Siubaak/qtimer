@@ -4,9 +4,11 @@ function fill(num) {
 }
 
 function time(msTime) {
-  // 100000为DNF，wxs传不进去Infinity
+  // 100000为DNF，100001为DNF，wxs传不进去Infinity
   if (msTime === 100000) {
     return 'DNF'
+  } else if (msTime === 100001) {
+    return 'DNS'
   } else {
     var ms = parseInt(msTime % 1000 / 10)
     msTime = parseInt(msTime / 1000)

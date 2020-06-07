@@ -2,7 +2,7 @@
   <view class="weui-form">
     <view class="weui-form__text-area">
       <h2 class="weui-form__title">加入比赛房间</h2>
-      <view class="weui-form__desc">输入房间号码，加入到对应的比赛房间参加比赛</view>
+      <view class="weui-form__desc">输入6位房间号码，加入到对应的比赛房间参加比赛</view>
     </view>
     <view class="weui-form__control-area">
       <view class="weui-cells__group weui-cells__group_form">
@@ -10,7 +10,7 @@
           <view class="weui-cell weui-cell_active">
             <view class="weui-cell__hd"><label class="weui-label">房间号码</label></view>
             <view class="weui-cell__bd">
-              <input class="weui-input" value="{{roomId}}" placeholder="填写房间号码" bindinput="inputNumber"/>
+              <input class="weui-input" value="{{roomId}}" placeholder="填写房间号码" maxlength="6" bindinput="inputNumber"/>
             </view>
           </view>
         </view>
