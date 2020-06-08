@@ -49,7 +49,7 @@ function avg(details) {
     sum += d
     if (d === 100000 || d === 100001) dnf++
   }
-  if (dnf > 1) {
+  if (dnf > 0) {
     return format.time(100000)
   } else {
     return format.time(sum / details.length)
