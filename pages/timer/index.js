@@ -225,19 +225,23 @@ Page({
       create: today()
     })
     app.saveGroups()
-  
-    this.setData({ status: 0 })
-    this.allowModify()
-    app.notifyData()
 
     if (roomInfo.id) {
-      this.setData({ scramble: '' })
+      this.setData({
+        scramble: '',
+        status: 0
+      })
       setTime({
         data: {
           time: time
         }
       })
+    } else {
+      this.setData({ status: 0 })
     }
+  
+    this.allowModify()
+    app.notifyData()
 
     if (!wx.getStorageSync('__finish_tips')) {
       wx.setStorageSync('__finish_tips', 1)
