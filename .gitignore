@@ -1,6 +1,9 @@
 # Useless directories
 /miniprogram_npm
 
+# Useless files
+.DS_Store
+
 # Logs
 logs
 *.log

@@ -15,13 +15,11 @@
     "selectedColor": "#07c160",
     "list": [
       {
-        "text": "计时",
         "pagePath": "pages/timer/index",
         "iconPath": "images/timer.png",
         "selectedIconPath": "images/timer_sel.png"
       },
       {
-        "text": "统计",
         "pagePath": "pages/data/index",
         "iconPath": "images/data.png",
         "selectedIconPath": "images/data_sel.png"

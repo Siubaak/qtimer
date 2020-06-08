@@ -141,7 +141,7 @@
             {{item.create}}
           </span>
         </view>
-        <view class="weui-media-box__desc scramble">{{item.scramble}}</view>
+        <view class="weui-media-box__desc">{{item.scramble}}</view>
       </view>
     </view>
   </view>

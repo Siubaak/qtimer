@@ -6,6 +6,7 @@
 /workers
 
 # Useless files
+.DS_Store
 /app.js
 /app.json
 /app.wxss
