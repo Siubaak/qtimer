@@ -37,7 +37,7 @@ function createRoom(opt) {
       scrambles: [firstScramble],
       msgList: [{
         playerIndex: 0,
-        content: `创建了房间：${id}，快点击右上角∙∙∙转发邀请对手吧`,
+        content: `创建了房间：${id}，快点击右上角∙∙∙发送给朋友来进行邀请吧`,
         system: true
       }]
     }
