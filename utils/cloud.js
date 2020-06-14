@@ -118,7 +118,7 @@ function joinRoom(opt) {
         return
       }
 
-      opt.success & opt.success(res.result)
+      opt.success && opt.success(res.result)
     },
     fail() {
       opt.fail && opt.fail({
@@ -173,7 +173,7 @@ function sendReply(opt) {
         }])
       },
       success() {
-        opt.success & opt.success({
+        opt.success && opt.success({
           ret: 0
         })
       },
@@ -212,7 +212,7 @@ function quitRoom(opt) {
     .update({
       data: data,
       success() {
-        opt.success & opt.success({
+        opt.success && opt.success({
           ret: 0
         })
       },
@@ -241,7 +241,7 @@ function setScramble(opt) {
         scrambles: _.set(roomInfo.scrambles.concat(opt.data.scramble))
       },
       success() {
-        opt.success & opt.success({
+        opt.success && opt.success({
           ret: 0,
           scramble: opt.data.scramble
         })
@@ -301,7 +301,7 @@ const checkIfEnd = (opt) => {
         return
       }
 
-      opt.success & opt.success(res.result)
+      opt.success && opt.success(res.result)
     },
     fail() {
       opt.fail && opt.fail({
@@ -353,7 +353,7 @@ function setTime(opt) {
             complete: opt.complete
           })
         } else {
-          opt.success & opt.success({
+          opt.success && opt.success({
             ret: 0
           })
         }
@@ -396,7 +396,7 @@ function updateTime(opt) {
         }])
       },
       success() {
-        opt.success & opt.success({
+        opt.success && opt.success({
           ret: 0
         })
       },
