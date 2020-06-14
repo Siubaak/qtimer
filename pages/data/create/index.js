@@ -13,9 +13,7 @@ Page({
     supportedTypes: ['3x3'],
 
     timeIndex: 1,
-    supportedTimes: [3, 5, 12],
-
-    lastCreateTs: 0
+    supportedTimes: [3, 5, 12]
   },
   onShow() {
     app.getWorkerResult({
@@ -40,7 +38,8 @@ Page({
   },
   createRoom(event) {
     const now = Date.now();
-    if (now < this.data.lastCreateTs + CREATE_INTERVAL_THRESHOLD) {
+    const lastCreateTs = parseInt(wx.getStorageSync('__last_create_room')) || 0;
+    if (now < lastCreateTs + CREATE_INTERVAL_THRESHOLD) {
       wx.showModal({
         title: '提示',
         content: '创建房间太频繁，过2分钟再试吧',
@@ -76,9 +75,7 @@ Page({
       },
       complete: () => wx.hideLoading()
     })
-    this.setData({
-      lastCreateTs: now
-    })
+    wx.setStorageSync('__last_create_room', now)
   },
   createGroup(roomInfo) {
     const { groups } = app.globalData

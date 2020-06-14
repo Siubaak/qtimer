@@ -9,7 +9,6 @@ let roomInfoWatcher = null
 Page({
   data: {
     roomId: '',
-    lastReplyTs: 0,
     replyContent: '',
     selfIndex: '',
     players: [],
@@ -64,7 +63,8 @@ Page({
       return
     }
     const now = Date.now();
-    if (now < this.data.lastReplyTs + REPLY_INTERVAL_THRESHOLD) {
+    const lastReplyTs = parseInt(wx.getStorageSync('__last_reply_time')) || 0;
+    if (now < lastReplyTs + REPLY_INTERVAL_THRESHOLD) {
       wx.showModal({
         title: '提示',
         content: '回复太频繁，过5秒再发吧',
@@ -86,10 +86,8 @@ Page({
         })
       }
     })
-    this.setData({
-      replyContent: '',
-      lastReplyTs: now
-    })
+    this.setData({ replyContent: '' })
+    wx.setStorageSync('__last_reply_time', now)
   },
   goToTimer() {
     wx.switchTab({

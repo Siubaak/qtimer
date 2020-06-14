@@ -6,8 +6,7 @@ const JOIN_INTERVAL_THRESHOLD = 10 * 1000 // 至少间隔10s才能再尝试加�
 
 Page({
   data: {
-    roomId: '',
-    lastJoinTs: 0
+    roomId: ''
   },
   onLoad(query) {
     if (query.room) {
@@ -28,7 +27,8 @@ Page({
       return
     }
     const now = Date.now();
-    if (now < this.data.lastJoinTs + JOIN_INTERVAL_THRESHOLD) {
+    const lastJoinTs = parseInt(wx.getStorageSync('__last_join_room')) || 0;
+    if (now < lastJoinTs + JOIN_INTERVAL_THRESHOLD) {
       wx.showModal({
         title: '提示',
         content: '加入房间太频繁，过10秒再试吧',
@@ -62,9 +62,7 @@ Page({
       },
       complete: () => wx.hideLoading()
     })
-    this.setData({
-      lastJoinTs: now
-    })
+    wx.setStorageSync('__last_join_room', now)
   },
   createGroup(roomInfo) {
     const { groups } = app.globalData
