@@ -284,7 +284,7 @@ const checkIfEnd = (opt) => {
   wx.cloud.callFunction({
     name: 'room',
     data: {
-      action: 'join',
+      action: 'end',
       params: opt.data
     },
     success(res) {

@@ -24,7 +24,7 @@ module.exports = async (params) => {
     }
   }
 
-  const data = roomInfo.data
+  const data = roomInfo.data[0]
 
   // 判断是否结束游戏，决定是否需要更新房间状态
   let isEnd = true

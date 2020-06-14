@@ -67,7 +67,7 @@ Page({
     if (now < this.data.lastReplyTs + REPLY_INTERVAL_THRESHOLD) {
       wx.showModal({
         title: '提示',
-        content: '回复太频繁，过会再发吧',
+        content: '回复太频繁，过5秒再发吧',
         confirmText: '我知道了',
         showCancel: false
       })

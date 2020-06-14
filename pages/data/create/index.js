@@ -2,6 +2,8 @@ const app = getApp()
 const today = require('../../../utils/today.js')
 const { createRoom } = require('../../../utils/cloud.js')
 
+const CREATE_INTERVAL_THRESHOLD = 2 * 60 * 1000 // 至少间隔2min才能再尝试创建另外一个房间
+
 Page({
   data: {
     playerIndex: 0,
@@ -11,7 +13,9 @@ Page({
     supportedTypes: ['3x3'],
 
     timeIndex: 1,
-    supportedTimes: [3, 5, 12]
+    supportedTimes: [3, 5, 12],
+
+    lastCreateTs: 0
   },
   onShow() {
     app.getWorkerResult({
@@ -35,6 +39,16 @@ Page({
     this.setData({ timeIndex: event.detail.value })
   },
   createRoom(event) {
+    const now = Date.now();
+    if (now < this.data.lastCreateTs + CREATE_INTERVAL_THRESHOLD) {
+      wx.showModal({
+        title: '提示',
+        content: '创建房间太频繁，过2分钟再试吧',
+        confirmText: '我知道了',
+        showCancel: false
+      })
+      return;
+    }
     wx.showLoading({ title: '正在创建房间', mask: true })
     const userInfo = event.detail.userInfo
     createRoom({
@@ -61,6 +75,9 @@ Page({
         })
       },
       complete: () => wx.hideLoading()
+    })
+    this.setData({
+      lastCreateTs: now
     })
   },
   createGroup(roomInfo) {

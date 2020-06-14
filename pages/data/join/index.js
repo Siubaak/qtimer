@@ -2,9 +2,12 @@ const app = getApp()
 const today = require('../../../utils/today.js')
 const { joinRoom } = require('../../../utils/cloud.js')
 
+const JOIN_INTERVAL_THRESHOLD = 10 * 1000 // 至少间隔10s才能再尝试加入另外一个房间
+
 Page({
   data: {
-    roomId: ''
+    roomId: '',
+    lastJoinTs: 0
   },
   onLoad(query) {
     if (query.room) {
@@ -24,7 +27,16 @@ Page({
       })
       return
     }
-
+    const now = Date.now();
+    if (now < this.data.lastJoinTs + JOIN_INTERVAL_THRESHOLD) {
+      wx.showModal({
+        title: '提示',
+        content: '加入房间太频繁，过10秒再试吧',
+        confirmText: '我知道了',
+        showCancel: false
+      })
+      return;
+    }
     wx.showLoading({ title: '正在加入房间', mask: true })
     const userInfo = event.detail.userInfo
     joinRoom({
@@ -49,6 +61,9 @@ Page({
         })
       },
       complete: () => wx.hideLoading()
+    })
+    this.setData({
+      lastJoinTs: now
     })
   },
   createGroup(roomInfo) {
