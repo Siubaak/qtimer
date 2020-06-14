@@ -235,6 +235,7 @@ function setScramble(opt) {
   db.collection('room')
     .where({
       id: roomInfo.id,
+      status: _.eq(1),
       scrambles: _.size(roomInfo.scrambles.length)
     })
     .update({
