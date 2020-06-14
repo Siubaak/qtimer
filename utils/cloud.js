@@ -234,11 +234,12 @@ function setScramble(opt) {
   }
   db.collection('room')
     .where({
-      id: roomInfo.id
+      id: roomInfo.id,
+      scrambles: _.size(roomInfo.scrambles.length)
     })
     .update({
       data: {
-        scrambles: _.set(roomInfo.scrambles.concat(opt.data.scramble))
+        scrambles: _.push([opt.data.scramble])
       },
       success() {
         opt.success && opt.success({

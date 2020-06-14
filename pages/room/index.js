@@ -30,7 +30,7 @@ Page({
         this.setData({
           players: newRoomInfo.players,
           msgList: newRoomInfo.msgList,
-          finished: roomInfo.status === 2
+          finished: newRoomInfo.status === 2
         })
       }
     })
