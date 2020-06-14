@@ -98,100 +98,36 @@ function createRoom(opt) {
 }
 
 function joinRoom(opt) {
-  const join = (data) => {
-    const isFull = data.playerNum === data.players.length + 1
-    db.collection('room')
-      .doc(data._id)
-      .update({
-        data: {
-          status: isFull ? 1 : 0,
-          players: _.push([{
-            nickName: opt.data.nickName,
-            avatarUrl: opt.data.avatarUrl,
-            details: []
-          }]),
-          msgList: _.push([{
-            playerIndex: data.players.length,
-            content: `加入了房间${isFull ? '，房间已满，开始比赛' : ''}`,
-            system: true
-          }])
-        },
-        success() {
-          data.selfIndex = data.players.length
-          opt.success & opt.success({
-            ret: 0,
-            roomInfo: data
-          })
-        },
-        fail() {
-          opt.fail && opt.fail({
-            ret: 1000,
-            error: '加入房间失败，请稍后再试'
-          })
-        },
-        complete: () => opt.complete && opt.complete()
-      })
-  }
+  wx.cloud.callFunction({
+    name: 'room',
+    data: {
+      action: 'join',
+      params: opt.data
+    },
+    success(res) {
+      if (res.errMsg.indexOf(':ok') === -1) {
+        opt.fail && opt.fail({
+          ret: 1000,
+          error: '加入房间失败，请稍后再试'
+        })
+        return
+      }
 
-  const find = () => {
-    db.collection('room')
-      .where({
-        id: opt.data.roomId
-      })
-      .get({
-        success(res) {
-          if (res.data.length) {
-            let exit = false
-            const data = res.data[0]
-            for (let i = 0; i < data.players.length; i++) {
-              if (
-                data.players[i].nickName === opt.data.nickName &&
-                data.players[i].avatarUrl === opt.data.avatarUrl
-              ) {
-                exit = true
-                break
-              }
-            }
-            if (exit) {
-              opt.fail & opt.fail({
-                ret: 1002,
-                error: '已退出比赛，无法重新加入'
-              })
-              return
-            }
-            if (data.status) {
-              opt.fail & opt.fail({
-                ret: 1001,
-                error: '房间已开始比赛，无法加入'
-              })
-              return
-            }
-            if (data.playerNum <= data.players.length) {
-              opt.fail & opt.fail({
-                ret: 1001,
-                error: '房间已满，无法加入'
-              })
-              return
-            }
-            join(res.data[0])
-          } else {
-            opt.fail & opt.fail({
-              ret: 1003,
-              error: '房间不存在，请检查房间号是否输入正确'
-            })
-          }
-        },
-        fail() {
-          opt.fail && opt.fail({
-            ret: 1000,
-            error: '加入房间失败，请稍后再试'
-          })
-          opt.complete && opt.complete()
-        }
-      })
-  }
+      if (res.result.ret) {
+        opt.fail && opt.fail(res.result)
+        return
+      }
 
-  find();
+      opt.success & opt.success(res.result)
+    },
+    fail() {
+      opt.fail && opt.fail({
+        ret: 1000,
+        error: '加入房间失败，请稍后再试'
+      })
+    },
+    complete: () => opt.complete && opt.complete()
+  })
 }
 
 function watchRoom(opt) {
@@ -344,6 +280,39 @@ const formatTime = (msTime) => {
   }
 }
 
+const checkIfEnd = (opt) => {
+  wx.cloud.callFunction({
+    name: 'room',
+    data: {
+      action: 'join',
+      params: opt.data
+    },
+    success(res) {
+      if (res.errMsg.indexOf(':ok') === -1) {
+        opt.fail && opt.fail({
+          ret: 1000,
+          error: '更新房间状态失败，请稍后再试'
+        })
+        return
+      }
+
+      if (res.result.ret) {
+        opt.fail && opt.fail(res.result)
+        return
+      }
+
+      opt.success & opt.success(res.result)
+    },
+    fail() {
+      opt.fail && opt.fail({
+        ret: 1000,
+        error: '更新房间状态失败，请稍后再试'
+      })
+    },
+    complete: () => opt.complete && opt.complete()
+  })
+}
+
 function setTime(opt) {
   const { roomInfo } = app.globalData
   const roomId = roomInfo.id
@@ -358,47 +327,36 @@ function setTime(opt) {
   if (selfSolvedNum >= roomInfo.solveNum) {
     return
   }
-  // 判断是否结束游戏，决定是否需要更新房间状态
-  let hasFinished = true
-  for (let i = 0; i < roomInfo.players.length; i++) {
-    if (roomInfo.selfIndex === i) {
-      if (roomInfo.solveNum > selfSolvedNum + 1) {
-        // 如果是自己没有完成
-        hasFinished = false
-        break
-      }
-    } else if (roomInfo.solveNum > roomInfo.players[i].details.length) {
-      // 或者是其他人没有完成
-      hasFinished = false
-      break
-    }
-  }
-  const data = {
-    [`players.${roomInfo.selfIndex}.details`]: _.push([opt.data.time])
-  }
-  const msgList = [{
-    playerIndex: roomInfo.selfIndex,
-    content: `完成第${selfSolvedNum + 1}次还原，成绩：${formatTime(opt.data.time)}`,
-    system: true
-  }]
-  if (hasFinished) {
-    data.status = 2
-    msgList.push({
-      content: '比赛结束，可点击右下角按钮查看结果，或点击左下角按钮退出游戏',
-      system: true
-    })
-  }
-  data.msgList = _.push(msgList)
+  // 需要判断是否结束游戏，决定是否需要更新房间状态
+  const needCheckIfEnd = roomInfo.solveNum <= selfSolvedNum + 1
   db.collection('room')
     .where({
       id: roomInfo.id
     })
     .update({
-      data: data,
+      data: {
+        [`players.${roomInfo.selfIndex}.details`]: _.push([opt.data.time]),
+        msgList: _.push([{
+          playerIndex: roomInfo.selfIndex,
+          content: `完成第${selfSolvedNum + 1}次还原，成绩：${formatTime(opt.data.time)}`,
+          system: true
+        }])
+      },
       success() {
-        opt.success & opt.success({
-          ret: 0
-        })
+        if (needCheckIfEnd) {
+          checkIfEnd({
+            data: {
+              roomId: roomInfo.id
+            },
+            success: opt.success,
+            fail: opt.fail,
+            complete: opt.complete
+          })
+        } else {
+          opt.success & opt.success({
+            ret: 0
+          })
+        }
       },
       fail() {
         opt.fail && opt.fail({
