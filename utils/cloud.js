@@ -57,7 +57,7 @@ function createRoom(opt) {
             error: '生成房间号失败，请稍后再试'
           })
         },
-        complete: () => opt.complete()
+        complete: () => opt.complete && opt.complete()
       })
   }
 
@@ -89,8 +89,8 @@ function createRoom(opt) {
             ret: 1000,
             error: '生成房间号失败，请稍后再试'
           })
-        },
-        complete: () => opt.complete()
+          opt.complete && opt.complete()
+        }
       })
   }
 
@@ -129,7 +129,7 @@ function joinRoom(opt) {
             error: '加入房间失败，请稍后再试'
           })
         },
-        complete: () => opt.complete()
+        complete: () => opt.complete && opt.complete()
       })
   }
 
@@ -186,8 +186,8 @@ function joinRoom(opt) {
             ret: 1000,
             error: '加入房间失败，请稍后再试'
           })
-        },
-        complete: () => opt.complete()
+          opt.complete && opt.complete()
+        }
       })
   }
 
@@ -247,7 +247,7 @@ function sendReply(opt) {
           error: '回复失败，请稍后再试'
         })
       },
-      complete: () => opt.complete()
+      complete: () => opt.complete && opt.complete()
     })
 }
 
@@ -286,7 +286,7 @@ function quitRoom(opt) {
           error: '退出房间失败'
         })
       },
-      complete: () => opt.complete()
+      complete: () => opt.complete && opt.complete()
     })
 }
 
@@ -316,7 +316,7 @@ function setScramble(opt) {
           error: '更新打乱失败，请稍后再试'
         })
       },
-      complete: () => opt.complete()
+      complete: () => opt.complete && opt.complete()
     })
 }
 
@@ -348,6 +348,10 @@ function setTime(opt) {
   const { roomInfo } = app.globalData
   const roomId = roomInfo.id
   if (!roomId) {
+    opt.fail && opt.fail({
+      ret: 1001,
+      error: '房间不存在，无法提交成绩'
+    })
     return
   }
   const selfSolvedNum = roomInfo.players[roomInfo.selfIndex].details.length
@@ -410,6 +414,10 @@ function updateTime(opt) {
   const { roomInfo } = app.globalData
   const roomId = roomInfo.id
   if (!roomId) {
+    opt.fail && opt.fail({
+      ret: 1001,
+      error: '房间不存在，无法更新成绩'
+    })
     return
   }
   const selfSolvedNum = roomInfo.players[roomInfo.selfIndex].details.length
@@ -440,7 +448,7 @@ function updateTime(opt) {
           error: '更新成绩失败，请稍后再试'
         })
       },
-      complete: () => opt.complete()
+      complete: () => opt.complete && opt.complete()
     })
 }
 
