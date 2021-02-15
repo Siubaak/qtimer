@@ -1,15 +1,30 @@
 <wxs src="../../utils/format.wxs" module="format"></wxs>
 <wxs src="./index.wxs" module="util"></wxs>
+<nav-bar>
+  <view class="group-entry {{util.getInfoClass(status)}}">
+    默认分组
+  </view>
+</nav-bar>
 <view class="container" bindtouchstart="pressDown" bindtouchend="pressUp">
-  <view class="item down">
+  <view class="item scramble-item {{timeClass}}">
+    <text class="scramble {{util.getInfoClass(status)}} {{util.getScrambleSize(scramble.length)}}">
+      {{scramble}}
+    </text>
+  </view>
+  <view class="item">
     <text class="time {{timeClass}} {{util.getTimeSize(time)}}">
       {{format.time(time)}}
     </text>
   </view>
-  <view class="item">
-    <text class="scramble {{util.getScrambleClass(status)}} {{util.getScrambleSize(scramble.length)}}">
-      {{scramble}}
-    </text>
+  <view class="preview {{util.getInfoClass(status)}}">
+    <view class="preview-list">
+      <view class="preview-item">还原次数：</view>
+      <view class="preview-item">最快：</view>
+      <view class="preview-item">最慢</view>
+      <view class="preview-item">去头尾平均：</view>
+    </view>
+    <view class="preview-detail">成绩详情</view>
   </view>
 </view>
 <float-room wx:if="{{roomId}}"/>
+<tab-bar class="{{util.getInfoClass(status)}}"/>

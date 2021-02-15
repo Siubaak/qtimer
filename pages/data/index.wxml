@@ -1,5 +1,6 @@
 <wxs src="../../utils/format.wxs" module="format"></wxs>
 <wxs src="./index.wxs" module="util"></wxs>
+<nav-bar/>
 <view class="container">
   <view class="weui-cells stats">
     <view class="weui-cell">
@@ -147,3 +148,4 @@
   </view>
 </view>
 <float-room wx:if="{{roomId}}"/>
+<tab-bar/>

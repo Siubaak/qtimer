@@ -1,0 +1,34 @@
+.nav {
+  position: fixed;
+  background-color: #FBFCFD;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+}
+
+.nav-padding {
+  background-color: #FBFCFD;
+}
+
+.nav .nav-bar {
+  position: relative;
+}
+
+.nav .nav-bar .nav-item {
+  display: flex;
+  position: absolute;
+  align-items: center;
+  left: 16px;
+  top: 0;
+  bottom: 0;
+}
+
+.nav .nav-bar .nav-title {
+  width: 120px;
+  text-align: center;
+  margin: 0 auto;
+  font-size: 16px;
+  line-height: 100%;
+  font-weight: 500;
+}

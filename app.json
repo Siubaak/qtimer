@@ -4,27 +4,25 @@
     "pages/data/index"
   ],
   "window": {
-    "navigationBarBackgroundColor": "#191919",
+    "navigationBarBackgroundColor": "#FBFCFD",
     "navigationBarTitleText": "QTimer",
-    "navigationBarTextStyle": "white",
-    "backgroundColor": "#191919"
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#FBFCFD",
+    "navigationStyle": "custom"
   },
   "tabBar": {
-    "backgroundColor": "#191919",
-    "color": "#eee",
-    "selectedColor": "#07c160",
+    "custom": true,
     "list": [
       {
-        "pagePath": "pages/timer/index",
-        "iconPath": "images/timer.png",
-        "selectedIconPath": "images/timer_sel.png"
+        "pagePath": "pages/timer/index"
       },
       {
-        "pagePath": "pages/data/index",
-        "iconPath": "images/data.png",
-        "selectedIconPath": "images/data_sel.png"
+        "pagePath": "pages/data/index"
       }
     ]
+  },
+  "usingComponents": {
+    "nav-bar": "/modules/nav_bar/index"
   },
   "workers": "workers",
   "resizable": true,

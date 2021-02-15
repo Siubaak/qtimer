@@ -1,8 +1,6 @@
 {
-  "navigationBarBackgroundColor": "#191919",
-  "navigationBarTextStyle": "white",
-  "backgroundColor": "#f8f8f8",
   "usingComponents": {
+    "tab-bar": "/modules/tab_bar/index",
     "float-room": "/modules/float_room/index"
   }
 }

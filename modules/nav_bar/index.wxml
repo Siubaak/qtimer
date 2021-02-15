@@ -1,0 +1,12 @@
+<view class="nav" style="height: {{status + navHeight}}px">
+  <view class="status-bar" style="height: {{status}}px"></view>
+  <view class="nav-bar" style="height: {{navHeight}}px">
+    <view class="nav-item">
+      <slot></slot>
+    </view>
+    <view class="nav-title" style="line-height: {{navHeight}}px">
+      <text class="nav-title-text">{{title}}</text>
+    </view>
+  </view>
+</view>
+<view class="nav-padding" style="height: {{status + navHeight}}px"/>

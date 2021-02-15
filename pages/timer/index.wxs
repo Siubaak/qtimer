@@ -3,8 +3,8 @@ function getTimeSize(time) {
   return time < 60000 || time === 100000 ? '' : 'small'
 }
 
-function getScrambleClass(status) {
-  return status === 2 ? 'hide' : ''
+function getInfoClass(status) {
+  return status === 0 ? '' : 'hide'
 }
 
 function getScrambleSize(len) {
@@ -13,6 +13,6 @@ function getScrambleSize(len) {
 
 module.exports = {
   getTimeSize: getTimeSize,
-  getScrambleClass: getScrambleClass,
+  getInfoClass: getInfoClass,
   getScrambleSize: getScrambleSize
 }

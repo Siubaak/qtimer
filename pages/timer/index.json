@@ -1,5 +1,6 @@
 {
   "usingComponents": {
+    "tab-bar": "/modules/tab_bar/index",
     "float-room": "/modules/float_room/index"
   }
 }
