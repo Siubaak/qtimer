@@ -19,17 +19,22 @@ Page({
     time: 0,
     scramble: '',
     timeClass: '',
-    roomId: ''
+    roomId: '',
+    group: {},
+    redDot: false
   },
   onShow() {
-    const { roomInfo } = app.globalData
-    this.setData({ roomId: roomInfo.id || '' })
+    const { current, groups, roomInfo } = app.globalData
+    this.setData({
+      group: groups[current],
+      roomId: roomInfo.id || ''
+    })
     if (roomInfo.id) {
       this.dataWatcher = watchRoom({
         change: () => this.getScramble()
       })
       // 进入房间的时候不允许修改红点，这里在onShow的时候再隐藏一次
-      wx.hideTabBarRedDot({ index: 0 })
+      this.hideModifyRedDot()
     } else {
       this.getScramble()
     }
@@ -117,11 +122,13 @@ Page({
           success: ({ tapIndex }) => {
             if (tapIndex < 3) {
               const time = this.modify(tapIndex)
-              this.setData({ time })
+              const curGroup = groups[current]
     
-              const details = groups[current].details
+              const details = curGroup.details
               details[details.length - 1].time = time
               details[details.length - 1].cond = tapIndex
+
+              this.setData({ time, group: curGroup })
 
               app.saveGroups()
 
@@ -137,13 +144,15 @@ Page({
                 title: '删除成绩',
                 content: '当前成绩将不纳入分组统计，确定删除当前成绩？',
                 success: ({ confirm }) => {
-                  if (confirm) {
-                    this.setData({ time: 0 })
-                    this.preventModify()
-  
+                  if (confirm) {  
                     const { current, groups } = app.globalData
-                    const details = groups[current].details
+                    const curGroup = groups[current]
+
+                    const details = curGroup.details
                     details.pop()
+
+                    this.setData({ time: 0, group: curGroup })
+                    this.preventModify()
 
                     app.saveGroups()
                     app.notifyData()
@@ -229,7 +238,8 @@ Page({
     if (roomInfo.id) {
       this.setData({
         scramble: '',
-        status: 0
+        status: 0,
+        group: curGroup
       })
       setTime({
         data: {
@@ -237,7 +247,10 @@ Page({
         }
       })
     } else {
-      this.setData({ status: 0 })
+      this.setData({
+        status: 0,
+        group: curGroup
+      })
     }
   
     this.allowModify()
@@ -247,7 +260,7 @@ Page({
       wx.setStorageSync('__finish_tips', 1)
       wx.showModal({
         title: '提示',
-        content: '当左下角“计时”选项出现红点时，可以双击屏幕对成绩进行操作哦',
+        content: '当时间右上角出现红点时，可以双击屏幕对成绩进行操作哦',
         confirmText: '我知道了',
         showCancel: false
       })
@@ -265,10 +278,21 @@ Page({
   },
   allowModify() {
     allowModify = true
-    wx.showTabBarRedDot({ index: 0 })
+    this.showModifyRedDot()
   },
   preventModify() {
-    wx.hideTabBarRedDot({ index: 0 })
+    this.hideModifyRedDot()
     allowModify = false
+  },
+  showModifyRedDot() {
+    this.setData({ redDot: true })
+  },
+  hideModifyRedDot() {
+    this.setData({ redDot: false })
+  },
+  navGroup() {
+    wx.navigateTo({
+      url: '/pages/timer/group/index'
+    })
   }
 })

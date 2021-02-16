@@ -1,24 +1,17 @@
 Component({
-  attached() {
-    this.setData({
-      idx: wx.getStorageSync('__current_tab_id') * 1 || 0
-    })
-  },
-  data: {
-    idx: wx.getStorageSync('__current_tab_id') * 1 || 0
+  properties: {
+    idx: {
+      type: Number,
+      value: 0
+    }
   },
   methods: {
-    navPage(e) {
-      const id = e.currentTarget.id * 1
-      if (id === this.idx) return
-
-      this.setData({ idx: id })
-
-      wx.setStorageSync('__current_tab_id', id)
-
+    navPage(event) {
+      const id = event.currentTarget.id * 1
+      if (id === this.data.idx) return
       switch (id) {
-        case 2: wx.reLaunch({ url: '/pages/data/index' }); break
-        default: wx.reLaunch({ url: '/pages/timer/index' })
+        case 2: wx.switchTab({ url: '/pages/data/index' }); break
+        default: wx.switchTab({ url: '/pages/timer/index' })
       }
     },
   }

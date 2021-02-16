@@ -1,0 +1,21 @@
+function reverse(arr) {
+  var a = [].concat(arr)
+  return a.reverse()
+}
+
+function getTypeIconSrc(type, selected) {
+  switch (type) {
+    case '3x3-OH':
+    case '3x3-WF':
+      return '/images/3x3' + (selected ? '_sel' : '') + '.png'
+    case 'Megaminx':
+      return '/images/mega' + (selected ? '_sel' : '') + '.png'
+    default:
+      return '/images/' + type + (selected ? '_sel' : '') + '.png'
+  }
+}
+
+module.exports = {
+  reverse: reverse,
+  getTypeIconSrc: getTypeIconSrc
+}

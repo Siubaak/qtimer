@@ -37,12 +37,12 @@ App({
     wx.setStorageSync('__groups', this.globalData.groups)
   },
   notifyData() {
-    const { groups, current } = this.globalData
-    const detailsLen = groups[current].details.length
-    if ([5, 12, 50, 100].indexOf(detailsLen) !== -1) {
-      wx.setTabBarBadge({ index: 1, text: '' + detailsLen })
-    } else {
-      wx.removeTabBarBadge({ index: 1 })
-    }
+    // const { groups, current } = this.globalData
+    // const detailsLen = groups[current].details.length
+    // if ([5, 12, 50, 100].indexOf(detailsLen) !== -1) {
+    //   wx.setTabBarBadge({ index: 1, text: '' + detailsLen })
+    // } else {
+    //   wx.removeTabBarBadge({ index: 1 })
+    // }
   }
 })

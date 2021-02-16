@@ -148,4 +148,4 @@
   </view>
 </view>
 <float-room wx:if="{{roomId}}"/>
-<tab-bar/>
+<tab-bar idx="2"/>

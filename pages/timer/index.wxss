@@ -2,27 +2,43 @@ page {
   overflow: hidden;
 }
 
-.container {
-  background-color: #FBFCFD;
-}
-
 .item {
   display: flex;
   flex-direction: column;
   align-items: center;
-  font-family: 'PingFang SC', 'Courier New', Courier, monospace;
-  font-weight: 500;
   justify-content: center;
 }
 
 .scramble-item {
+  font-family: 'PingFang SC', 'Courier New', Courier, monospace;
   padding: 36px 16px;
+  font-weight: 500;
+  position: fixed;
+  left: 0;
+  right: 0;
+}
+
+.time-item {
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: bold;
+  height: 80%;
 }
 
 .time {
   font-size: 148rpx;
   text-align: center;
   color: #333;
+}
+
+.time-item .red-dot::after {
+  content: ' ';
+  background-color: #FF6565;
+  width: 12px;
+  height: 12px;
+  border-radius: 6px;
+  position: absolute;
+  margin-top: 12px;
+  margin-left: -6px;
 }
 
 .time.small {
@@ -44,8 +60,8 @@ page {
 }
 
 .scramble.small {
-  font-size: 17px;
-  line-height: 16px;
+  font-size: 14px;
+  line-height: 14px;
 }
 
 .hide {
@@ -53,7 +69,7 @@ page {
 }
 
 .preview {
-  box-shadow: 0px 0px 20px 0px rgba(70, 126, 175, 0.15);
+  box-shadow: 0px 0px 20px 0px rgba(70, 126, 175, 0.1);
   border-radius: 16px;
   padding: 16px;
   position: absolute;
@@ -88,4 +104,8 @@ page {
   text-align: center;
   color: #FFFFFF;
   font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: 0 6px;
 }

@@ -26,5 +26,8 @@
   },
   "workers": "workers",
   "resizable": true,
-  "sitemapLocation": "sitemap.json"
+  "sitemapLocation": "sitemap.json",
+  "useExtendedLib": {
+    "weui": true
+  }
 }

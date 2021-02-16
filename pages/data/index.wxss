@@ -1,9 +1,5 @@
 @import './weui.wxss';
 
-.container {
-  background-color: #f8f8f8;
-}
-
 .stats {
   margin-top: 0;
 }

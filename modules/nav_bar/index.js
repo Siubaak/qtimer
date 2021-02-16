@@ -5,8 +5,10 @@ Component({
       value: 'QTimer'
     }
   },
-  attached() {
-    this.setNavSize();
+  lifetimes: {
+    attached() {
+      this.setNavSize();
+    }
   },
   data: {
     status: 0,

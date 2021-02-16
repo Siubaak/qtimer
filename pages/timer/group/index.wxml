@@ -1,0 +1,48 @@
+<wxs src="./index.wxs" module="util"></wxs>
+<nav-bar>
+  <view class="nav-back" catchtap="navBack"></view>
+</nav-bar>
+<view class="container" bindtap="hideAllGroupOpr">
+  <view class="group-new" bindtap="showCreateDialog">
+    <text class="group-new-icon">+</text>
+    <text>新建</text>
+  </view>
+  <view class="group" wx:for="{{util.reverse(groups)}}" bindtap="switchGroup" id="{{index}}">
+    <view class="group-info">
+      <view class="group-name">{{item.name || '默认分组'}} - {{item.type}}</view>
+      <view class="group-date">{{item.create}}</view>
+    </view>
+    <view class="group-status" wx:if="{{current === groups.length - index - 1}}">
+      <view class="group-status-fill-c">
+        <view class="group-status-fill-b">
+          <view class="group-status-fill-a">
+          </view>
+        </view>
+      </view>
+    </view>
+    <swiper class="group-opr" current="{{curOpr === index ? 1 : 0}}">
+      <swiper-item></swiper-item>
+      <swiper-item class="group-opr-move">
+        <view id="{{index}}" class="group-opr-item group-rename" catchtap="showRenameDialog">
+          <text class="group-opr-text">重命名</text>
+        </view>
+        <view class="group-opr-item group-delete" catchtap="deleteGroup">
+          <text class="group-opr-text">{{groups.length > 1 ? '删除' : '重置'}}</text>
+        </view>
+        <view class="group-opr-left-padding"></view>
+      </swiper-item>
+    </swiper>
+  </view>
+</view>
+<mp-dialog title="新建" show="{{creating}}" buttons="{{dialogButtons}}" bindbuttontap="createGroup" bindclose="closeCreateDialog">
+  <input class="modal-input" value="{{nameContent}}" placeholder="请输入分组名称" bindinput="inputingName"/>
+  <view class="type-list">
+    <view wx:for="{{supportedTypes}}" class="type-item" id="{{index}}" bindtap="selectType">
+      <image class="type-icon" src="{{util.getTypeIconSrc(item, typeIndex === index)}}"/>
+      <text class="type-text {{typeIndex === index ? 'selected' : ''}}">{{item}}</text>
+    </view>
+  </view>
+</mp-dialog>
+<mp-dialog title="重命名" show="{{renameIndex > -1}}" buttons="{{dialogButtons}}" bindbuttontap="renameGroup" bindclose="closeRenameDialog">
+  <input class="modal-input" value="{{nameContent}}" placeholder="请输入分组名称" bindinput="inputingName"/>
+</mp-dialog>
