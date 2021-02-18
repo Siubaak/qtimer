@@ -70,6 +70,7 @@ Page({
   },
   showRenameDialog(event) {
     this.setData({ renameIndex: event.currentTarget.id * 1 })
+    this.hideAllGroupOpr()
   },
   closeRenameDialog() {
     this.setData({ nameContent: '', renameIndex: -1 })
@@ -109,10 +110,11 @@ Page({
         success: ({ confirm }) => {
           if (confirm) {
             groups.splice(current, 1)
-            app.globalData.current = groups.length - 1
+            const newCurrent = groups.length - 1
+            app.globalData.current = newCurrent
 
             const groupList = this.getGroupList(groups)
-            this.setData({ current, groups: groupList })
+            this.setData({ current: newCurrent, groups: groupList })
 
             app.saveCurrent()
             app.saveGroups()
@@ -120,14 +122,12 @@ Page({
         }
       })
     }
-
+    this.hideAllGroupOpr()
   },
   resetGroup(index) {
     const { groups } = app.globalData
     const group = groups[index]
-    group.name = ''
     group.create = today()
-    group.type = '3x3'
     group.details = []
     app.globalData.current = index
 

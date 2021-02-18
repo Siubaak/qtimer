@@ -6,6 +6,8 @@ page {
   height: auto;
   min-height: 85%;
   overflow-x: hidden;
+  padding-bottom: 50px;
+  box-sizing: border-box;
 }
 
 .group-new {
