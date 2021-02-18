@@ -1,12 +1,8 @@
-page {
-  background-color: #FBFCFD;
-}
-
 .container {
   height: auto;
   min-height: 85%;
   overflow-x: hidden;
-  padding-bottom: 50px;
+  padding-bottom: 56px;
   box-sizing: border-box;
 }
 

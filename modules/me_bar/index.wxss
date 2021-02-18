@@ -6,6 +6,9 @@
   padding: 8px;
   display: flex;
   align-items: center;
+  position: fixed;
+  width: 100%;
+  z-index: 10;
 }
 
 .me-info .me-avatar {
@@ -20,4 +23,9 @@
   margin-left: 16px;
   font-size: 17px;
   font-weight: 500;
+}
+
+.me-info-padding {
+  height: 56px;
+  margin-bottom: 16px;
 }

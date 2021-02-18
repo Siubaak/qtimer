@@ -1,8 +1,4 @@
-page {
-  height: 100%;
-}
-
-.container {
+page, .container {
   height: 100%;
   background-color: #FBFCFD;
 }

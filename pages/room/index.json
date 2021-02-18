@@ -1,5 +1,6 @@
 {
   "usingComponents": {
+    "mp-dialog": "weui-miniprogram/dialog/dialog",
     "tab-bar": "/modules/tab_bar/index",
     "me-bar": "/modules/me_bar/index"
   }

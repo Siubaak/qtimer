@@ -1,3 +1,130 @@
+.container {
+  height: auto;
+  min-height: 85%;
+  overflow-x: hidden;
+  padding-bottom: 56px;
+  box-sizing: border-box;
+}
+
 .nav-search {
   margin-left: 32px;
+}
+
+.group-move-area {
+  height: 100px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.group-move-view {
+  padding: 0 8px 8px;
+  height: 100px;
+  width: calc(100% + 144px);
+  box-sizing: border-box;
+  display: flex;
+}
+
+.group {
+  width: 100%;
+  background-color: #FBFCFD;
+  box-shadow: 0px 0px 20px 0px rgba(70, 126, 175, 0.15);
+  border-radius: 16px;
+  position: relative;
+  box-sizing: border-box;
+}
+
+.group .group-info {
+  padding: 16px;
+}
+
+.group .group-info .group-name {
+  font-size: 17px;
+  font-weight: 400;
+  opacity: 0.9;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.group .group-info .group-date {
+  font-size: 14px;
+  font-weight: 400;
+  opacity: 0.5;
+  margin-top: 8px;
+}
+
+.group .group-status {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 82px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.group .group-status .group-status-fill-c {
+  width: 34px;
+  height: 34px;
+  border-radius: 17px;
+  background: rgba(157, 202, 224, 0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.group .group-status .group-status-fill-b {
+  width: 28px;
+  height: 28px;
+  border-radius: 14px;
+  background: rgba(67, 171, 224, 0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.group .group-status .group-status-fill-a {
+  width: 18px;
+  height: 18px;
+  border-radius: 9px;
+  background: rgba(0, 148, 224, 0.2);
+}
+
+.group-opr {
+  height: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.group-opr .group-opr-text {
+  font-size: 14px;
+  color: #FBFCFD;
+  text-align: center;
+  font-weight: 500;
+  line-height: 64px;
+  display: block;
+}
+
+.group-opr .group-opr-item {
+  width: 64px;
+  height: 64px;
+  border-radius: 32px;
+  margin-left: 8px;
+}
+
+.group-opr .group-rename {
+  margin-left: 16px;
+  background-image: linear-gradient(144deg, #E4A30B 7%, #F2B90C 97%);
+}
+
+.group-opr .group-delete {
+  background-image: linear-gradient(141deg, #DB7052 2%, #E58B79 98%);
+}
+
+.modal-input {
+  color: #467EAF;
+  margin-top: 12px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
