@@ -6,8 +6,9 @@
   </view>
 </nav-bar>
 <view class="container" bindtouchstart="pressDown" bindtouchend="pressUp">
-  <view class="item scramble-item">
-    <view class="scramble {{util.getInfoClass(status)}} {{util.getScrambleSize(scramble.length)}}">
+  <view class="item scramble-item {{util.getInfoClass(status)}}">
+    <view class="type">{{group.type}}</view>
+    <view class="scramble {{util.getScrambleSize(scramble.length)}}">
       <text>{{scramble}}</text>
     </view>
   </view>

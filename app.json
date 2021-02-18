@@ -1,7 +1,8 @@
 {
   "pages": [
     "pages/timer/index",
-    "pages/data/index"
+    "pages/room/index",
+    "pages/me/index"
   ],
   "window": {
     "navigationBarBackgroundColor": "#FBFCFD",
@@ -17,7 +18,10 @@
         "pagePath": "pages/timer/index"
       },
       {
-        "pagePath": "pages/data/index"
+        "pagePath": "pages/room/index"
+      },
+      {
+        "pagePath": "pages/me/index"
       }
     ]
   },

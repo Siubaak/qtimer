@@ -134,7 +134,7 @@ Page({
     const groupList = this.getGroupList(groups)
 
     this.setData({
-      current: groups.length - index,
+      current: groups.length - index - 1,
       groups: groupList,
     })
     
@@ -152,7 +152,24 @@ Page({
     this.setData({ current })
     this.navBack()
   },
+  showGroupOpr(index) {
+    this.setData({ curOpr: index })
+  },
   hideAllGroupOpr() {
     this.setData({ curOpr: -1 })
+  },
+  handleTouchStart(event) {
+    this.startX = event.touches[0].pageX
+  },
+  handleTouchEnd(event) {
+    console.error(event.changedTouches[0].pageX - this.startX)
+    if (
+      event.changedTouches[0].pageX < this.startX && event.changedTouches[0].pageX - this.startX <= -30 // 右滑
+      || event.changedTouches[0].pageX > this.startX && event.changedTouches[0].pageX - this.startX < 30 // 左滑
+    ) {
+      this.showGroupOpr(event.currentTarget.id * 1)
+    } else {
+      this.hideAllGroupOpr()
+    }
   }
 })

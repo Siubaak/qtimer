@@ -4,11 +4,11 @@
   	<image wx:else class="tab-icon" src="/images/timer.png" mode="aspectFit"></image>
 		<text class="tab-text">聊天</text>
 	</view>
-	<!-- <view class="tab-item {{idx === 1 ? 'selected' : '' }}" catchtap="navPage" id="1">
-  	<image wx:if="{{idx === 1}}" class="tab-icon" src="/images/room.png" mode="aspectFit"></image>
+	<view class="tab-item {{idx === 1 ? 'selected' : '' }}" catchtap="navPage" id="1">
+  	<image wx:if="{{idx === 1}}" class="tab-icon" src="/images/room_sel.png" mode="aspectFit"></image>
   	<image wx:else class="tab-icon" src="/images/room.png" mode="aspectFit"></image>
 		<text class="tab-text">房间</text>
-	</view> -->
+	</view>
 	<view class="tab-item {{idx === 2 ? 'selected' : '' }}" catchtap="navPage" id="2">
   	<image wx:if="{{idx === 2}}" class="tab-icon" src="/images/me_sel.png" mode="aspectFit"></image>
   	<image wx:else class="tab-icon" src="/images/me.png" mode="aspectFit"></image>

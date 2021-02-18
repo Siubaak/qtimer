@@ -7,15 +7,20 @@ page {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  color: #333;
 }
 
 .scramble-item {
   font-family: 'PingFang SC', 'Courier New', Courier, monospace;
-  padding: 36px 16px;
+  padding: 16px;
   font-weight: 500;
   position: fixed;
   left: 0;
   right: 0;
+}
+
+.scramble-item .type {
+  font-size: 17px;
 }
 
 .time-item {
@@ -27,7 +32,6 @@ page {
 .time {
   font-size: 148rpx;
   text-align: center;
-  color: #333;
 }
 
 .time-item .red-dot::after {
@@ -56,12 +60,13 @@ page {
 .scramble {
   font-size: 20px;
   text-align: center;
-  color: #333;
+  margin-top: 12px;  
 }
 
 .scramble.small {
   font-size: 14px;
   line-height: 14px;
+  margin-top: 6px;  
 }
 
 .hide {

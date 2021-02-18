@@ -1,0 +1,5 @@
+<nav-bar/>
+<view class="container">
+  <me-bar/>
+</view>
+<tab-bar idx="2"/>
