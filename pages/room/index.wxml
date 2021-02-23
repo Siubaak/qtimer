@@ -1,9 +1,9 @@
 <wxs src="./index.wxs" module="util"></wxs>
 <nav-bar>
-  <view class="nav-add"></view>
+  <view class="nav-add" catchtap="showCreateDialog"></view>
   <view class="nav-search"></view>
 </nav-bar>
-<view class="container">
+<view class="container" bindtap="hideAllGroupOpr">
   <me-bar/>
   <movable-area class="group-move-area" wx:for="{{util.reverse(groups)}}">
     <movable-view class="group-move-view" id="{{index}}" x="{{curOpr === index ? -144 : 0}}"
@@ -36,6 +36,15 @@
     </movable-view>
   </movable-area>
 </view>
+<mp-dialog title="新建房间" show="{{creating}}" buttons="{{dialogButtons}}" bindbuttontap="createGroup" bindclose="closeCreateDialog">
+  <input class="modal-input" value="{{nameContent}}" placeholder="请输入房间名称" bindinput="inputingName"/>
+  <view class="type-list">
+    <view wx:for="{{supportedTypes}}" class="type-item" id="{{index}}" bindtap="selectType">
+      <image class="type-icon" src="{{util.getTypeIconSrc(item, typeIndex === index)}}"/>
+      <text class="type-text {{typeIndex === index ? 'selected' : ''}}">{{item}}</text>
+    </view>
+  </view>
+</mp-dialog>
 <mp-dialog title="重命名" show="{{renameIndex > -1}}" buttons="{{dialogButtons}}" bindbuttontap="renameGroup" bindclose="closeRenameDialog">
   <input class="modal-input" value="{{nameContent}}" placeholder="请输入分组名称" bindinput="inputingName"/>
 </mp-dialog>
