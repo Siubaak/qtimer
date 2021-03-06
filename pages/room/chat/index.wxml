@@ -1,0 +1,71 @@
+<wxs src="./index.wxs" module="util"></wxs>
+<nav-bar>
+  <view class="nav-back" catchtap="navBack"></view>
+</nav-bar>
+<view class="container" bindtap="hideResult">
+  <scroll-view class="message-container {{finished ? 'finished' : ''}}" scroll-into-view="m{{msgList.length - 1}}" enable-back-to-top='true' scroll-y="ture">
+    <view class="message-area">
+      <view class="message-list">
+        <view wx:for="{{msgList}}" wx:key="index" id="m{{index}}"
+          class="message-item {{!item.system && item.playerIndex === selfIndex ? 'message-reply': ''}}">
+          <view wx:if="{{item.system}}" class="message-info">
+            <view class="message-info-text">
+              <image wx:if="{{util.isNumber(item.playerIndex)}}" class="message-info-avatar-image" src="{{players[item.playerIndex].avatarUrl}}" mode="aspectFill"></image>
+              <text>{{util.isNumber(item.playerIndex) ? players[item.playerIndex].nickName : ''}}{{item.content}}</text>
+            </view>
+          </view>
+          <view wx:else class="message-item-container">
+            <view class="message-item-avatar">
+              <image class="message-item-avatar-image" src="{{players[item.playerIndex].avatarUrl}}" mode="aspectFill"></image>
+            </view>
+            <view class="message-bd">
+              <view class="message-content">
+                <text>{{item.content}}</text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+  <view wx:if="{{result}}" class="result-area" catchtap="noop">
+    <view class="result-box">
+      <view class="result-item" wx:for="{{players}}" wx:key="index">
+        <image class="result-item-avatar-image" src="{{item.avatarUrl}}" mode="aspectFill"></image>
+        <text class="result-item-info">{{item.nickName}}：</text>
+        <block wx:if="{{item.details.length}}">
+          <view wx:if="{{item.details.length > 2}}" class="result-item-info">
+            <block wx:if="{{item.details.length < 5}}">
+              平均：{{util.avg(item.details)}}；
+            </block>
+            <block wx:else>
+              去头尾平均：{{util.avgCut(item.details)}}；
+            </block>
+            最快：{{util.best(item.details)}}；
+            最慢：{{util.worst(item.details)}}
+          </view>
+          <view class="result-item-info">详细：{{util.list(item.details)}}</view>
+        </block>
+        <view wx:else>无成绩</view>
+      </view>
+    </view>
+  </view>
+  <view wx:if="{{!result && !finished}}" class="reply-area">
+    <view class="reply-box">
+      <view class="reply-input-box">
+        <input class="reply-input" placeholder-class="reply-input-placeholder"
+          confirm-type="send" bindconfirm="sendReply" bindinput="inputReply"
+          cursor-spacing="13" confirm-hold="true" value="{{replyContent}}"
+          maxlength="50"/>
+      </view>
+      <button type="primary" class="opr-btn" bindtap="sendReply">发送</button>
+    </view>
+  </view>
+  <view class="tools-area">
+    <view class="tools-box">
+      <button type="primary" class="opr-btn" bindtap="quitRoom">退出比赛</button>
+      <button type="primary" class="opr-btn" bindtap="goToTimer">前往计时</button>
+      <button type="primary" class="opr-btn" catchtap="triggerResult">查看结果</button>
+    </view>
+  </view>
+</view>

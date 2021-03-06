@@ -46,6 +46,7 @@ Page({
     this.setData({ typeIndex: event.currentTarget.id * 1 })
   },
   createGroup(event) {
+    this.closeCreateDialog()
     if (event.detail.index === 1) {
       const { groups } = app.globalData
       groups.push({
@@ -66,7 +67,6 @@ Page({
 
       this.navBack()
     }
-    this.closeCreateDialog()
   },
   showRenameDialog(event) {
     this.setData({ renameIndex: event.currentTarget.id * 1 })
@@ -79,6 +79,7 @@ Page({
     this.setData({ nameContent: event.detail.value })
   },
   renameGroup(event) {
+    this.closeRenameDialog()
     if (event.detail.index === 1) {
       const { groups } = app.globalData
       const curGroup = groups[groups.length - this.data.renameIndex - 1]
@@ -89,7 +90,6 @@ Page({
 
       app.saveGroups()
     }
-    this.closeRenameDialog()
   },
   deleteGroup() {
     const { current, groups } = app.globalData

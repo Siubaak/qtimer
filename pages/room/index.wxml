@@ -1,42 +1,50 @@
 <wxs src="./index.wxs" module="util"></wxs>
 <nav-bar>
   <view class="nav-add" catchtap="showCreateDialog"></view>
-  <view class="nav-search"></view>
+  <view class="nav-search" catchtap="showSearchDialog"></view>
 </nav-bar>
 <view class="container" bindtap="hideAllGroupOpr">
   <me-bar/>
-  <movable-area class="group-move-area" wx:for="{{util.reverse(groups)}}">
-    <movable-view class="group-move-view" id="{{index}}" x="{{curOpr === index ? -144 : 0}}"
-      direction="horizontal" inertia out-of-bounds damping="40"
-      bindtouchstart="handleTouchStart"
-      bindtouchend="handleTouchEnd"
-    >
-      <view class="group" bindtap="switchGroup" id="{{index}}">
-        <view class="group-info">
-          <view class="group-name">{{item.name || '默认分组'}} - {{item.type}}</view>
-          <view class="group-date">{{item.create}}</view>
-        </view>
-        <view class="group-status" wx:if="{{current === groups.length - index - 1}}">
-          <view class="group-status-fill-c">
-            <view class="group-status-fill-b">
-              <view class="group-status-fill-a">
+  <block wx:if="{{groups.length}}">
+    <movable-area class="group-move-area" wx:for="{{util.reverse(groups)}}">
+      <movable-view class="group-move-view" id="{{index}}" x="{{curOpr === index ? -144 : 0}}"
+        direction="horizontal" inertia out-of-bounds damping="40"
+        bindtouchstart="handleTouchStart"
+        bindtouchend="handleTouchEnd"
+      >
+        <view class="group" bindtap="switchGroup" id="{{index}}">
+          <view class="group-info">
+            <view class="group-name">{{item.name || '默认分组'}} - {{item.type}}</view>
+            <view class="group-date">{{item.create}}</view>
+          </view>
+          <view class="group-status" wx:if="{{current === groups.length - index - 1}}">
+            <view class="group-status-fill-c">
+              <view class="group-status-fill-b">
+                <view class="group-status-fill-a">
+                </view>
               </view>
             </view>
           </view>
         </view>
-      </view>
-      <view class="group-opr">
-        <view id="{{index}}" class="group-opr-item group-rename" catchtap="showRenameDialog">
-          <text class="group-opr-text">重命名</text>
+        <view class="group-opr">
+          <view id="{{index}}" class="group-opr-item group-rename" catchtap="showRenameDialog">
+            <text class="group-opr-text">重命名</text>
+          </view>
+          <view class="group-opr-item group-delete" catchtap="deleteGroup">
+            <text class="group-opr-text">{{groups.length > 1 ? '删除' : '重置'}}</text>
+          </view>
         </view>
-        <view class="group-opr-item group-delete" catchtap="deleteGroup">
-          <text class="group-opr-text">{{groups.length > 1 ? '删除' : '重置'}}</text>
-        </view>
-      </view>
-    </movable-view>
-  </movable-area>
+      </movable-view>
+    </movable-area>
+  </block>
+  <view wx:else class="room-tips">
+    <view class="room-tips-item">
+      <view>暂无房间</view>
+      <view>点击左上角“+”来新建吧</view>
+    </view>
+  </view>
 </view>
-<mp-dialog title="新建房间" show="{{creating}}" buttons="{{dialogButtons}}" bindbuttontap="createGroup" bindclose="closeCreateDialog">
+<mp-dialog title="新建房间" show="{{creating}}" buttons="{{dialogButtons}}" bindbuttontap="createRoom" bindclose="closeCreateDialog">
   <input class="modal-input" value="{{nameContent}}" placeholder="请输入房间名称" bindinput="inputingName"/>
   <view class="type-list">
     <view wx:for="{{supportedTypes}}" class="type-item" id="{{index}}" bindtap="selectType">
@@ -45,7 +53,10 @@
     </view>
   </view>
 </mp-dialog>
-<mp-dialog title="重命名" show="{{renameIndex > -1}}" buttons="{{dialogButtons}}" bindbuttontap="renameGroup" bindclose="closeRenameDialog">
+<mp-dialog title="搜索并加入房间" show="{{searching}}" buttons="{{searchButtons}}" bindbuttontap="joinRoom" bindclose="closeSearchDialog">
+  <input class="modal-input" value="{{nameContent}}" placeholder="请输入房间号" bindinput="inputingName"/>
+</mp-dialog>
+<mp-dialog title="重命名" show="{{renameIndex > -1}}" buttons="{{dialogButtons}}" bindbuttontap="renameRoom" bindclose="closeRenameDialog">
   <input class="modal-input" value="{{nameContent}}" placeholder="请输入分组名称" bindinput="inputingName"/>
 </mp-dialog>
 <tab-bar idx="1"/>

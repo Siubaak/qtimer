@@ -141,7 +141,7 @@
 }
 
 .type-list .type-item .type-text {
-  color: #C2C2C2;
+  color: #C3C2C2;
   font-size: 14px;
   display: block;
 }
@@ -154,4 +154,23 @@
   color: #467EAF;
   margin-top: 12px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.room-tips {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  font-size: 17px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #C3C2C2;
+}
+
+.room-tips .room-tips-item {
+  height: 54px;
+  text-align: center;
 }

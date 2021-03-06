@@ -1,5 +1,18 @@
 <nav-bar/>
 <view class="container">
   <me-bar/>
+  <view class="settings">
+    <view class="card">
+      <view class="card-name">手势说明</view>
+      <view class="card-opr">></view>
+    </view>
+    <view class="card">
+      <view class="card-name">意见反馈</view>
+      <view class="card-opr">></view>
+    </view>
+  </view>
+  <view>
+
+  </view>
 </view>
 <tab-bar idx="2"/>

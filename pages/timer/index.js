@@ -291,8 +291,14 @@ Page({
     this.setData({ redDot: false })
   },
   navGroup() {
-    wx.navigateTo({
-      url: '/pages/timer/group/index'
-    })
+    if (this.data.roomId) {
+      wx.navigateTo({
+        url: '/pages/room/chat/index'
+      })
+    } else {
+      wx.navigateTo({
+        url: '/pages/timer/group/index'
+      })
+    }
   }
 })

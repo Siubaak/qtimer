@@ -1,5 +1,8 @@
 const app = getApp()
 const today = require('../../utils/today.js')
+const { createRoom } = require('../../utils/cloud.js')
+
+const CREATE_INTERVAL_THRESHOLD = 1000 // 至少间隔2min才能再尝试创建另外一个房间
 
 Page({
   data: {
@@ -7,11 +10,21 @@ Page({
     groups: {},
     curOpr: -1,
     creating: false,
+    searching: false,
     renameIndex: -1,
     nameContent: '',
-    typeIndex: 0,
+  
     dialogButtons: [{ text: '取消' }, { text: '确定' }],
-    supportedTypes: ['3x3']
+    searchButtons: [{ text: '取消' }, { text: '加入' }],
+  
+    typeIndex: 0,
+    supportedTypes: ['3x3'],
+  
+    playerIndex: 0,
+    supportedPlayers: [2, 3, 4, 5],
+
+    timeIndex: 1,
+    supportedTimes: [3, 5, 12]
   },
   onShow() {
     const { groups, current } = app.globalData
@@ -45,28 +58,86 @@ Page({
   selectType(event) {
     this.setData({ typeIndex: event.currentTarget.id * 1 })
   },
-  createGroup(event) {
-    if (event.detail.index === 1) {
-      const { groups } = app.globalData
-      groups.push({
-        name: this.data.nameContent || '',
-        type: this.data.supportedTypes[this.data.typeIndex] || '3x3',
-        create: today(),
-        details: []
-      })
-      const current = groups.length - 1
-      app.globalData.current = current
-  
-      const groupList = this.getGroupList(groups)
-  
-      this.setData({ current: current, groups: groupList })
-      
-      app.saveCurrent()
-      app.saveGroups()
-
-      this.navBack()
-    }
+  createRoom(event) {
     this.closeCreateDialog()
+    if (event.detail.index === 1) {
+      const now = Date.now()
+      const lastCreateTs = parseInt(wx.getStorageSync('__last_create_room')) || 0
+      if (now < lastCreateTs + CREATE_INTERVAL_THRESHOLD) {
+        wx.showModal({
+          title: '提示',
+          content: '创建房间太频繁，过2分钟再试吧',
+          confirmText: '我知道了',
+          showCancel: false
+        })
+        return
+      }
+      wx.showLoading({ title: '正在创建房间', mask: true })
+      if (app.globalData.userInfo) {
+        this.createRoomAfterGetUserInfo(app.globalData.userInfo, now)
+        return
+      }
+      wx.getUserProfile({
+        desc: '创建房间需要获取您的信息',
+        success: (userInfo) => {
+          app.globalData.userInfo = userInfo
+          this.createRoomAfterGetUserInfo(userInfo, now)
+        },
+        fail: () => {
+          wx.hideLoading()
+          wx.showModal({
+            title: '创建房间失败',
+            content: '无法获取您的头像和昵称信息',
+            confirmText: '我知道了',
+            showCancel: false
+          })
+        }
+      })
+    }
+  },
+  createRoomAfterGetUserInfo(userInfo, now) {
+    createRoom({
+      data: {
+        name: this.data.nameContent,
+        type: this.data.supportedTypes[this.data.typeIndex],
+        solveNum: this.data.supportedTimes[this.data.timeIndex],
+        playerNum: this.data.supportedPlayers[this.data.playerIndex],
+        nickName: userInfo.nickName,
+        avatarUrl: userInfo.avatarUrl
+      },
+      success: ({ roomInfo }) => {
+        app.globalData.roomInfo = roomInfo
+        this.createGroup(roomInfo)
+        wx.redirectTo({
+          url: `/pages/room/chat/index`
+        })
+      },
+      fail: (res) => {
+        wx.showModal({
+          title: '创建房间失败',
+          content: res.error,
+          confirmText: '我知道了',
+          showCancel: false
+        })
+      },
+      complete: () => wx.hideLoading()
+    })
+    wx.setStorageSync('__last_create_room', now)
+  },
+  createGroup(roomInfo) {
+    const { groups } = app.globalData
+    const curGroup = {
+      room: true,
+      name: this.data.nameContent,
+      create: today(new Date(roomInfo.create)),
+      type: roomInfo.type,
+      details: []
+    }
+    groups.push(curGroup)
+    app.globalData.current = groups.length - 1
+  
+    app.saveCurrent()
+    app.saveGroups()
   },
   showRenameDialog(event) {
     this.setData({ renameIndex: event.currentTarget.id * 1 })
@@ -78,7 +149,19 @@ Page({
   inputingName(event) {
     this.setData({ nameContent: event.detail.value })
   },
-  renameGroup(event) {
+  showSearchDialog() {
+    this.setData({ searching: true })
+  },
+  closeSearchDialog() {
+    this.setData({ nameContent: '', searching: false })
+  },
+  joinRoom(event) {
+    this.closeSearchDialog()
+    if (event.detail.index === 1) {
+    }
+  },
+  renameRoom(event) {
+    this.closeRenameDialog()
     if (event.detail.index === 1) {
       const { groups } = app.globalData
       const curGroup = groups[groups.length - this.data.renameIndex - 1]
@@ -89,7 +172,6 @@ Page({
 
       app.saveGroups()
     }
-    this.closeRenameDialog()
   },
   deleteGroup() {
     const { current, groups } = app.globalData
@@ -142,7 +224,7 @@ Page({
     app.saveGroups()
   },
   getGroupList(groups) {
-    return groups.filter(i => !i.room)
+    return groups.filter(i => i.room)
   },
   switchGroup(event) {
     const { groups } = app.globalData
