@@ -12,12 +12,12 @@
         bindtouchstart="handleTouchStart"
         bindtouchend="handleTouchEnd"
       >
-        <view class="group" bindtap="switchGroup" id="{{index}}">
+        <view class="group">
           <view class="group-info">
-            <view class="group-name">{{item.name || '默认分组'}} - {{item.type}}</view>
+            <view class="group-name">{{item.name || ('房间' + item.roomId)}} - {{item.type}}</view>
             <view class="group-date">{{item.create}}</view>
           </view>
-          <view class="group-status" wx:if="{{current === groups.length - index - 1}}">
+          <view class="group-status" wx:if="{{current === item.idx}}">
             <view class="group-status-fill-c">
               <view class="group-status-fill-b">
                 <view class="group-status-fill-a">
@@ -27,11 +27,11 @@
           </view>
         </view>
         <view class="group-opr">
-          <view id="{{index}}" class="group-opr-item group-rename" catchtap="showRenameDialog">
+          <view id="{{item.idx}}" class="group-opr-item group-rename" catchtap="showRenameDialog">
             <text class="group-opr-text">重命名</text>
           </view>
-          <view class="group-opr-item group-delete" catchtap="deleteGroup">
-            <text class="group-opr-text">{{groups.length > 1 ? '删除' : '重置'}}</text>
+          <view id="{{item.idx}}" class="group-opr-item group-delete" catchtap="deleteGroup">
+            <text class="group-opr-text">删除</text>
           </view>
         </view>
       </movable-view>

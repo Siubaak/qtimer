@@ -46,7 +46,6 @@ Page({
     this.setData({ typeIndex: event.currentTarget.id * 1 })
   },
   createGroup(event) {
-    this.closeCreateDialog()
     if (event.detail.index === 1) {
       const { groups } = app.globalData
       groups.push({
@@ -67,6 +66,7 @@ Page({
 
       this.navBack()
     }
+    this.closeCreateDialog()
   },
   showRenameDialog(event) {
     this.setData({ renameIndex: event.currentTarget.id * 1 })
@@ -79,10 +79,9 @@ Page({
     this.setData({ nameContent: event.detail.value })
   },
   renameGroup(event) {
-    this.closeRenameDialog()
     if (event.detail.index === 1) {
       const { groups } = app.globalData
-      const curGroup = groups[groups.length - this.data.renameIndex - 1]
+      const curGroup = groups[this.data.renameIndex]
       curGroup.name = this.data.nameContent
 
       const groupList = this.getGroupList(groups)
@@ -90,16 +89,17 @@ Page({
 
       app.saveGroups()
     }
+    this.closeRenameDialog()
   },
-  deleteGroup() {
-    const { current, groups } = app.globalData
-    if (groups.length === 1) { // 只有一个分组，重置
+  deleteGroup(event) {
+    const index = event.currentTarget.id * 1
+    if (this.data.groups.length === 1) { // 只有一个分组，重置
       wx.showModal({
         title: '重置',
         content: '当前分组所有成绩将被清空，确定重置当前分组？',
         success: ({ confirm }) => {
           if (confirm) {
-            this.resetGroup(0)
+            this.resetGroup(index)
           }
         }
       })
@@ -109,11 +109,14 @@ Page({
         content: '当前分组所有成绩将被清空，确定删除当前分组？',
         success: ({ confirm }) => {
           if (confirm) {
-            groups.splice(current, 1)
-            const newCurrent = groups.length - 1
-            app.globalData.current = newCurrent
+            const { groups } = app.globalData
+            groups.splice(index, 1)
 
             const groupList = this.getGroupList(groups)
+            const newGroup = groupList[groupList.length - 1]
+            const newCurrent = newGroup.idx
+            app.globalData.current = newCurrent
+
             this.setData({ current: newCurrent, groups: groupList })
 
             app.saveCurrent()
@@ -134,7 +137,7 @@ Page({
     const groupList = this.getGroupList(groups)
 
     this.setData({
-      current: groups.length - index - 1,
+      current: index,
       groups: groupList,
     })
     
@@ -142,11 +145,10 @@ Page({
     app.saveGroups()
   },
   getGroupList(groups) {
-    return groups.filter(i => !i.room)
+    return groups.map((v, i) => Object.assign({ idx: i }, v)).filter(v => !v.roomId)
   },
   switchGroup(event) {
-    const { groups } = app.globalData
-    const current = groups.length - event.currentTarget.id * 1 - 1
+    const current = event.currentTarget.id * 1
     app.globalData.current = current
     app.saveCurrent()
     this.setData({ current })

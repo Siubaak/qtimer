@@ -2,7 +2,7 @@
 <wxs src="./index.wxs" module="util"></wxs>
 <nav-bar>
   <view class="group-entry {{util.getInfoClass(status)}}" catchtap="navGroup">
-    {{group.name || '默认分组'}}
+    {{group.name || roomId && ('房间' + roomId) || '默认分组'}}
   </view>
 </nav-bar>
 <view class="container" bindtouchstart="pressDown" bindtouchend="pressUp">

@@ -59,7 +59,6 @@ Page({
     this.setData({ typeIndex: event.currentTarget.id * 1 })
   },
   createRoom(event) {
-    this.closeCreateDialog()
     if (event.detail.index === 1) {
       const now = Date.now()
       const lastCreateTs = parseInt(wx.getStorageSync('__last_create_room')) || 0
@@ -94,6 +93,7 @@ Page({
         }
       })
     }
+    this.closeCreateDialog()
   },
   createRoomAfterGetUserInfo(userInfo, now) {
     createRoom({
@@ -108,7 +108,7 @@ Page({
       success: ({ roomInfo }) => {
         app.globalData.roomInfo = roomInfo
         this.createGroup(roomInfo)
-        wx.redirectTo({
+        wx.navigateTo({
           url: `/pages/room/chat/index`
         })
       },
@@ -126,16 +126,20 @@ Page({
   },
   createGroup(roomInfo) {
     const { groups } = app.globalData
-    const curGroup = {
-      room: true,
+    groups.push({
+      roomId: roomInfo.id,
       name: this.data.nameContent,
       create: today(new Date(roomInfo.create)),
       type: roomInfo.type,
       details: []
-    }
-    groups.push(curGroup)
-    app.globalData.current = groups.length - 1
-  
+    })
+    const current = groups.length - 1
+    app.globalData.current = current
+
+    const groupList = this.getGroupList(groups)
+
+    this.setData({ current: current, groups: groupList })
+
     app.saveCurrent()
     app.saveGroups()
   },
@@ -156,15 +160,14 @@ Page({
     this.setData({ nameContent: '', searching: false })
   },
   joinRoom(event) {
-    this.closeSearchDialog()
     if (event.detail.index === 1) {
     }
+    this.closeSearchDialog()
   },
   renameRoom(event) {
-    this.closeRenameDialog()
     if (event.detail.index === 1) {
       const { groups } = app.globalData
-      const curGroup = groups[groups.length - this.data.renameIndex - 1]
+      const curGroup = groups[this.data.renameIndex]
       curGroup.name = this.data.nameContent
 
       const groupList = this.getGroupList(groups)
@@ -172,13 +175,14 @@ Page({
 
       app.saveGroups()
     }
+    this.closeRenameDialog()
   },
-  deleteGroup() {
-    const { current, groups } = app.globalData
-    if (groups.length === 1) { // 只有一个分组，重置
+  deleteGroup(event) {
+    const index = event.currentTarget.id * 1
+    if (current === index) { // 如果是当前房间，重置
       wx.showModal({
-        title: '重置',
-        content: '当前分组所有成绩将被清空，确定重置当前分组？',
+        title: '退出',
+        content: '退出所有成绩将被清空，确定重置当前分组？',
         success: ({ confirm }) => {
           if (confirm) {
             this.resetGroup(0)
@@ -188,7 +192,7 @@ Page({
     } else {
       wx.showModal({
         title: '删除',
-        content: '当前分组所有成绩将被清空，确定删除当前分组？',
+        content: '房间所有成绩将被清空，确定删除当前房间？',
         success: ({ confirm }) => {
           if (confirm) {
             groups.splice(current, 1)
@@ -216,7 +220,7 @@ Page({
     const groupList = this.getGroupList(groups)
 
     this.setData({
-      current: groups.length - index - 1,
+      current: index,
       groups: groupList,
     })
     
@@ -224,15 +228,7 @@ Page({
     app.saveGroups()
   },
   getGroupList(groups) {
-    return groups.filter(i => i.room)
-  },
-  switchGroup(event) {
-    const { groups } = app.globalData
-    const current = groups.length - event.currentTarget.id * 1 - 1
-    app.globalData.current = current
-    app.saveCurrent()
-    this.setData({ current })
-    this.navBack()
+    return groups.map((v, i) => Object.assign({ idx: i }, v)).filter(v => v.roomId)
   },
   showGroupOpr(index) {
     this.setData({ curOpr: index })
