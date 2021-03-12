@@ -1,7 +1,7 @@
 <wxs src="./index.wxs" module="util"></wxs>
 <nav-bar>
-  <view class="nav-add" catchtap="showCreateDialog"></view>
-  <view class="nav-search" catchtap="showSearchDialog"></view>
+  <view wx:if="{{!roomId}}" class="nav-add" catchtap="showCreateDialog"></view>
+  <view wx:if="{{!roomId}}" class="nav-search" catchtap="showSearchDialog"></view>
 </nav-bar>
 <view class="container" bindtap="hideAllGroupOpr">
   <me-bar/>
@@ -12,7 +12,7 @@
         bindtouchstart="handleTouchStart"
         bindtouchend="handleTouchEnd"
       >
-        <view class="group">
+        <view class="group" bindtap="enterRoom" id="{{item.idx}}">
           <view class="group-info">
             <view class="group-name">{{item.name || ('房间' + item.roomId)}} - {{item.type}}</view>
             <view class="group-date">{{item.create}}</view>
@@ -31,7 +31,7 @@
             <text class="group-opr-text">重命名</text>
           </view>
           <view id="{{item.idx}}" class="group-opr-item group-delete" catchtap="deleteGroup">
-            <text class="group-opr-text">删除</text>
+            <text class="group-opr-text">{{current === item.idx ? '退出' : '删除'}}</text>
           </view>
         </view>
       </movable-view>
@@ -45,7 +45,16 @@
   </view>
 </view>
 <mp-dialog title="新建房间" show="{{creating}}" buttons="{{dialogButtons}}" bindbuttontap="createRoom" bindclose="closeCreateDialog">
-  <input class="modal-input" value="{{nameContent}}" placeholder="请输入房间名称" bindinput="inputingName"/>
+  <view class="modal-form">
+    <view class="modal-title">名称:</view>
+    <input class="modal-input" value="{{nameContent}}" placeholder="请输入房间名称" bindinput="inputingName"/>
+  </view>
+  <view class="modal-form">
+    <view class="modal-title">人数:</view>
+    <input class="modal-input" value="{{supportedPlayers[playerIndex]}}" placeholder="2~5" bindinput="inputingPlayers" bindblur="blurPlayers"/>
+    <view class="modal-title">轮次:</view>
+    <input class="modal-input" value="{{supportedTimes[timeIndex]}}" placeholder="3/5/12" bindinput="inputingTimes" bindblur="blurTimes"/>
+  </view>
   <view class="type-list">
     <view wx:for="{{supportedTypes}}" class="type-item" id="{{index}}" bindtap="selectType">
       <image class="type-icon" src="{{util.getTypeIconSrc(item, typeIndex === index)}}"/>
@@ -54,9 +63,13 @@
   </view>
 </mp-dialog>
 <mp-dialog title="搜索并加入房间" show="{{searching}}" buttons="{{searchButtons}}" bindbuttontap="joinRoom" bindclose="closeSearchDialog">
-  <input class="modal-input" value="{{nameContent}}" placeholder="请输入房间号" bindinput="inputingName"/>
+  <view class="modal-form">
+    <input class="modal-input" value="{{nameContent}}" placeholder="请输入6位房间号" bindinput="inputingName"/>
+  </view>
 </mp-dialog>
 <mp-dialog title="重命名" show="{{renameIndex > -1}}" buttons="{{dialogButtons}}" bindbuttontap="renameRoom" bindclose="closeRenameDialog">
-  <input class="modal-input" value="{{nameContent}}" placeholder="请输入分组名称" bindinput="inputingName"/>
+  <view class="modal-form">
+    <input class="modal-input" value="{{nameContent}}" placeholder="请输入分组名称" bindinput="inputingName"/>
+  </view>
 </mp-dialog>
 <tab-bar idx="1"/>

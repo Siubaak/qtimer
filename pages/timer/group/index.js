@@ -113,11 +113,18 @@ Page({
             groups.splice(index, 1)
 
             const groupList = this.getGroupList(groups)
-            const newGroup = groupList[groupList.length - 1]
-            const newCurrent = newGroup.idx
-            app.globalData.current = newCurrent
 
-            this.setData({ current: newCurrent, groups: groupList })
+            if (this.data.current === index) {
+              const newGroup = groupList[groupList.length - 1]
+              const newCurrent = newGroup.idx
+              app.globalData.current = newCurrent
+              this.setData({ current: newCurrent, groups: groupList })
+            } else if (this.data.current > index) {
+              app.globalData.current = this.data.current - 1
+              this.setData({ current: this.data.current - 1, groups: groupList })
+            } else {
+              this.setData({ groups: groupList })
+            }
 
             app.saveCurrent()
             app.saveGroups()

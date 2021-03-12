@@ -155,7 +155,6 @@ Page({
                     this.preventModify()
 
                     app.saveGroups()
-                    app.notifyData()
                   }
                 }
               })
@@ -254,7 +253,6 @@ Page({
     }
   
     this.allowModify()
-    app.notifyData()
 
     if (!wx.getStorageSync('__finish_tips')) {
       wx.setStorageSync('__finish_tips', 1)
@@ -300,5 +298,10 @@ Page({
         url: '/pages/timer/group/index'
       })
     }
+  },
+  navDetails() {
+    wx.navigateTo({
+      url: '/pages/timer/detail/index'
+    })
   }
 })

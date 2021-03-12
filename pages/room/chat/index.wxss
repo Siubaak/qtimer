@@ -36,7 +36,7 @@
 	height: 42px;
 	overflow: hidden;
   margin-right: 10px;
-  border-radius: 20px;
+  border-radius: 21px;
 }
 
 .message-item-avatar-image {
@@ -58,11 +58,11 @@
 	display: inline-block;
 	vertical-align: top;
 	word-break: break-all;
-	background: #467EAF;
-	border-radius: 20px;
+	background: #E8EFF4;
+	border-radius: 21px;
 	padding: 10px;
 	text-align: left;
-	max-width: 80%;
+	max-width: 60%;
 	vertical-align: middle;
 }
 
@@ -85,7 +85,6 @@
 }
 
 .message-info {
-	padding: 10px 0;
 	text-align: center;
 }
 
@@ -93,11 +92,8 @@
 	display: inline-block;
 	vertical-align: top;
 	margin: 0 auto;
-	color: #fff;
-	background-color: rgba(57, 69, 78, .3);
+	color: #C3C2C2;
 	font-size: 14px;
-	padding: 6px 10px;
-	border-radius: 16px;
 	text-align: left;
 }
 
@@ -190,13 +186,13 @@
 }
 
 .reply-box .opr-btn {
-	background-color: #467EAF;
+	background-image: linear-gradient(155deg, #4D8ABF 0%, #5CA6E6 100%);
 	margin-left: 5px;
 	width: 65px;
 }
 
 .reply-input-box {
-	background-color: #fff;
+	background-color: #E8EFF4;
 	border-radius: 17px;
 	padding: 0 10px;
 	height: 34px;

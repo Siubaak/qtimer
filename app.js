@@ -24,25 +24,24 @@ App({
   onLaunch() {
     if (groups) {
       this.globalData.groups = groups
-      this.globalData.current = current
+      if (!groups[current].roomId) {
+        this.globalData.current = current
+      } else {
+        for (let i = groups.length - 1; i > -1; i--) {
+          if (!groups[i].roomId) {
+            this.globalData.current = i
+            break
+          }
+        }
+      }
     }
     this.saveCurrent()
     this.saveGroups()
-    this.notifyData()
   },
   saveCurrent() {
     wx.setStorageSync('__current_group_index', this.globalData.current)
   },
   saveGroups() {
     wx.setStorageSync('__groups', this.globalData.groups)
-  },
-  notifyData() {
-    // const { groups, current } = this.globalData
-    // const detailsLen = groups[current].details.length
-    // if ([5, 12, 50, 100].indexOf(detailsLen) !== -1) {
-    //   wx.setTabBarBadge({ index: 1, text: '' + detailsLen })
-    // } else {
-    //   wx.removeTabBarBadge({ index: 1 })
-    // }
   }
 })

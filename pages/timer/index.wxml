@@ -26,7 +26,7 @@
     <view wx:if="{{group.details.length < 3}}" class="preview-item">平均: {{format.time(util.avg(group.details))}}</view>
     <view wx:else class="preview-item">平均(去头尾): {{format.time(util.avgCut(group.details))}}</view>
   </view>
-  <view class="preview-detail">成绩详情</view>
+  <view class="preview-detail" bindtap="navDetails">成绩详情</view>
 </view>
 <float-room wx:if="{{roomId}}"/>
 <tab-bar idx="0" class="{{util.getInfoClass(status)}}"/>

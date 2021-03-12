@@ -61,16 +61,11 @@ function avgCut(details) {
   }
 }
 
-function eventHover(detailsLen) {
-  return detailsLen ? '' : 'weui-cell_active'
-}
-
 module.exports = {
   reverse: reverse,
   best: best,
   worst: worst,
   solved: solved,
   avg: avg,
-  avgCut: avgCut,
-  eventHover: eventHover
+  avgCut: avgCut
 }

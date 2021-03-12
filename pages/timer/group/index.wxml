@@ -39,7 +39,10 @@
   </movable-area>
 </view>
 <mp-dialog title="新建" show="{{creating}}" buttons="{{dialogButtons}}" bindbuttontap="createGroup" bindclose="closeCreateDialog">
-  <input class="modal-input" value="{{nameContent}}" placeholder="请输入分组名称" bindinput="inputingName"/>
+  <view class="modal-form">
+    <view class="modal-title">分组名：</view>
+    <input class="modal-input" value="{{nameContent}}" placeholder="请输入分组名称" bindinput="inputingName"/>
+  </view>
   <view class="type-list">
     <view wx:for="{{supportedTypes}}" class="type-item" id="{{index}}" bindtap="selectType">
       <image class="type-icon" src="{{util.getTypeIconSrc(item, typeIndex === index)}}"/>
@@ -48,5 +51,7 @@
   </view>
 </mp-dialog>
 <mp-dialog title="重命名" show="{{renameIndex > -1}}" buttons="{{dialogButtons}}" bindbuttontap="renameGroup" bindclose="closeRenameDialog">
-  <input class="modal-input" value="{{nameContent}}" placeholder="请输入分组名称" bindinput="inputingName"/>
+  <view class="modal-form">
+    <input class="modal-input" value="{{nameContent}}" placeholder="请输入分组名称" bindinput="inputingName"/>
+  </view>
 </mp-dialog>

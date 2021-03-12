@@ -1,0 +1,59 @@
+.container {
+  background: rgba(70, 126, 175, 0.05);
+}
+
+.group-detail-name {
+  height: 56px;
+  background: #FBFCFD;
+  padding: 16px;
+  font-size: 17px;
+  font-weight: 500;
+  color: #333;
+  box-sizing: border-box;
+}
+
+.group-detail-stat {
+  font-size: 14px;
+  padding: 8px 16px 16px;
+  background: #FBFCFD;
+  font-weight: 400;
+  box-shadow: 0px 2px 6px 0px rgba(70, 126, 175, 0.05);
+}
+
+.group-detail-stat .stat-item {
+  margin-top: 6px;
+}
+
+.group-detail-stat .stat-item .right {
+  float: right;
+}
+
+.group-detail-list {
+  padding: 16px 20px;
+}
+
+.group-detail-item {
+  padding-top: 16px;
+}
+
+.group-detail-item .detail-time {
+  font-size: 17px;
+  font-weight: 400px;
+  opacity: 0.9;
+}
+
+.group-detail-item .detail-time .extra {
+  font-size: 14px;
+  opacity: 0.5;
+}
+
+.group-detail-item .detail-time .create {
+  float: right;
+}
+
+.group-detail-item .detail-scramble {
+  font-size: 14px;
+  font-weight: 400px;
+  opacity: 0.5;
+  margin: 8px 0;
+}

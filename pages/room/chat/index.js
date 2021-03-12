@@ -16,7 +16,7 @@ Page({
     result: false,
     finished: false
   },
-  onLoad() {
+  onLoad(query) {
     const { roomInfo } = app.globalData
     this.setData({
       roomId: roomInfo.id,
@@ -42,6 +42,9 @@ Page({
         }
       })
     }
+    if (query.exit) {
+      this.quitRoom();
+    }
   },
   onUnload() {
     this.dataWatcher.close()
@@ -49,7 +52,7 @@ Page({
   onShareAppMessage() {
     return {
       title: '来和我一决高下吧',
-      path: '/pages/data/join/index?room=' + this.data.roomId,
+      path: '/pages/room/index?room=' + this.data.roomId,
       success() {
         wx.showToast({ title: '邀请成功' })
       }
@@ -125,6 +128,12 @@ Page({
               }
               app.saveGroups()
               app.globalData.roomInfo = {};
+              for (let i = groups.length - 1; i > -1; i--) {
+                if (!groups[i].roomId) {
+                  app.globalData.current = i
+                  break
+                }
+              }
               wx.navigateBack();
             }
           })

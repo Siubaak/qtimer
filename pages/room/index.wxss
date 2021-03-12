@@ -150,10 +150,23 @@
   color: #467EAF;
 }
 
-.modal-input {
-  color: #467EAF;
+.modal-form {
+  display: flex;
   margin-top: 12px;
+}
+
+.modal-title {
+  color: #333;
+}
+
+.modal-input {
+  flex: 1;
+  color: #467EAF;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.modal-input + .modal-title {
+  margin-left: 22px;
 }
 
 .room-tips {
