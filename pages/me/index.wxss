@@ -3,7 +3,7 @@
 }
 
 .settings .card {
-  background: #FBFCFD;
+  background-color: #FBFCFD;
   box-shadow: 0px 0px 20px 0px rgba(70, 126, 175, 0.15);
   border-radius: 16px;
   display: flex;
@@ -11,6 +11,15 @@
   align-items: center;
   padding: 16px;
   margin-bottom: 16px;
+}
+
+.settings .card.button {
+  line-height: unset;
+  text-align: unset;
+}
+
+.settings .card.button::after {
+  border: none;
 }
 
 .settings .card-group {
