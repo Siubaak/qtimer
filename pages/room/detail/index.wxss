@@ -1,0 +1,127 @@
+page, .container {
+  height: auto;
+  min-height: 100vh;
+  background: rgba(70, 126, 175, 0.05);
+}
+
+.group-detail-name {
+  height: 56px;
+  background: #FBFCFD;
+  padding: 16px;
+  font-size: 17px;
+  font-weight: 500;
+  color: #333;
+  box-sizing: border-box;
+  box-shadow: 0px 2px 6px 0px rgba(70, 126, 175, 0.05);
+  margin-bottom: 16px;
+}
+
+.group-detail-stat {
+  font-size: 14px;
+  padding: 8px 16px 0;
+  font-weight: 400;
+}
+
+.group-detail-stat .stat-item {
+  margin-top: 6px;
+}
+
+.group-detail-stat .stat-item.title {
+  font-size: 17px;
+}
+
+.group-detail-stat .stat-item .right {
+  float: right;
+}
+
+.group-detail-list {
+  padding: 16px 20px;
+}
+
+.group-detail-item {
+  padding-top: 16px;
+}
+
+.group-detail-item .detail-time {
+  font-size: 17px;
+  font-weight: 400px;
+  opacity: 0.9;
+}
+
+.group-detail-item .detail-time .extra {
+  font-size: 14px;
+  opacity: 0.5;
+}
+
+.group-detail-item .detail-time .create {
+  float: right;
+}
+
+.group-detail-item .detail-scramble {
+  font-size: 14px;
+  font-weight: 400px;
+  opacity: 0.5;
+  margin: 8px 0;
+}
+
+.group-rank-list .group-rank-item {
+  width: 100%;
+  position: relative;
+}
+
+.group-rank-list .group-rank-item .group-rank-bg {
+  width: 100%;
+}
+
+.group-rank-list .group-rank-item .group-rank-info {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  padding-left: 20%;
+  padding-right: 12%;
+  padding-bottom: 12%;
+  align-items: flex-end;
+}
+
+.group-rank-info .group-rank-avatar {
+  overflow: hidden;
+  position: relative;
+}
+
+.group-rank-item.rank-1 .group-rank-info .group-rank-avatar {
+  width: 92px;
+  height: 92px;
+  border-radius: 46px;
+}
+
+.group-rank-item.rank-2 .group-rank-info .group-rank-avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 36px;
+}
+
+.group-rank-item.rank-3 .group-rank-info .group-rank-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 28px;
+}
+
+.group-rank-avatar .avatar-image {
+  height: 100%;
+  width: 100%;
+}
+
+.group-rank-info .group-rank-name {
+  color: #FBFCFD;
+  font-size: 17px;
+  flex: 1;
+}
+
+.group-rank-info .group-rank-avg {
+  color: #FBFCFD;
+  font-size: 17px;
+  float: right;
+}

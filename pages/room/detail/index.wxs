@@ -1,0 +1,69 @@
+function reverse(arr) {
+  var a = [].concat(arr)
+  return a.reverse()
+}
+
+function best(details) {
+  var b = Infinity
+  for (var i = 0; i < details.length; i++) {
+    b = Math.min(details[i].time, b)
+  }
+  return b
+}
+
+function worst(details) {
+  var w = 0
+  for (var i = 0; i < details.length; i++) {
+    w = Math.max(details[i].time, w)
+  }
+  return w
+}
+
+function solved(details) {
+  var solved = 0
+  for (var i = 0; i < details.length; i++) {
+    if (details[i].cond !== 2) {
+      solved++
+    }
+  }
+  return solved
+}
+
+function avg(details) {
+  var sum = 0, dnf = 0
+  for (var i = 0; i < details.length; i++) {
+    var d = details[i].time
+    sum += d
+    if (d === 100000 || d === 100001) dnf++
+  }
+  if (dnf > 0) {
+    return 100000
+  } else {
+    return sum / details.length
+  }
+}
+
+function avgCut(details) {
+  var sum = 0, dnf = 0, best = Infinity, worst = 0
+  for (var i = 0; i < details.length; i++) {
+    var d = details[i].time
+    sum += d
+    best = Math.min(d, best)
+    worst = Math.max(d, worst)
+    if (d === 100000 || d === 100001) dnf++
+  }
+  if (dnf > 1) {
+    return 100000
+  } else {
+    return (sum - best - worst) / (details.length - 2)
+  }
+}
+
+module.exports = {
+  reverse: reverse,
+  best: best,
+  worst: worst,
+  solved: solved,
+  avg: avg,
+  avgCut: avgCut
+}

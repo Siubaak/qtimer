@@ -64,8 +64,8 @@
   <view class="tools-area">
     <view class="tools-box">
       <button type="primary" class="opr-btn" bindtap="quitRoom">退出比赛</button>
-      <button type="primary" class="opr-btn" bindtap="goToTimer">前往计时</button>
-      <button type="primary" class="opr-btn" catchtap="triggerResult">查看结果</button>
+      <button wx:if="{{!finished}}" type="primary" class="opr-btn" bindtap="goToTimer">前往计时</button>
+      <button type="primary" class="opr-btn {{finished ? 'done' : ''}}" catchtap="triggerResult">查看结果</button>
     </view>
   </view>
 </view>

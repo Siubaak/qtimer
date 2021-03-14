@@ -1,4 +1,6 @@
-.container {
+page, .container {
+  height: auto;
+  min-height: 100vh;
   background: rgba(70, 126, 175, 0.05);
 }
 

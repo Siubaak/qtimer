@@ -1,4 +1,0 @@
-<view class="float-room-container" hover-class="float-room-container-active" bindtap="enterRoom">
-  <image class="float-room-icon" src="/images/room.png" mode="aspectFill"></image>
-  <text class="float-room-text">房间</text>
-</view>

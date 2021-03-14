@@ -1,0 +1,74 @@
+<wxs src="../../../utils/format.wxs" module="format"></wxs>
+<wxs src="./index.wxs" module="util"></wxs>
+<nav-bar>
+  <view class="nav-back" catchtap="navBack"></view>
+</nav-bar>
+<view class="container">
+  <view class="group-detail-name">
+    <text>{{group.name || ('房间' + group.roomId)}} - {{group.type}}</text>
+  </view>
+  <view wx:if="{{status === 2}}" class="group-rank-list">
+    <view class="group-rank-item rank-1">
+      <view class="group-rank-info">
+        <view class="group-rank-avatar">
+          <image class="avatar-image" src="{{players[0].avatarUrl}}" mode="aspectFill"></image>
+        </view>
+        <text class="group-rank-name">{{players[0].nickName}}</text>
+        <text class="group-rank-avg">平均{{format.time(players[0].avg)}}</text>
+      </view>
+  	  <image class="group-rank-bg" src="/images/no1.png" mode="widthFix"></image>
+    </view>
+    <view class="group-rank-item rank-2">
+      <view class="group-rank-info">
+        <view class="group-rank-avatar">
+          <image class="avatar-image" src="{{players[1].avatarUrl}}" mode="aspectFill"></image>
+        </view>
+        <text class="group-rank-name">{{players[1].nickName}}</text>
+        <text class="group-rank-avg">平均{{format.time(players[1].avg)}}</text>
+      </view>
+  	  <image class="group-rank-bg" src="/images/no2.png" mode="widthFix"></image>
+    </view>
+    <view wx:if="{{players.length > 2}}" class="group-rank-item rank-3">
+      <view class="group-rank-info">
+        <view class="group-rank-avatar">
+          <image class="avatar-image" src="{{players[2].avatarUrl}}" mode="aspectFill"></image>
+        </view>
+        <text class="group-rank-name">{{players[2].nickName}}</text>
+        <text class="group-rank-avg">平均{{format.time(players[2].avg)}}</text>
+      </view>
+  	  <image class="group-rank-bg" src="/images/no3.png" mode="widthFix"></image>
+    </view>
+  </view>
+  <view wx:if="{{group.details}}" class="group-detail-stat">
+    <view class="stat-item title">我的比赛成绩:</view>
+    <view class="stat-item">
+      还原次数: {{util.solved(group.details)}}/{{group.details.length}}
+      <view class="right">最快: {{format.time(util.best(group.details))}}</view>
+    </view>
+    <view wx:if="{{group.details.length > 3}}" class="stat-item">
+      平均(去头尾): {{format.time(util.avgCut(group.details))}}
+      <view class="right">最慢: {{format.time(util.worst(group.details))}}</view>
+    </view>
+    <view wx:else class="stat-item">
+      平均: {{format.time(util.avg(group.details))}}
+      <view class="right">最慢: {{format.time(util.worst(group.details))}}</view>
+    </view>
+  </view>
+  <view wx:if="{{group.details.length}}" class="group-detail-list">
+    <view wx:for="{{util.reverse(group.details)}}" class="group-detail-item">
+      <view class="detail-time">
+        {{format.time(item.time)}}
+        <span wx:if="{{item.cond === 1}}" class="extra">
+          ({{format.time(item.origin)}}+2)
+        </span>
+        <span wx:elif="{{item.cond === 2}}" class="extra">
+          ({{format.time(item.origin)}})
+        </span>
+        <span class="extra create">
+          {{item.create}}
+        </span>
+      </view>
+      <view class="detail-scramble">{{item.scramble}}</view>
+    </view>
+  </view>
+</view>

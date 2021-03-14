@@ -26,6 +26,7 @@ function createRoom(opt) {
       id: id,
       status: 0, // 0:准备中; 1:比赛中; 2:比赛结束
       create: Date.now(),
+      name: opt.data.name,
       type: opt.data.type,
       solveNum: opt.data.solveNum,
       playerNum: opt.data.playerNum,

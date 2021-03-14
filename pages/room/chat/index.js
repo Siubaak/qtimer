@@ -105,31 +105,18 @@ Page({
       title: '提示',
       content: '退出比赛房间后将无法重新进入，确认退出房间？',
       confirmText: '确定',
-      success(res) {
+      success: (res) => {
         if (res.confirm) {
           quitRoom({
-            complete() {
+            complete: () => {
               if (roomInfoWatcher) {
                 roomInfoWatcher.close()
                 roomInfoWatcher = null
               }
-              const { current, groups, roomInfo } = app.globalData
-              const curGroup = groups[current]
-              let dnsNum =  roomInfo.solveNum - curGroup.details.length
-              while (dnsNum > 0) {
-                dnsNum--
-                curGroup.details.push({
-                  origin: 100001,
-                  time: 100001,
-                  cond: 0,
-                  scramble: '', 
-                  create: today()
-                })
-              }
-              app.saveGroups()
+              this.saveResult();
               app.globalData.roomInfo = {};
-              for (let i = groups.length - 1; i > -1; i--) {
-                if (!groups[i].roomId) {
+              for (let i = app.globalData.groups.length - 1; i > -1; i--) {
+                if (!app.globalData.groups[i].roomId) {
                   app.globalData.current = i
                   break
                 }
@@ -142,10 +129,36 @@ Page({
     })
   },
   triggerResult() {
-    this.setData({ result: !this.data.result })
+    const { current, roomInfo } = app.globalData
+    if (roomInfo.status === 2) {
+      this.saveResult();
+      wx.navigateTo({
+        url: '/pages/room/detail/index?index=' + current
+      })
+    } else {
+      this.setData({ result: !this.data.result })
+    }
   },
   hideResult() {
     this.setData({ result: false })
+  },
+  saveResult() {
+    const { current, groups, roomInfo } = app.globalData
+    const curGroup = groups[current]
+    let dnsNum =  roomInfo.solveNum - curGroup.details.length
+    while (dnsNum > 0) {
+      dnsNum--
+      curGroup.details.push({
+        origin: 100001,
+        time: 100001,
+        cond: 0,
+        scramble: '', 
+        create: today()
+      })
+    }
+    curGroup.roomPlayers = roomInfo.players
+    curGroup.roomStatus = roomInfo.status
+    app.saveGroups()
   },
   noop() { }
 })

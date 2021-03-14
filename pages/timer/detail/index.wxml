@@ -7,13 +7,19 @@
   <view class="group-detail-name">
     <text>{{group.name || '默认分组'}} - {{group.type}}</text>
   </view>
-  <view class="group-detail-stat">
-    <view class="stat-item">还原次数: {{util.solved(group.details)}}/{{group.details.length}}
-    <view class="right">最快: {{format.time(util.best(group.details))}}</view></view>
-    <view wx:if="{{group.details.length < 3}}" class="stat-item">平均: {{format.time(util.avg(group.details))}}
-    <view class="right">最慢: {{format.time(util.worst(group.details))}}</view></view>
-    <view wx:else class="stat-item">平均(去头尾): {{format.time(util.avgCut(group.details))}}
-    <view class="right">最慢: {{format.time(util.worst(group.details))}}</view></view>
+  <view wx:if="{{group.details}}" class="group-detail-stat">
+    <view class="stat-item">
+      还原次数: {{util.solved(group.details)}}/{{group.details.length}}
+      <view class="right">最快: {{format.time(util.best(group.details))}}</view>
+    </view>
+    <view wx:if="{{group.details.length < 3}}" class="stat-item">
+      平均: {{format.time(util.avg(group.details))}}
+      <view class="right">最慢: {{format.time(util.worst(group.details))}}</view>
+    </view>
+    <view wx:else class="stat-item">
+      平均(去头尾): {{format.time(util.avgCut(group.details))}}
+      <view class="right">最慢: {{format.time(util.worst(group.details))}}</view>
+    </view>
   </view>
   <view wx:if="{{group.details.length}}" class="group-detail-list">
     <view wx:for="{{util.reverse(group.details)}}" class="group-detail-item">

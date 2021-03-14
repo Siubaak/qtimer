@@ -81,7 +81,22 @@ Page({
           }
         }
         if (hasAllFinished) {
-          this.setData({ scramble: roomInfo.scrambles[selfSolvedNum] })
+          if (roomInfo.scrambles[selfSolvedNum]) {
+            this.setData({ scramble: roomInfo.scrambles[selfSolvedNum] })
+          } else {
+            app.getWorkerResult({
+              type: groups[current].type
+            }, ({ type, data }) => {
+              if (type === groups[current].type) {
+                this.setData({ scramble: data })
+                setScramble({
+                  data: {
+                    scramble: data
+                  }
+                })
+              }
+            })
+          }
         } else if (roomInfo.scrambles.length > selfSolvedNum) {
           this.setData({ scramble: WAIT_FOR_OTHERS_MSG })
         } else {

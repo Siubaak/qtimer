@@ -2,17 +2,25 @@
 <view class="container">
   <me-bar/>
   <view class="settings">
-    <view class="card">
+    <view class="card-group">
+      <view class="card-group-title">历史成绩统计</view>
+      <view class="card" bindtap="showNextVerTips">
+        <view class="card-name">分组历史成绩</view>
+        <view class="card-opr"></view>
+      </view>
+      <view class="card" bindtap="showNextVerTips">
+        <view class="card-name">房间历史成绩</view>
+        <view class="card-opr"></view>
+      </view>
+    </view>
+    <view class="card" bindtap="showNextVerTips">
       <view class="card-name">手势说明</view>
-      <view class="card-opr">></view>
+      <view class="card-opr"></view>
     </view>
-    <view class="card">
+    <view class="card" bindtap="showNextVerTips">
       <view class="card-name">意见反馈</view>
-      <view class="card-opr">></view>
+      <view class="card-opr"></view>
     </view>
-  </view>
-  <view>
-
   </view>
 </view>
 <tab-bar idx="2"/>

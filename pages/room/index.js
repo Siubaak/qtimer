@@ -127,8 +127,8 @@ Page({
       data: {
         name: this.data.nameContent,
         type: this.data.supportedTypes[this.data.typeIndex],
-        solveNum: 5, // this.data.supportedTimes[this.data.timeIndex],
-        playerNum: 2, // this.data.supportedPlayers[this.data.playerIndex],
+        solveNum: this.data.supportedTimes[this.data.timeIndex],
+        playerNum: this.data.supportedPlayers[this.data.playerIndex],
         nickName: userInfo.nickName,
         avatarUrl: userInfo.avatarUrl
       },
@@ -159,7 +159,7 @@ Page({
     const { groups } = app.globalData
     groups.push({
       roomId: roomInfo.id,
-      name: this.data.nameContent,
+      name: roomInfo.name,
       create: today(new Date(roomInfo.create)),
       type: roomInfo.type,
       details: []
@@ -217,7 +217,9 @@ Page({
         url: `/pages/room/chat/index`
       })
     } else { // 如果不是当前房间，展示历史结果
-
+      wx.navigateTo({
+        url: '/pages/room/detail/index?index=' + index
+      })
     }
   },
   joinRoom(event) {
